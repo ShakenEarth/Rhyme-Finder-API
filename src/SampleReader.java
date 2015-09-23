@@ -58,14 +58,14 @@ public class SampleReader {
 				Phoneme phoneme = new Phoneme();
 				String phonemeName = "";
 				char charBeingExamined = wordBeingExamined.charAt(k);
-				if(charBeingExamined != ' ' || charBeingExamined != anInteger){ 
-				//"anInteger" and "charBeingExaminedAsAnInteger" are placeholders for now
+				if(charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false){ 
 					
 					phonemeName = phonemeName + charBeingExamined;
 					
-				}else if(charBeingExamined == anInteger){
+				}else if(Character.isDigit(charBeingExamined)){
 					
-					phoneme.setStress(charBeingExaminedAsAnInteger);
+					int stress = charBeingExamined;
+					phoneme.setStress(stress);
 					
 				}else if(charBeingExamined == ' '){
 					
