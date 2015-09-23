@@ -53,19 +53,22 @@ public class SampleReader {
 			
 			indexOfCharBeingExamined = indexOfCharBeingExamined + 2;
 			phonemes = new ArrayList<Phoneme>();
+			Phoneme phoneme = new Phoneme();
+			String phonemeName = "";
 			for (int k = indexOfCharBeingExamined; k < lineBeingExamined.length(); k++){
 				
-				Phoneme phoneme = new Phoneme();
-				String phonemeName = "";
 				char charBeingExamined = lineBeingExamined.charAt(k);
-				if(charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false){ 
+				//if the character is a letter
+				if(Character.isLetter(charBeingExamined)
+						/*this didn't work for whatever reason: 
+						 * charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false*/){ 
 					
 					phonemeName = phonemeName + charBeingExamined;
 					System.out.println(phonemeName);
 					
 				}else if(Character.isDigit(charBeingExamined)){
 					
-					int stress = charBeingExamined;
+					int stress = Character.getNumericValue(charBeingExamined);
 					phoneme.setStress(stress);
 					
 				}else if(charBeingExamined == ' '){
@@ -76,9 +79,15 @@ public class SampleReader {
 					phonemeName = "";
 					
 					
-				}
+				}else{}
 				
 			}
+			
+			//this is for the last phoneme
+			phoneme.setPhoneme(phonemeName);
+			phonemes.add(phoneme);
+			phoneme = new Phoneme();
+			phonemeName = "";
 			
 			listsOfPhonemesForWords.add(phonemes);
 			
@@ -89,11 +98,15 @@ public class SampleReader {
 			
 			System.out.println(wordNames.get(h));
 			ArrayList<Phoneme> listSample = listsOfPhonemesForWords.get(h);
-			System.out.println("porehig");
-			System.out.println(listsOfPhonemesForWords);
+			
 			for(int l = 0; l < listSample.size(); l++){
 				
-				System.out.println(listSample.get(l).getStress());
+				if(l == 3){
+					
+					System.out.println(listSample.get(l).getStress());
+					
+				}
+				System.out.println(listSample.get(l).getPhoneme());
 				
 			}
 			
