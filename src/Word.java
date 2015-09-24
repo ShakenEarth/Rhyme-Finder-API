@@ -2,14 +2,30 @@ import java.util.*;
 
 public class Word {
 	
-	String wordName = "";
-	ArrayList<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
+	private String wordName = "";
+	private ArrayList<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
 	
 	public Word(String wordName, ArrayList<Phoneme> phonemes) {
 		
-		this.wordName = wordName;
-		listOfPhonemes = phonemes;
+		this.setWordName(wordName);
+		setListOfPhonemes(phonemes);
 		
+	}
+
+	public String getWordName() {
+		return wordName;
+	}
+
+	public void setWordName(String wordName) {
+		this.wordName = wordName;
+	}
+
+	public ArrayList<Phoneme> getListOfPhonemes() {
+		return listOfPhonemes;
+	}
+
+	public void setListOfPhonemes(ArrayList<Phoneme> listOfPhonemes) {
+		this.listOfPhonemes = listOfPhonemes;
 	}
 
 }

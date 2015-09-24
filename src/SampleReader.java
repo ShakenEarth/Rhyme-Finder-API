@@ -112,12 +112,46 @@ public class SampleReader {
 			
 		}
 		
-		//4
+		//3
 		ArrayList<Word> anchorWords = new ArrayList<Word>();
 		
 		for(int f = 0; f < wordNames.size(); f++){
 			
 			anchorWords.add(new Word(wordNames.get(f), listsOfPhonemesForWords.get(f)));
+			
+		}
+		
+		for(int q = 0; q < wordNames.size(); q++){
+			
+			System.out.println("Word Name (Anchor):");
+			System.out.println(anchorWords.get(q).getWordName());
+			System.out.println("Phonemes (Anchor):");
+			for(int i = 0; i < anchorWords.get(q).getListOfPhonemes().size(); i++){
+				
+				System.out.println(anchorWords.get(q).getListOfPhonemes().get(i).getPhoneme());
+				
+			}
+			
+		}
+		
+		//4
+		ArrayList<Word> satelliteWords = new ArrayList<Word>();
+		for(int b = 0; b < wordNames.size(); b++){
+			
+			satelliteWords.add(anchorWords.get(b));
+			
+		}
+		
+		for(int q = 0; q < wordNames.size(); q++){
+			
+			System.out.println("Word Name (Satellite):");
+			System.out.println(anchorWords.get(q).getWordName());
+			System.out.println("Phonemes (Satellite):");
+			for(int i = 0; i < satelliteWords.get(q).getListOfPhonemes().size(); i++){
+				
+				System.out.println(satelliteWords.get(q).getListOfPhonemes().get(i).getPhoneme());
+				
+			}
 			
 		}
 
