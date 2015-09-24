@@ -111,6 +111,15 @@ public class SampleReader {
 			}
 			
 		}
+		
+		//4
+		ArrayList<Word> anchorWords = new ArrayList<Word>();
+		
+		for(int f = 0; f < wordNames.size(); f++){
+			
+			anchorWords.add(new Word(wordNames.get(f), listsOfPhonemesForWords.get(f)));
+			
+		}
 
 	}
 }
