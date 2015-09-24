@@ -3,7 +3,7 @@ public class Phoneme {
 	
 	private boolean isAVowel = false;
 	private String phoneme = "";
-	private int stress;
+	private int stress = -1; //-1 just means there isn't an assigned stress
 	
 	public String getPhoneme() {
 		return phoneme;
