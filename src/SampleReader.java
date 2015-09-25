@@ -11,7 +11,7 @@ public class SampleReader {
 		List<String> linesOfDictionary = null;
 	//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
 		try{
-			linesOfDictionary = Files.readAllLines(Paths.get("cmudictOneLiner.txt"), Charset.defaultCharset());
+			linesOfDictionary = Files.readAllLines(Paths.get("cmudict-0.7b_modified.txt"), Charset.defaultCharset());
 			
 		 	for (String line : linesOfDictionary) {
 			 	System.out.println(line);
@@ -26,7 +26,7 @@ public class SampleReader {
 		//ArrayList for the word names
 		ArrayList<String> wordNames = new ArrayList<String>();
 		
-		/**ArrayList of lists of phonemes that compose a word*/
+		/**ArrayList of lists of phonemes that compose a word**/
 		ArrayList<ArrayList<Phoneme>> listsOfPhonemesForWords = new ArrayList<ArrayList<Phoneme>>();
 		String word = "";
 		
@@ -45,6 +45,7 @@ public class SampleReader {
 				}else{
 					
 					wordNames.add(word);
+					word = "";
 					break;
 					
 				}
@@ -117,7 +118,7 @@ public class SampleReader {
 		
 		for(int f = 0; f < wordNames.size(); f++){
 			
-			anchorWords.add(new Word(wordNames.get(f), listsOfPhonemesForWords.get(f)));
+			anchorWords.add(new Word((wordNames.get(f)).toLowerCase(), listsOfPhonemesForWords.get(f)));
 			
 		}
 		
