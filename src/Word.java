@@ -1,5 +1,7 @@
 import java.util.*;
 
+/**@author Thomas Lisankie*/
+
 public class Word {
 	
 	private String wordName = "";

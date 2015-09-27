@@ -1,4 +1,6 @@
 
+/**@author Thomas Lisankie*/
+
 public class Phoneme {
 	
 	private boolean isAVowelPhoneme = false;

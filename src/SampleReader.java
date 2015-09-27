@@ -3,6 +3,8 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
 
+/**@author Thomas Lisankie*/
+
 public class SampleReader {
 	
 	public static void main(String[] args){
