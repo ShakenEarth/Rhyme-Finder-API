@@ -5,7 +5,7 @@ import java.util.*;
 
 /**@author Thomas Lisankie*/
 
-public class SampleReader {
+public class RhymeDictionaryAssembler {
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
