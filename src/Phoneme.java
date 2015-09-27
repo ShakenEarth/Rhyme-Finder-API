@@ -11,6 +11,15 @@ public class Phoneme {
 
 	public void setPhoneme(String phoneme) {
 		this.phoneme = phoneme;
+		
+		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
+				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
+				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
+				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
+			
+			setIsAVowelPhoneme(true);
+			
+		}
 	}
 
 	public boolean isAVowelPhoneme() {
@@ -27,6 +36,19 @@ public class Phoneme {
 
 	public void setStress(int stress) {
 		this.stress = stress;
+	}
+
+	public boolean isEqualTo(Phoneme p2) {
+		
+		if(this.getPhoneme().equals(p2.getPhoneme())){
+			
+			return true;
+			
+		}else{
+		
+			return false;
+			
+		}
 	}
 
 }

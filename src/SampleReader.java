@@ -129,7 +129,8 @@ public class SampleReader {
 			System.out.println("Phonemes (Anchor):");
 			for(int i = 0; i < anchorWords.get(q).getListOfPhonemes().size(); i++){
 				
-				System.out.println(anchorWords.get(q).getListOfPhonemes().get(i).getPhoneme());
+				System.out.println(anchorWords.get(q).getListOfPhonemes().get(i).getPhoneme() + ", " 
+						+ anchorWords.get(q).getListOfPhonemes().get(i).getStress());
 				
 			}
 			
@@ -150,7 +151,8 @@ public class SampleReader {
 			System.out.println("Phonemes (Satellite):");
 			for(int i = 0; i < satelliteWords.get(q).getListOfPhonemes().size(); i++){
 				
-				System.out.println(satelliteWords.get(q).getListOfPhonemes().get(i).getPhoneme());
+				System.out.println(satelliteWords.get(q).getListOfPhonemes().get(i).getPhoneme() + ", " 
+				+ satelliteWords.get(q).getListOfPhonemes().get(i).getStress());
 				
 			}
 			
@@ -191,7 +193,7 @@ public class SampleReader {
 				return 1.0;
 				
 			}
-		}else if(p1.isAConsonantPhoneme() && p2.isAConsonantPhoneme()){
+		}else if(!p1.isAVowelPhoneme() && !p1.isAVowelPhoneme()){
 			
 			if(p1.isEqualTo(p2)){
 				
