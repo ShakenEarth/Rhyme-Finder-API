@@ -182,6 +182,7 @@ public class SampleReader {
 		
 	}
 	
+	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
 	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
