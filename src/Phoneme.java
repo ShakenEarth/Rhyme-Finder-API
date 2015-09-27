@@ -1,7 +1,7 @@
 
 public class Phoneme {
 	
-	private boolean isAVowel = false;
+	private boolean isAVowelPhoneme = false;
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
@@ -13,12 +13,12 @@ public class Phoneme {
 		this.phoneme = phoneme;
 	}
 
-	public boolean isAVowel() {
-		return isAVowel;
+	public boolean isAVowelPhoneme() {
+		return isAVowelPhoneme;
 	}
 	
-	public void setIsAVowel(boolean isAVowel) {
-		this.isAVowel = isAVowel;
+	public void setIsAVowelPhoneme(boolean isAVowel) {
+		this.isAVowelPhoneme = isAVowel;
 	}
 
 	public int getStress() {

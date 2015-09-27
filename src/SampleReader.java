@@ -155,6 +155,59 @@ public class SampleReader {
 			}
 			
 		}
+		
+		System.out.println(satelliteWords.get(20).getWordName()); //prints out "aardvarks"
+		
+		//find Rhyme Value/Percentile for all Words
+		for(int i = 0; i < anchorWords.size(); i++){
+			
+			for(int j = 0; j < satelliteWords.size(); j++){
+				
+				findRhymeValueAndPercentileForWords(anchorWords.get(i), satelliteWords.get(j));
+				
+			}
+			
+		}
 
+	}
+
+	public static void findRhymeValueAndPercentileForWords(Word anchorWord,
+			Word satelliteWord) {
+		
+		
+		
+	}
+	
+	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
+		
+		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+			
+			if(p1.isEqualTo(p2)){
+				
+				return 2.0;
+				
+			}else{
+				
+				return 1.0;
+				
+			}
+		}else if(p1.isAConsonantPhoneme() && p2.isAConsonantPhoneme()){
+			
+			if(p1.isEqualTo(p2)){
+				
+				return 1.0;
+				
+			}else{
+				
+				return 0.5;
+				
+			}
+			
+		}else{
+			
+			return 0.0;
+			
+		}
+		
 	}
 }
