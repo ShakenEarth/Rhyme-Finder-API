@@ -1,6 +1,8 @@
 
-/**@author Thomas Lisankie*/
-
+/**
+ * Class for representing phonemes
+ * @author Thomas Lisankie
+ */
 public class Phoneme {
 	
 	private boolean isAVowelPhoneme = false;

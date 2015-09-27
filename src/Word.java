@@ -1,6 +1,9 @@
 import java.util.*;
 
-/**@author Thomas Lisankie*/
+/**
+ * Class for representing words. This includes a word's spelling and its phonemic translation (sequence of phonemes).
+ * @author Thomas Lisankie
+ */
 
 public class Word {
 	
