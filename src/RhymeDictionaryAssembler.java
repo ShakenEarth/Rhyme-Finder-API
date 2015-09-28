@@ -175,15 +175,28 @@ public class RhymeDictionaryAssembler {
 
 	}
 
-	public static void findRhymeValueAndPercentileForWords(Word anchorWord, Word satelliteWord) {
+	public static void findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
+		double rhymeValue = 0.0;
+		Word word = null;
+		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
+			
+			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+				
+				rhymeValue = rhymeValue + findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
+						satellite.getListOfPhonemes().get(s));
+				
+			}
+			
+		}
 		
+		return findRhymePercentile(rhymeValue, word);
 		
 	}
 	
 	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
 	 * actual Rhyme Value matches with the homophonic RV*/
-	public double findRhymePercentile(int rhymeValue, Word longerWord){
+	public double findRhymePercentile(double rhymeValue, Word longerWord){
 		
 		double homophonicRhymeValue = 0.0;
 		double rhymePercentile = 0.0;
@@ -202,7 +215,7 @@ public class RhymeDictionaryAssembler {
 	}
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
+	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			
