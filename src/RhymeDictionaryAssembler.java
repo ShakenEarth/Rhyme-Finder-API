@@ -184,7 +184,8 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep*/
+			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep the focus on
+			 * the anchor word which is the focus word*/
 			rhymePercentile = findRhymePercentile(rhymeValue, anchor); 
 			
 		}else{//do ideal Rhyme Value process
