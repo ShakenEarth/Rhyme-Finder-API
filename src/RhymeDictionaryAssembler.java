@@ -104,11 +104,6 @@ public class RhymeDictionaryAssembler {
 			
 			for(int l = 0; l < listSample.size(); l++){
 				
-				if(l == 3){
-					
-					System.out.println(listSample.get(l).getStress());
-					
-				}
 				System.out.println(listSample.get(l).getPhoneme());
 				
 			}
@@ -175,9 +170,10 @@ public class RhymeDictionaryAssembler {
 
 	}
 
-	public static void findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
+	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
 		double rhymeValue = 0.0;
+		double rhymePercentile = 0.0;
 		Word word = null;
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
 			
@@ -188,15 +184,22 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
+			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep*/
+			rhymePercentile = findRhymePercentile(rhymeValue, anchor); 
+			
+		}else{//do ideal Rhyme Value process
+			
+			
+			
 		}
 		
-		return findRhymePercentile(rhymeValue, word);
+		return rhymePercentile;
 		
 	}
 	
 	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
 	 * actual Rhyme Value matches with the homophonic RV*/
-	public double findRhymePercentile(double rhymeValue, Word longerWord){
+	public static double findRhymePercentile(double rhymeValue, Word longerWord){
 		
 		double homophonicRhymeValue = 0.0;
 		double rhymePercentile = 0.0;
