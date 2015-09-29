@@ -4,7 +4,20 @@ import java.util.*;
 public class IndexSet {
 	
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();
-	private double rhymeValueForSet;
+	private double rhymeValueForSet = 0.0;
+	
+	public IndexSet(int index, double RVBetweenPhonemes) {
+		
+		this.addIndex(index, RVBetweenPhonemes);
+		
+	}
+	
+	public void addIndex(int index, double RVBetweenPhonemes){
+		
+		indexes.add(index);
+		rhymeValueForSet = rhymeValueForSet + RVBetweenPhonemes;
+		
+	}
 	
 	public ArrayList<Integer> getIndexes() {
 		

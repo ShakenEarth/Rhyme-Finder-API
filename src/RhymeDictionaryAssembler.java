@@ -213,7 +213,32 @@ public class RhymeDictionaryAssembler {
 			boolean firstSearch = true;
 			for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
 				
-				
+				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(t);
+				if(firstSearch == true){
+					
+					for(int u = 0; u < longerWord.getListOfPhonemes().size(); u++){
+						
+						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
+						double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+						if(RVBetweenPhonemes > 0){
+							
+							listOfIndexSets.add(new IndexSet(u, RVBetweenPhonemes));
+							
+						}
+						
+					}
+					
+					firstSearch = false;
+					
+				}else{
+					
+					for(int v = 0; v < listOfIndexSets.size(); v++){
+						
+						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
+						
+					}
+					
+				}
 				
 			}
 			
