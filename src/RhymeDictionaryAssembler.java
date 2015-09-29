@@ -235,6 +235,7 @@ public class RhymeDictionaryAssembler {
 					for(int v = 0; v < listOfIndexSets.size(); v++){
 						
 						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
+						//Also, fix this phenomenon http://i.imgur.com/jxjip2O.jpg
 						
 					}
 					
