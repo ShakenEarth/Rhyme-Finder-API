@@ -63,7 +63,7 @@ public class RhymeDictionaryAssembler {
 				char charBeingExamined = lineBeingExamined.charAt(k);
 				//if the character is a letter
 				if(Character.isLetter(charBeingExamined)
-						/*this didn't work for whatever reason: 
+						/*this didn't work for whatever reason:
 						 * charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false*/){ 
 					
 					phonemeName = phonemeName + charBeingExamined;
@@ -170,6 +170,8 @@ public class RhymeDictionaryAssembler {
 
 	}
 
+	/**This method goes through the entire process of finding how well two words rhyme with one another.
+	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.*/
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
 		double rhymeValue = 0.0;
@@ -190,7 +192,30 @@ public class RhymeDictionaryAssembler {
 			
 		}else{//do ideal Rhyme Value process
 			
+			Word shorterWord = null;
+			Word longerWord = null;
 			
+			//these conditionals find which word is longer and which is shorter
+			if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
+				
+				shorterWord = anchor;
+				longerWord = satellite;
+				
+			}else{
+				
+				shorterWord = satellite;
+				longerWord = anchor;
+				
+			}
+			
+			double idealRhymeValue = 0.0;
+			ArrayList<IndexSet> listOfIndexSets = new ArrayList<IndexSet>();
+			boolean firstSearch = true;
+			for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
+				
+				
+				
+			}
 			
 		}
 		
