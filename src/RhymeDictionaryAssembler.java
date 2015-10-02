@@ -243,6 +243,13 @@ public class RhymeDictionaryAssembler {
 								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
 							
 							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
+							double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+							
+							if(RVBetweenPhonemes > 0){
+								
+								listOfIndexSets.get(v).addIndex(v, RVBetweenPhonemes);
+								
+							}
 							
 						}
 						
@@ -251,10 +258,48 @@ public class RhymeDictionaryAssembler {
 				}
 				
 			}
+		
+			//choose which IndexSet is best
+			IndexSet bestSet = null;
+			for(int x = 0; x < listOfIndexSets.size(); x++){
+				
+				if(x == 0){
+					
+					bestSet = listOfIndexSets.get(x);
+					
+				}else{
+					
+					if(listOfIndexSets.get(x).getRhymeValueForSet() > bestSet.getRhymeValueForSet()){
+						
+						bestSet = listOfIndexSets.get(x);
+						
+					}
+					
+				}
+				
+			}
+			
+			//subtract spacing to get actual rhyme value
+			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
+			double deduction = 0.0;
+			for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
+				
+				int index1 = bestSet.getIndexes().get(y);
+				int index2 = bestSet.getIndexes().get(y + 1);
+				deduction = deduction + (0.25 * (index2 - index1 - 1));
+				
+			}
+			
+			rhymeValue = rhymeValue - deduction;
+			
+			rhymePercentile = findRhymePercentile(rhymeValue, longerWord);
 			
 		}
 		
 		return rhymePercentile;
+		
+		/*okay, this method may be done or may have been done wrong. Just copy and
+		 * pasted what I had written in Evernote more or less*/
 		
 	}
 	
