@@ -224,6 +224,7 @@ public class RhymeDictionaryAssembler {
 							
 							listOfIndexSets.add(new IndexSet(u, RVBetweenPhonemes));
 							
+							
 						}
 						
 					}
@@ -236,6 +237,14 @@ public class RhymeDictionaryAssembler {
 						
 						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
 						//Also, fix this phenomenon http://i.imgur.com/jxjip2O.jpg
+						
+						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(listOfIndexSets.size()-1);
+						for(int w = startIndexBeingExamined; 
+								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
+							
+							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
+							
+						}
 						
 					}
 					
