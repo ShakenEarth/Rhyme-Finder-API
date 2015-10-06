@@ -60,5 +60,16 @@ public class Word {
 	public void setWordsThisRhymesWith(ArrayList<Point2D.Double> wordsThisRhymesWith) {
 		this.wordsThisRhymesWith = wordsThisRhymesWith;
 	}
+	
+	public void printListOfPhonemes(){
+		
+		for(int i = 0; i < getListOfPhonemes().size(); i++){
+			
+			System.out.println(getListOfPhonemes().get(i).getPhoneme() + ", " 
+					+ getListOfPhonemes().get(i).getStress());
+			
+		}
+		
+	}
 
 }

@@ -124,12 +124,7 @@ public class RhymeDictionaryAssembler {
 			System.out.println("Word Name (Anchor):");
 			System.out.println(anchorWords.get(q).getWordName());
 			System.out.println("Phonemes (Anchor):");
-			for(int i = 0; i < anchorWords.get(q).getListOfPhonemes().size(); i++){
-				
-				System.out.println(anchorWords.get(q).getListOfPhonemes().get(i).getPhoneme() + ", " 
-						+ anchorWords.get(q).getListOfPhonemes().get(i).getStress());
-				
-			}
+			anchorWords.get(q).printListOfPhonemes();
 			
 		}
 		
@@ -159,6 +154,10 @@ public class RhymeDictionaryAssembler {
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		Word word = null;
+		System.out.println("Anchor:");
+		anchor.printListOfPhonemes();
+		System.out.println("Satellite:");
+		satellite.printListOfPhonemes();
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
 			
 			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
@@ -277,12 +276,14 @@ public class RhymeDictionaryAssembler {
 				
 			//}
 			
+			System.out.println("Deduction:" + deduction);
 			rhymeValue = rhymeValue - deduction;
 			
 			rhymePercentile = findRhymePercentile(rhymeValue, longerWord);
 			
 		}
 		
+		System.out.println("Rhyme Percentile:" + rhymePercentile);
 		return rhymePercentile;
 		
 		/*okay, this method may be done or may have been done wrong. Just copy and
