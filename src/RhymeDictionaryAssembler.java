@@ -133,36 +133,18 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		//4
-		ArrayList<Word> satelliteWords = new ArrayList<Word>();
-		for(int b = 0; b < wordNames.size(); b++){
-			
-			satelliteWords.add(anchorWords.get(b));
-			
-		}
-		
-		for(int q = 0; q < wordNames.size(); q++){
-			
-			System.out.println("Word Name (Satellite):");
-			System.out.println(anchorWords.get(q).getWordName());
-			System.out.println("Phonemes (Satellite):");
-			for(int i = 0; i < satelliteWords.get(q).getListOfPhonemes().size(); i++){
-				
-				System.out.println(satelliteWords.get(q).getListOfPhonemes().get(i).getPhoneme() + ", " 
-				+ satelliteWords.get(q).getListOfPhonemes().get(i).getStress());
-				
-			}
-			
-		}
-		
-		System.out.println(satelliteWords.get(20).getWordName()); //prints out "aardvarks"
+		System.out.println(anchorWords.get(20).getWordName()); //prints out "aardvarks"
 		
 		//find Rhyme Value/Percentile for all Words
 		for(int i = 0; i < anchorWords.size(); i++){
 			
-			for(int j = 0; j < satelliteWords.size(); j++){
+			for(int j = 0; j < anchorWords.size(); j++){
 				
-				findRhymeValueAndPercentileForWords(anchorWords.get(i), satelliteWords.get(j));
+				if(j != i){
+					
+					findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
+				
+				}
 				
 			}
 			
@@ -173,7 +155,7 @@ public class RhymeDictionaryAssembler {
 	/**This method goes through the entire process of finding how well two words rhyme with one another.
 	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.*/
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
-		
+		//add printlns throughout this to make sure everything is working right
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		Word word = null;
@@ -282,13 +264,18 @@ public class RhymeDictionaryAssembler {
 			//subtract spacing to get actual rhyme value
 			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
 			double deduction = 0.0;
-			for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
+			System.out.println("bestSet indexes size:" + bestSet.getIndexes().size());
+			//if(bestSet.getIndexes().size() > 1){
 				
-				int index1 = bestSet.getIndexes().get(y);
-				int index2 = bestSet.getIndexes().get(y + 1);
-				deduction = deduction + (0.25 * (index2 - index1 - 1));
+				for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
+					
+					int index1 = bestSet.getIndexes().get(y);
+					int index2 = bestSet.getIndexes().get(y + 1);
+					deduction = deduction + (0.25 * (index2 - index1 - 1));
+					
+				}
 				
-			}
+			//}
 			
 			rhymeValue = rhymeValue - deduction;
 			
