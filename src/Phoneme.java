@@ -5,7 +5,7 @@
  */
 public class Phoneme {
 	
-	private boolean isAVowelPhoneme = false;
+	private boolean isAVowelPhoneme ;
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
