@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = false;
+	public final static boolean DEBUGGING = true;
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
@@ -148,6 +148,8 @@ public class RhymeDictionaryAssembler {
 			}
 			
 		}
+		
+		System.out.println("done - rhyme dictionary has been created");
 
 	}
 
@@ -253,6 +255,8 @@ public class RhymeDictionaryAssembler {
 						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
 						//Also, fix this phenomenon http://i.imgur.com/jxjip2O.jpg
 						
+						debugPrint(listOfIndexSets.size());
+						debugPrint(listOfIndexSets.get(v).getIndexes().size());
 						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(listOfIndexSets.size()-1);
 						for(int w = startIndexBeingExamined;
 								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
