@@ -7,6 +7,8 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
+	public final static boolean DEBUGGING = false;
+	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
 		//1
@@ -15,12 +17,12 @@ public class RhymeDictionaryAssembler {
 		try{
 			linesOfDictionary = Files.readAllLines(Paths.get("cmudict-0.7b_modified.txt"), Charset.defaultCharset());
 			
-		 	for (String line : linesOfDictionary) {
-			 	System.out.println(line);
-         	}
+		 	/*for (String line : linesOfDictionary) {
+			 	debugPrint(line);
+         	}*/
 		}catch(Exception e){
 			
-			System.out.println("there was an exception");
+			debugPrint("there was an exception");
 		
 		}
 		
@@ -69,9 +71,9 @@ public class RhymeDictionaryAssembler {
 						 * charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false*/){ 
 					
 					phonemeName = phonemeName + charBeingExamined;
-					System.out.println(phonemeName);
+					//debugPrint(phonemeName);
 					
-				}else if(Character.isDigit(charBeingExamined)){ 
+				}else if(Character.isDigit(charBeingExamined)){
 					//IF THERE IS A CONSONANT BEFORE A VOWEL IT'S MAKING THE VOWEL ISAVOWEL FALSE for some reason
 					//it's somewhere around here
 					int stress = Character.getNumericValue(charBeingExamined);
@@ -100,18 +102,18 @@ public class RhymeDictionaryAssembler {
 		}
 		
 		
-		for(int h = 0; h < wordNames.size(); h++){
+		/*for(int h = 0; h < wordNames.size(); h++){
 			
-			System.out.println(wordNames.get(h));
+			debugPrint(wordNames.get(h));
 			ArrayList<Phoneme> listSample = listsOfPhonemesForWords.get(h);
 			
 			for(int l = 0; l < listSample.size(); l++){
 				
-				System.out.println(listSample.get(l).getPhoneme());
+				debugPrint(listSample.get(l).getPhoneme());
 				
 			}
 			
-		}
+		}*/
 		
 		//3
 		ArrayList<Word> anchorWords = new ArrayList<Word>();
@@ -122,16 +124,15 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		for(int q = 0; q < wordNames.size(); q++){
+		/*for(int q = 0; q < wordNames.size(); q++){
 			
-			System.out.println("Word Name (Anchor):");
-			System.out.println(anchorWords.get(q).getWordName());
-			System.out.println("Phonemes (Anchor):");
+			debugPrint("Word Name (Anchor): " + anchorWords.get(q).getWordName());
+			debugPrint("Phonemes (Anchor):");
 			anchorWords.get(q).printListOfPhonemes();
 			
 		}
 		
-		System.out.println(anchorWords.get(20).getWordName()); //prints out "aardvarks"
+		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		//find Rhyme Value/Percentile for all Words
 		for(int i = 0; i < anchorWords.size(); i++){
@@ -158,13 +159,17 @@ public class RhymeDictionaryAssembler {
 		double rhymePercentile = 0.0;
 		Word word = null;
 		
+		//System.out.println();
+		debugPrint("---------------------------------------------");
+		//System.out.println();
+		
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
 			
-			System.out.println("REGULAR RHYME VALUE");
+			debugPrint("REGULAR RHYME VALUE");
 			
-			System.out.println("Anchor:");
+			debugPrint("Anchor:");
 			anchor.printListOfPhonemes();
-			System.out.println("Satellite:");
+			debugPrint("Satellite:");
 			satellite.printListOfPhonemes();
 			
 			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
@@ -174,7 +179,7 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			System.out.println("Rhyme Value:" + rhymeValue);
+			debugPrint("Rhyme Value:" + rhymeValue);
 			
 			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep the focus on
 			 * the anchor word which is the focus word*/
@@ -182,11 +187,11 @@ public class RhymeDictionaryAssembler {
 			
 		}else{//do ideal Rhyme Value process
 			
-			System.out.println("IDEAL RHYME VALUE");
+			debugPrint("IDEAL RHYME VALUE");
 			
-			System.out.println("Anchor:");
+			debugPrint("Anchor:");
 			anchor.printListOfPhonemes();
-			System.out.println("Satellite:");
+			debugPrint("Satellite:");
 			satellite.printListOfPhonemes();
 			
 			Word shorterWord = null;
@@ -205,8 +210,8 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			System.out.println("Shorter Word:" + shorterWord.getWordName());
-			System.out.println("Longer Word:" + longerWord.getWordName());
+			debugPrint("Shorter Word:" + shorterWord.getWordName());
+			debugPrint("Longer Word:" + longerWord.getWordName());
 			
 			double idealRhymeValue = 0.0;
 			ArrayList<IndexSet> listOfIndexSets = new ArrayList<IndexSet>();
@@ -214,20 +219,20 @@ public class RhymeDictionaryAssembler {
 			//put together IndexSets
 			for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
 				
-				System.out.println("shorterWord index:" + t);
+				debugPrint("shorterWord index:" + t);
 				
 				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(t);
 				if(firstSearch == true){ /*first search through the larger word for similar phonemes.
 					Beginnings/starting points of IndexSets are found here*/
-					System.out.println("FIRST SEARCH IS TRUE");
+					debugPrint("FIRST SEARCH IS TRUE");
 					for(int u = 0; u < longerWord.getListOfPhonemes().size(); u++){
 						
-						System.out.println("longerWord index:" + u);
+						debugPrint("longerWord index: " + u);
 						
-						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
+						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(u); //here?
 						double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
 						
-						System.out.println(RVBetweenPhonemes);
+						debugPrint(RVBetweenPhonemes);
 						
 						if(RVBetweenPhonemes > 0){
 							
@@ -241,15 +246,15 @@ public class RhymeDictionaryAssembler {
 					
 				}else{
 					
-					System.out.println("FIRST SEARCH IS FALSE");
+					debugPrint("FIRST SEARCH IS FALSE");
 					
 					for(int v = 0; v < listOfIndexSets.size(); v++){
-						System.out.println("In FALSE loop");
+						debugPrint("In FALSE loop");
 						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
 						//Also, fix this phenomenon http://i.imgur.com/jxjip2O.jpg
 						
 						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(listOfIndexSets.size()-1);
-						for(int w = startIndexBeingExamined; 
+						for(int w = startIndexBeingExamined;
 								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
 							
 							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
@@ -292,7 +297,7 @@ public class RhymeDictionaryAssembler {
 			//subtract spacing to get actual rhyme value
 			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
 			double deduction = 0.0;
-			System.out.println("bestSet indexes size:" + listOfIndexSets);
+			debugPrint("bestSet indexes size:" + listOfIndexSets);
 			//if(bestSet.getIndexes().size() > 1){
 				
 				for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
@@ -309,14 +314,14 @@ public class RhymeDictionaryAssembler {
 				
 			}*/
 			
-			System.out.println("Deduction:" + deduction);
+			debugPrint("Deduction:" + deduction);
 			rhymeValue = rhymeValue - deduction;
 			
 			rhymePercentile = findRhymePercentile(rhymeValue, longerWord);
 			
 		}
 		
-		System.out.println("Rhyme Percentile:" + rhymePercentile);
+		debugPrint("Rhyme Percentile:" + rhymePercentile);
 		return rhymePercentile;
 		
 		/*okay, this method may be done or may have been done wrong. Just copy and
@@ -347,14 +352,14 @@ public class RhymeDictionaryAssembler {
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
 	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
 		
-		System.out.println("In method");
-		System.out.println("p1 is a vowel:" + p1.isAVowelPhoneme());
-		System.out.println("p2 is a vowel:" + p2.isAVowelPhoneme());
+		debugPrint("In method");
+		debugPrint("p1 is a vowel:" + p1.isAVowelPhoneme());
+		debugPrint("p2 is a vowel:" + p2.isAVowelPhoneme());
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
-			System.out.println("Both vowels");
+			debugPrint("Both vowels");
 			if(p1.isEqualTo(p2)){
-				System.out.println("Equal");
+				debugPrint("Equal");
 				return 2.0;
 				
 			}else{
@@ -377,6 +382,16 @@ public class RhymeDictionaryAssembler {
 		}else{
 			
 			return 0.0;
+			
+		}
+		
+	}
+	
+	public static void debugPrint(Object x){
+		
+		if(DEBUGGING == true){
+			
+			System.out.println(x);
 			
 		}
 		

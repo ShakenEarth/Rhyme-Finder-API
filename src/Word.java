@@ -65,7 +65,7 @@ public class Word {
 		
 		for(int i = 0; i < getListOfPhonemes().size(); i++){
 			
-			System.out.println(getListOfPhonemes().get(i).getPhoneme() + ", " 
+			RhymeDictionaryAssembler.debugPrint(getListOfPhonemes().get(i).getPhoneme() + ", " 
 					+ getListOfPhonemes().get(i).getStress());
 			
 		}
