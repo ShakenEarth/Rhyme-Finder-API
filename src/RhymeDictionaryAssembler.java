@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = true;
+	public final static boolean DEBUGGING = false;
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
@@ -157,6 +157,7 @@ public class RhymeDictionaryAssembler {
 	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.*/
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		//add printlns throughout this to make sure everything is working right
+		System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		Word word = null;
@@ -257,7 +258,8 @@ public class RhymeDictionaryAssembler {
 						
 						debugPrint(listOfIndexSets.size());
 						debugPrint(listOfIndexSets.get(v).getIndexes().size());
-						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(listOfIndexSets.size()-1);
+						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(
+								listOfIndexSets.get(v).getIndexes().size() - 1);
 						for(int w = startIndexBeingExamined;
 								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
 							
