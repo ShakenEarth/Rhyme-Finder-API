@@ -21,15 +21,26 @@ public class Word {
 	
 	public void addWord(int index, double rhymePercentile){
 		
+		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
+		
 		if(wordsThisRhymesWith.size() == 0){
 			
-			wordsThisRhymesWith.add(new Point2D.Double(index, rhymePercentile));
+			wordsThisRhymesWith.add(wordToBeInserted);
 			
 		}else{
 			
 			for(int i = 0; i < wordsThisRhymesWith.size(); i++){
 				
 				//do process to put Point in proper place based on RP
+				//insertion sort since this will continuously be nearly sorted
+				//basic insertion sort in java //http://i.imgur.com/hD5Cptj.gif
+				Point2D.Double wordBeingExamined = wordsThisRhymesWith.get(i);
+				if(wordToBeInserted.getY() < wordBeingExamined.getY()){
+					
+					//TODO finish insertion sort
+					
+				}
+				
 				
 			}
 			
