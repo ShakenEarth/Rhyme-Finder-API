@@ -29,21 +29,33 @@ public class Word {
 			
 		}else{
 			
+			//goes through every word until it reaches a proper place to be inserted
 			for(int i = 0; i < wordsThisRhymesWith.size(); i++){
 				
-				//do process to put Point in proper place based on RP
-				//insertion sort since this will continuously be nearly sorted
-				//basic insertion sort in java //http://i.imgur.com/hD5Cptj.gif
 				Point2D.Double wordBeingExamined = wordsThisRhymesWith.get(i);
-				if(wordToBeInserted.getY() < wordBeingExamined.getY()){
+				
+				
+				if(i+1 != wordsThisRhymesWith.size()){
 					
-					//TODO finish insertion sort
+					if(wordToBeInserted.getY() < wordBeingExamined.getY() && wordToBeInserted.getY() > wordsThisRhymesWith.get(i+1).getY()){
+						
+						int listSize = wordsThisRhymesWith.size();
+						for(int j = listSize; j > j - i; j--){
+							
+							
+							
+						}
+						
+					}
+					
+				}else{
+					
+					wordsThisRhymesWith.add(wordToBeInserted);
 					
 				}
 				
-				
 			}
-			
+				
 		}
 		
 	}
