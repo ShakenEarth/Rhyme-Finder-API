@@ -138,7 +138,11 @@ public class RhymeDictionaryAssembler {
 		//find Rhyme Value/Percentile for all Words
 		for(int i = 0; i < anchorWords.size(); i++){
 			
+			debugPrint("Anchor Index: " + i);
+			
 			for(int j = 0; j < anchorWords.size(); j++){
+				
+				debugPrint("Satellite Index: " + j);
 				
 				double rhymePercentile = 0.0;
 				

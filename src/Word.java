@@ -14,6 +14,7 @@ public class Word {
 	
 	public Word(String wordName, ArrayList<Phoneme> phonemes) {
 		
+		//RhymeDictionaryAssembler.debugPrint("INITIAL SIZE: " + wordsThisRhymesWith.size());
 		this.setWordName(wordName);
 		setListOfPhonemes(phonemes);
 		
@@ -21,28 +22,35 @@ public class Word {
 	
 	public void addWord(int index, double rhymePercentile){
 		
+		RhymeDictionaryAssembler.debugPrint("First word going to be created");
 		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
+		RhymeDictionaryAssembler.debugPrint("First word created");
+		RhymeDictionaryAssembler.debugPrint(wordsThisRhymesWith.size());
 		
 		if(wordsThisRhymesWith.size() == 0){
 			
+			RhymeDictionaryAssembler.debugPrint("First word to be added");
 			wordsThisRhymesWith.add(wordToBeInserted);
+			RhymeDictionaryAssembler.debugPrint("First word just added");
 			
 		}else{
 			
+			RhymeDictionaryAssembler.debugPrint("Words already in array");
 			//goes through every word until it reaches a proper place to be inserted
 			for(int i = 0; i < wordsThisRhymesWith.size(); i++){
-				
+				RhymeDictionaryAssembler.debugPrint("Things");
+				//TODO fix bug
 				Point2D.Double wordBeingExamined = wordsThisRhymesWith.get(i);
 				
 				
 				if(i+1 != wordsThisRhymesWith.size()){
-					
+					RhymeDictionaryAssembler.debugPrint("otherThings");
 					if(wordToBeInserted.getY() < wordBeingExamined.getY() && wordToBeInserted.getY() > wordsThisRhymesWith.get(i+1).getY()){
 						
 						int listSize = wordsThisRhymesWith.size();
 						for(int j = listSize; j > j - i; j--){
 							
-							
+							wordsThisRhymesWith.set(j, wordsThisRhymesWith.get(j-1));
 							
 						}
 						
@@ -50,6 +58,7 @@ public class Word {
 					
 				}else{
 					
+					RhymeDictionaryAssembler.debugPrint("otherotherThings");
 					wordsThisRhymesWith.add(wordToBeInserted);
 					
 				}
