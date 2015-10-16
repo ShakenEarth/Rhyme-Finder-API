@@ -22,11 +22,12 @@ public class Word {
 	
 	public void addWord(int index, double rhymePercentile){
 		
-		RhymeDictionaryAssembler.debugPrint("First word going to be created");
-		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
-		RhymeDictionaryAssembler.debugPrint("First word created");
-		RhymeDictionaryAssembler.debugPrint(wordsThisRhymesWith.size());
 		
+		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
+		wordsThisRhymesWith.add(wordToBeInserted);
+		
+		//TODO add some sort of way to sort
+		/*
 		if(wordsThisRhymesWith.size() == 0){
 			
 			RhymeDictionaryAssembler.debugPrint("First word to be added");
@@ -38,34 +39,48 @@ public class Word {
 			RhymeDictionaryAssembler.debugPrint("Words already in array");
 			//goes through every word until it reaches a proper place to be inserted
 			for(int i = 0; i < wordsThisRhymesWith.size(); i++){
-				RhymeDictionaryAssembler.debugPrint("Things");
-				//TODO fix bug
+				//RhymeDictionaryAssembler.debugPrint("Things");
 				Point2D.Double wordBeingExamined = wordsThisRhymesWith.get(i);
 				
-				
 				if(i+1 != wordsThisRhymesWith.size()){
-					RhymeDictionaryAssembler.debugPrint("otherThings");
+					//RhymeDictionaryAssembler.debugPrint("otherThings");
 					if(wordToBeInserted.getY() < wordBeingExamined.getY() && wordToBeInserted.getY() > wordsThisRhymesWith.get(i+1).getY()){
 						
 						int listSize = wordsThisRhymesWith.size();
 						for(int j = listSize; j > j - i; j--){
-							
-							wordsThisRhymesWith.set(j, wordsThisRhymesWith.get(j-1));
+							//this the music that saved my life
+							System.out.println("j: " + j);
+							if(j == listSize){
+								
+								wordsThisRhymesWith.add(wordsThisRhymesWith.get(j-1));
+								
+							}else if(j-1 > -1){
+								
+								wordsThisRhymesWith.set(j, wordsThisRhymesWith.get(j-1));
+								
+							}else{
+								
+								break;
+								
+							}
 							
 						}
+						break;
 						
 					}
 					
 				}else{
 					
-					RhymeDictionaryAssembler.debugPrint("otherotherThings");
+					//RhymeDictionaryAssembler.debugPrint("otherotherThings");
 					wordsThisRhymesWith.add(wordToBeInserted);
+					break;
 					
 				}
 				
 			}
 				
 		}
+		*/
 		
 	}
 

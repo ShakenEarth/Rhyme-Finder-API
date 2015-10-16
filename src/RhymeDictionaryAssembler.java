@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = true;
+	public final static boolean DEBUGGING = true, SAMPLESIZE = true;
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
@@ -157,6 +157,18 @@ public class RhymeDictionaryAssembler {
 					anchorWords.get(i).addWord(j, rhymePercentile);
 					
 				}
+				
+			}
+			
+			for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
+				
+				debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
+				
+			}
+			
+			if(i == 0 && SAMPLESIZE == true){
+				
+				break;
 				
 			}
 			

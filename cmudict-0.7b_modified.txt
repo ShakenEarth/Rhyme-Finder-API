@@ -1,5 +1,5 @@
-A  AH0
-A(1)  EY1
+A  EY1
+A(1)  AH0
 A  AH0 AH0
 A'S  EY1 Z
 A.  EY1
