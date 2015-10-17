@@ -152,7 +152,7 @@ public class RhymeDictionaryAssembler {
 				
 				}
 				
-				if(rhymePercentile >= 0.35){
+				if(rhymePercentile >= 0.4){
 					
 					anchorWords.get(i).addWord(j, rhymePercentile);
 					
@@ -168,6 +168,7 @@ public class RhymeDictionaryAssembler {
 			
 			if(i == 0 && SAMPLESIZE == true){
 				
+				debugPrint("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
 				break;
 				
 			}
@@ -341,7 +342,20 @@ public class RhymeDictionaryAssembler {
 					//TODO need to also deduct when there's a bunch of spaces between end phonemes of each
 					
 				}
-			
+				//1325 without
+				
+				if(bestSet.getIndexes().get(0) > 0){
+					
+					deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
+					
+				}
+				
+				if(bestSet.getIndexes().size() - (bestSet.getIndexes().get(bestSet.getIndexes().size()-1)) - 1 > 0){
+					
+					deduction = deduction + Math.log10(bestSet.getIndexes().size() - (bestSet.getIndexes().get(bestSet.getIndexes().size()-1)) - 1);
+					
+				}
+				
 			debugPrint("Deduction:" + deduction);
 			rhymeValue = rhymeValue - deduction;
 			
