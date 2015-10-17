@@ -35,7 +35,10 @@ public class RhymeDictionaryAssembler {
 		String word = "";
 		
 		//creates word names
+		int spacesToSkip = 2;
 		for (int i = 0; i < linesOfDictionary.size(); i++){
+			
+			spacesToSkip = 2;
 			
 			String lineBeingExamined = linesOfDictionary.get(i);
 			int indexOfCharBeingExamined = 0;
@@ -43,10 +46,17 @@ public class RhymeDictionaryAssembler {
 				
 				indexOfCharBeingExamined = j;
 				char charBeingExamined = lineBeingExamined.charAt(j);
-				if(charBeingExamined != ' '){
+				
+				if(charBeingExamined != ' ' && charBeingExamined != '('){
 					
 					word = word + charBeingExamined;
-					//TODO fix this phenomenon http://i.imgur.com/jxjip2O.jpg
+					
+				}else if(charBeingExamined == '('){
+					
+					spacesToSkip = spacesToSkip + 3;
+					wordNames.add(word);
+					word = "";
+					break;
 					
 				}else{
 					
@@ -58,7 +68,7 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			indexOfCharBeingExamined = indexOfCharBeingExamined + 2;
+			indexOfCharBeingExamined = indexOfCharBeingExamined + spacesToSkip;
 			phonemes = new ArrayList<Phoneme>();
 			Phoneme phoneme = new Phoneme();
 			String phonemeName = "";
@@ -136,7 +146,7 @@ public class RhymeDictionaryAssembler {
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		//find Rhyme Value/Percentile for all Words
-		for(int i = 0; i < anchorWords.size(); i++){
+		/*for(int i = 0; i < anchorWords.size(); i++){
 			
 			debugPrint("Anchor Index: " + i);
 			
@@ -166,16 +176,16 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			if(i == 0 && SAMPLESIZE == true){
+			if(i == 9 && SAMPLESIZE == true){
 				
-				debugPrint("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
+				System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
 				break;
 				
 			}
 			
-		}
+		}*/
 		
-		//findRhymeValueAndPercentileForWords(anchorWords.get(0), anchorWords.get(2));
+		findRhymeValueAndPercentileForWords(anchorWords.get(9), anchorWords.get(133783));
 		
 		System.out.println("done - rhyme dictionary has been created");
 
@@ -328,7 +338,7 @@ public class RhymeDictionaryAssembler {
 			}
 			
 			idealRhymeValue = bestSet.getRhymeValueForSet();
-			System.out.println("IRV: " + idealRhymeValue);
+			debugPrint("IRV: " + idealRhymeValue);
 			//subtract spacing to get actual rhyme value
 			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
 			double deduction = 0.0;
@@ -363,7 +373,7 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		debugPrint("Rhyme Percentile: " + rhymePercentile);
+		System.out.println("Rhyme Percentile: " + rhymePercentile);
 		
 		return rhymePercentile;
 		
