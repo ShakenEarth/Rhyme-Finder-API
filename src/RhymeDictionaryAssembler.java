@@ -1,4 +1,5 @@
 
+import java.awt.geom.Point2D;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -251,20 +252,98 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			debugPrint("Shorter Word:" + shorterWord.getWordName());
-			debugPrint("Longer Word:" + longerWord.getWordName());
+			debugPrint("Shorter Word: " + shorterWord.getWordName());
+			debugPrint("Longer Word: " + longerWord.getWordName());
 			
 			double idealRhymeValue = 0.0;
+			
+			//put together IndexSets
 			ArrayList<IndexSet> listOfIndexSets = new ArrayList<IndexSet>();
 			boolean firstSearch = true;
-			//put together IndexSets
-			for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
+			
+			for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
+				
+				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(s);
+				
+				if(firstSearch == true){
+					
+					for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
+						
+						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(l);
+						
+						double RVBetweenShortAndLong = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+						
+						if(RVBetweenShortAndLong > 0){
+							
+							IndexSet newSet = new IndexSet(l, RVBetweenShortAndLong);
+							listOfIndexSets.add(newSet);
+							
+						}
+						
+					}
+					
+					firstSearch = false;
+					
+				}else{
+					
+					//now we have a list of all IndexSets that could be possible contenders
+					for(int i = 0; i < listOfIndexSets.size(); i++){
+						
+						IndexSet setBeingExamined = listOfIndexSets.get(i);
+						int indexToStartAt = setBeingExamined.getIndexes().get(setBeingExamined.getIndexes().size() - 1); //get most recent index that was examined
+						ArrayList<Point2D.Double> RVs = new ArrayList<Point2D.Double>();
+						
+						for(int l = indexToStartAt; l < (longerWord.getListOfPhonemes().size() - 1) - indexToStartAt; l++){
+							
+							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(l);
+							
+							double RVBetweenShortAndLong = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+							
+							if(RVBetweenShortAndLong > 0){
+								
+								Point2D.Double indexAndRV = new Point2D.Double(l, RVBetweenShortAndLong);
+								RVs.add(indexAndRV);
+								
+							}
+							
+						}
+						
+						//
+						Point2D.Double indexWithHighestRV = null;
+						for(int x = 0; x < RVs.size(); x++){
+							
+							if(x == 0){
+								
+								indexWithHighestRV = RVs.get(x);
+								
+							}else{
+								
+								if(RVs.get(x).getY() > indexWithHighestRV.getY()){
+									
+									indexWithHighestRV = RVs.get(x);
+									
+								}
+								
+							}
+							
+						}
+						
+						setBeingExamined.addIndex((int) indexWithHighestRV.getX(), indexWithHighestRV.getY());
+						//stopped here, should make sure everything makes sense and works
+						
+					}
+					
+				}
+				
+			}
+			
+			/*for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
 				
 				debugPrint("shorterWord index:" + t);
 				
 				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(t);
-				if(firstSearch == true){ /*first search through the larger word for similar phonemes.
-					Beginnings/starting points of IndexSets are found here*/
+				if(firstSearch == true){ first search through the larger word for similar phonemes.
+					Beginnings/starting points of IndexSets are found here
 					debugPrint("FIRST SEARCH IS TRUE");
 					for(int u = 0; u < longerWord.getListOfPhonemes().size(); u++){
 						
@@ -287,20 +366,25 @@ public class RhymeDictionaryAssembler {
 					
 				}else{
 					
-					debugPrint("FIRST SEARCH IS FALSE");
+					debugPrint("	FIRST SEARCH IS FALSE");
 					
 					for(int v = 0; v < listOfIndexSets.size(); v++){
-						debugPrint("In FALSE loop");
+						debugPrint("	In FALSE loop");
 						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
 						
-						debugPrint(listOfIndexSets.size());
-						debugPrint(listOfIndexSets.get(v).getIndexes().size());
+						debugPrint("	" + listOfIndexSets.size());
+						debugPrint("	" + listOfIndexSets.get(v).getIndexes().size());
+						
 						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(
 								listOfIndexSets.get(v).getIndexes().size() - 1);
+						
+						debugPrint("	startIndexBeingExamined: " + startIndexBeingExamined);
+						
 						for(int w = startIndexBeingExamined;
 								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
 							
-							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(t);
+							debugPrint("		longerWord index:" + w);
+							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(w);
 							double RVBetweenPhonemes = (double) findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
 							
 							if(RVBetweenPhonemes > 0){
@@ -315,7 +399,7 @@ public class RhymeDictionaryAssembler {
 					
 				}
 				
-			}
+			}*/
 		
 			//choose which IndexSet is best
 			IndexSet bestSet = null;
@@ -342,7 +426,14 @@ public class RhymeDictionaryAssembler {
 			//subtract spacing to get actual rhyme value
 			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
 			double deduction = 0.0;
-			debugPrint("bestSet indexes size:" + bestSet);
+			debugPrint("bestSet indexes size:" + bestSet.getIndexes().size());
+			debugPrint("Indexes:");
+			
+			for(int y = 0; y < bestSet.getIndexes().size(); y++){
+				
+				debugPrint(bestSet.getIndexes().get(y));
+				
+			}
 				
 				for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
 					
@@ -392,8 +483,8 @@ public class RhymeDictionaryAssembler {
 					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i));
 			
 		}
-		debugPrint("RV" + rhymeValue);
-		debugPrint("HRV" + homophonicRhymeValue);
+		debugPrint("RV: " + rhymeValue);
+		debugPrint("HRV: " + homophonicRhymeValue);
 		
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
 		
@@ -404,35 +495,35 @@ public class RhymeDictionaryAssembler {
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
 	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
 		
-		debugPrint("In method");
-		debugPrint("p1 is a vowel:" + p1.isAVowelPhoneme());
-		debugPrint("p2 is a vowel:" + p2.isAVowelPhoneme());
+		debugPrint("			In method");
+		debugPrint("			p1 is a vowel:" + p1.isAVowelPhoneme());
+		debugPrint("			p2 is a vowel:" + p2.isAVowelPhoneme());
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
-			debugPrint("-Both vowels");
+			debugPrint("			-Both vowels");
 			if(p1.isEqualTo(p2)){
-				debugPrint("--Equal");
+				debugPrint("			--Equal");
 				return 2.0;
 				
 			}else{
-				debugPrint("--Not equal");
+				debugPrint("			--Not equal");
 				return 1.0;
 				
 			}
 		}else if(!p1.isAVowelPhoneme() && !p1.isAVowelPhoneme()){
-			debugPrint("-Both consonants");
+			debugPrint("			-Both consonants");
 			if(p1.isEqualTo(p2)){
-				debugPrint("--Equal");
+				debugPrint("			--Equal");
 				return 1.0;
 				
 			}else{
-				debugPrint("--Not equal");
+				debugPrint("			--Not equal");
 				return 0.5;
 				
 			}
 			
 		}else{
-			debugPrint("-No reasonable relation");
+			debugPrint("			-No reasonable relation");
 			return 0.0;
 			
 		}
