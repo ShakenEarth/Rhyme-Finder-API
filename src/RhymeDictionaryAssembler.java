@@ -263,19 +263,20 @@ public class RhymeDictionaryAssembler {
 			
 			for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 				
-				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(s);
+				Phoneme shortWordPhoneme = shorterWord.getListOfPhonemes().get(s); //phoneme being examined of the shorter word
 				
 				if(firstSearch == true){
 					
-					for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
+					//compare the phoneme of the shorter word to each of the phonemes in the longer word to find possible start locations
+					for(int l = 0; l < longerWord.getListOfPhonemes().size(); s++){
 						
-						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(l);
+						Phoneme longWordPhoneme = longerWord.getListOfPhonemes().get(l);
 						
-						double RVBetweenShortAndLong = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+						double RVBetweenPhonemes = findRVBetweenPhonemes(shortWordPhoneme, longWordPhoneme);
 						
-						if(RVBetweenShortAndLong > 0){
+						if(RVBetweenPhonemes > 0){
 							
-							IndexSet newSet = new IndexSet(l, RVBetweenShortAndLong);
+							IndexSet newSet = new IndexSet(l, RVBetweenPhonemes);
 							listOfIndexSets.add(newSet);
 							
 						}
@@ -286,50 +287,27 @@ public class RhymeDictionaryAssembler {
 					
 				}else{
 					
-					//now we have a list of all IndexSets that could be possible contenders
-					for(int i = 0; i < listOfIndexSets.size(); i++){
+					//compare the next phoneme of the shorter word with each of the longer word phonemes coming after the index that was previously selected
+					for(int i = 0; i< listOfIndexSets.size(); i++){
 						
-						IndexSet setBeingExamined = listOfIndexSets.get(i);
-						int indexToStartAt = setBeingExamined.getIndexes().get(setBeingExamined.getIndexes().size() - 1); //get most recent index that was examined
-						ArrayList<Point2D.Double> RVs = new ArrayList<Point2D.Double>();
-						
-						for(int l = indexToStartAt; l < (longerWord.getListOfPhonemes().size() - 1) - indexToStartAt; l++){
+						int startIndex = listOfIndexSets.get(i).getIndexes().get(listOfIndexSets.size()-1);
+						debugPrint("startIndex: " + startIndex);
+						int currentIndex = startIndex + 1;
+						while(currentIndex < longerWord.getListOfPhonemes().size()){
 							
-							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(l);
+							Phoneme longWordPhoneme = longerWord.getListOfPhonemes().get(currentIndex);
 							
-							double RVBetweenShortAndLong = findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
+							double RVBetweenPhonemes = findRVBetweenPhonemes(shortWordPhoneme, longWordPhoneme);
 							
-							if(RVBetweenShortAndLong > 0){
+							if(RVBetweenPhonemes > 0){
 								
-								Point2D.Double indexAndRV = new Point2D.Double(l, RVBetweenShortAndLong);
-								RVs.add(indexAndRV);
+								//add the index and the RV to a list of temporary index sets.
 								
 							}
 							
-						}
-						
-						//
-						Point2D.Double indexWithHighestRV = null;
-						for(int x = 0; x < RVs.size(); x++){
-							
-							if(x == 0){
-								
-								indexWithHighestRV = RVs.get(x);
-								
-							}else{
-								
-								if(RVs.get(x).getY() > indexWithHighestRV.getY()){
-									
-									indexWithHighestRV = RVs.get(x);
-									
-								}
-								
-							}
+							currentIndex = currentIndex + 1;
 							
 						}
-						
-						setBeingExamined.addIndex((int) indexWithHighestRV.getX(), indexWithHighestRV.getY());
-						//stopped here, should make sure everything makes sense and works
 						
 					}
 					
@@ -440,7 +418,6 @@ public class RhymeDictionaryAssembler {
 					int index1 = bestSet.getIndexes().get(y);
 					int index2 = bestSet.getIndexes().get(y + 1);
 					deduction = (double) (deduction + (0.25 * (index2 - index1 - 1)));
-					//TODO need to also deduct when there's a bunch of spaces between end phonemes of each
 					
 				}
 				//1325 without
