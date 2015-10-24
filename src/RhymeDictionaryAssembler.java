@@ -276,7 +276,7 @@ public class RhymeDictionaryAssembler {
 						
 						if(RVBetweenPhonemes > 0){
 							
-							IndexSet newSet = new IndexSet(l, RVBetweenPhonemes);
+							IndexSet newSet = new IndexSet(l, RVBetweenPhonemes, shorterWord, longerWord);
 							listOfIndexSets.add(newSet);
 							
 						}
@@ -301,7 +301,8 @@ public class RhymeDictionaryAssembler {
 							
 							if(RVBetweenPhonemes > 0){
 								
-								//add the index and the RV to a list of temporary index sets.
+								//add the index and the RV to a list of temporary points (index sets).
+								
 								
 							}
 							

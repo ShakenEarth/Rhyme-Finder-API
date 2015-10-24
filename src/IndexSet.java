@@ -6,7 +6,7 @@ public class IndexSet {
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();
 	private double rhymeValueForSet = 0.0;
 	
-	public IndexSet(int index, double RVBetweenPhonemes) {
+	public IndexSet(int index, double RVBetweenPhonemes, Word shorterWord, Word longerWord) {
 		
 		this.addIndex(index, RVBetweenPhonemes);
 		
