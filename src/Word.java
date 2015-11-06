@@ -11,6 +11,7 @@ public class Word {
 	private String wordName = "";
 	private ArrayList<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
+	private int numOfSyllables = 0;
 	
 	public Word(String wordName, ArrayList<Phoneme> phonemes) {
 		
@@ -117,6 +118,14 @@ public class Word {
 			
 		}
 		
+	}
+
+	public int getNumOfSyllables() {
+		return numOfSyllables;
+	}
+
+	public void setNumOfSyllables(int numOfSyllables) {
+		this.numOfSyllables = numOfSyllables;
 	}
 
 }

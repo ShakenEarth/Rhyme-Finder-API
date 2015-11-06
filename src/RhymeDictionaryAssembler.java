@@ -257,186 +257,53 @@ public class RhymeDictionaryAssembler {
 			
 			double idealRhymeValue = 0.0;
 			
-			//put together IndexSets
-			ArrayList<IndexSet> listOfIndexSets = new ArrayList<IndexSet>();
+			//start here
+			//too much hatred for too long
+			
 			boolean firstSearch = true;
+			boolean foundStartingIndex = false;
+			ArrayList<Layer> layers = new ArrayList<Layer>();
+			ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
 			
 			for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 				
-				Phoneme shortWordPhoneme = shorterWord.getListOfPhonemes().get(s); //phoneme being examined of the shorter word
-				
 				if(firstSearch == true){
 					
-					//compare the phoneme of the shorter word to each of the phonemes in the longer word to find possible start locations
-					for(int l = 0; l < longerWord.getListOfPhonemes().size(); s++){
+					Node startNode = new Node();
+					for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 						
-						Phoneme longWordPhoneme = longerWord.getListOfPhonemes().get(l);
-						
-						double RVBetweenPhonemes = findRVBetweenPhonemes(shortWordPhoneme, longWordPhoneme);
-						
+						double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
 						if(RVBetweenPhonemes > 0){
 							
-							IndexSet newSet = new IndexSet(l, RVBetweenPhonemes, shorterWord, longerWord);
-							listOfIndexSets.add(newSet);
+							foundStartingIndex = true;
+							
+							IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+							
+							startNode.addIndexSet(indexSet);
 							
 						}
 						
+						
 					}
 					
-					firstSearch = false;
+					if(foundStartingIndex == true){
+						
+						nodesForThisLayer.add(startNode);
+						layers.add(new Layer(nodesForThisLayer));
+						firstSearch = false;
+						
+					}
+					
+					nodesForThisLayer = new ArrayList<Node>();
 					
 				}else{
 					
-					//compare the next phoneme of the shorter word with each of the longer word phonemes coming after the index that was previously selected
-					for(int i = 0; i< listOfIndexSets.size(); i++){
-						
-						int startIndex = listOfIndexSets.get(i).getIndexes().get(listOfIndexSets.size()-1);
-						debugPrint("startIndex: " + startIndex);
-						int currentIndex = startIndex + 1;
-						while(currentIndex < longerWord.getListOfPhonemes().size()){
-							
-							Phoneme longWordPhoneme = longerWord.getListOfPhonemes().get(currentIndex);
-							
-							double RVBetweenPhonemes = findRVBetweenPhonemes(shortWordPhoneme, longWordPhoneme);
-							
-							if(RVBetweenPhonemes > 0){
-								
-								//add the index and the RV to a list of temporary points (index sets).
-								
-								
-							}
-							
-							currentIndex = currentIndex + 1;
-							
-						}
-						
-					}
+					//left off here
 					
 				}
 				
 			}
 			
-			/*for(int t = 0; t < shorterWord.getListOfPhonemes().size(); t++){
-				
-				debugPrint("shorterWord index:" + t);
-				
-				Phoneme shorterWordPhoneme = shorterWord.getListOfPhonemes().get(t);
-				if(firstSearch == true){ first search through the larger word for similar phonemes.
-					Beginnings/starting points of IndexSets are found here
-					debugPrint("FIRST SEARCH IS TRUE");
-					for(int u = 0; u < longerWord.getListOfPhonemes().size(); u++){
-						
-						debugPrint("longerWord index: " + u);
-						
-						Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(u); //here?
-						double RVBetweenPhonemes = (double) findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
-						
-						debugPrint(RVBetweenPhonemes);
-						
-						if(RVBetweenPhonemes > 0){
-							
-							listOfIndexSets.add(new IndexSet(u, RVBetweenPhonemes));
-							
-						}
-						
-					}
-					
-					firstSearch = false;
-					
-				}else{
-					
-					debugPrint("	FIRST SEARCH IS FALSE");
-					
-					for(int v = 0; v < listOfIndexSets.size(); v++){
-						debugPrint("	In FALSE loop");
-						//okay, I'm gonna stop here for the night. Some of the code may be whack since I was really tired.
-						
-						debugPrint("	" + listOfIndexSets.size());
-						debugPrint("	" + listOfIndexSets.get(v).getIndexes().size());
-						
-						int startIndexBeingExamined = listOfIndexSets.get(v).getIndexes().get(
-								listOfIndexSets.get(v).getIndexes().size() - 1);
-						
-						debugPrint("	startIndexBeingExamined: " + startIndexBeingExamined);
-						
-						for(int w = startIndexBeingExamined;
-								w < longerWord.getListOfPhonemes().size() - startIndexBeingExamined - 1; w++){
-							
-							debugPrint("		longerWord index:" + w);
-							Phoneme longerWordPhoneme = longerWord.getListOfPhonemes().get(w);
-							double RVBetweenPhonemes = (double) findRVBetweenPhonemes(shorterWordPhoneme, longerWordPhoneme);
-							
-							if(RVBetweenPhonemes > 0){
-								
-								listOfIndexSets.get(v).addIndex(v, RVBetweenPhonemes);
-								
-							}
-							
-						}
-						
-					}
-					
-				}
-				
-			}*/
-		
-			//choose which IndexSet is best
-			IndexSet bestSet = null;
-			for(int x = 0; x < listOfIndexSets.size(); x++){
-				
-				if(x == 0){
-					
-					bestSet = listOfIndexSets.get(x);
-					
-				}else{
-					
-					if(listOfIndexSets.get(x).getRhymeValueForSet() > bestSet.getRhymeValueForSet()){
-						
-						bestSet = listOfIndexSets.get(x);
-						
-					}
-					
-				}
-				
-			}
-			
-			idealRhymeValue = bestSet.getRhymeValueForSet();
-			debugPrint("IRV: " + idealRhymeValue);
-			//subtract spacing to get actual rhyme value
-			rhymeValue = idealRhymeValue; //now let’s deduct from this motherfucker
-			double deduction = 0.0;
-			debugPrint("bestSet indexes size:" + bestSet.getIndexes().size());
-			debugPrint("Indexes:");
-			
-			for(int y = 0; y < bestSet.getIndexes().size(); y++){
-				
-				debugPrint(bestSet.getIndexes().get(y));
-				
-			}
-				
-				for(int y = 0; y < bestSet.getIndexes().size() - 1; y++){
-					
-					int index1 = bestSet.getIndexes().get(y);
-					int index2 = bestSet.getIndexes().get(y + 1);
-					deduction = (double) (deduction + (0.25 * (index2 - index1 - 1)));
-					
-				}
-				//1325 without
-				
-				if(bestSet.getIndexes().get(0) > 0){
-					
-					deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
-					
-				}
-				
-				if(bestSet.getIndexes().size() - (bestSet.getIndexes().get(bestSet.getIndexes().size()-1)) - 1 > 0){
-					
-					deduction = deduction + Math.log10(bestSet.getIndexes().size() - (bestSet.getIndexes().get(bestSet.getIndexes().size()-1)) - 1);
-					
-				}
-				
-			debugPrint("Deduction:" + deduction);
-			rhymeValue = rhymeValue - deduction;
 			
 			rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
 			
