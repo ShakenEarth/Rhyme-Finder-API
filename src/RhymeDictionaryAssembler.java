@@ -1,5 +1,4 @@
 
-import java.awt.geom.Point2D;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -298,11 +297,54 @@ public class RhymeDictionaryAssembler {
 					
 				}else{
 					
-					//left off here
+					for(int n = 0; n < layers.get(s-1).getNodes().size(); n++){
+						//loop for each node in the previous layer
+						
+						Node nodeBeingExamined = layers.get(s-1).getNodes().get(n);
+						
+						for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
+							//loop for the index sets in the node being examined
+							
+							IndexSet setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
+							Node childNode = new Node(); //node to be attached to the index set being examined.
+							int indexToStartAt = setBeingExamined.getIndexes().get(0);
+							
+							if(indexToStartAt + 1 == longerWord.getListOfPhonemes().size()){
+								
+								//do nothing
+								
+							}else{
+								
+								for(int l = indexToStartAt; l < longerWord.getListOfPhonemes().size(); l++){
+									
+									double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+									
+									if(RVBetweenPhonemes > 0){
+										
+										IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+										childNode.addIndexSet(indexSet);
+										
+									}
+									
+									setBeingExamined.attachChildNode(childNode);
+									nodesForThisLayer.add(childNode);
+									
+								}
+								
+							}
+							
+						}
+						
+					}
+					
+					layers.add(new Layer(nodesForThisLayer));
+					nodesForThisLayer = new ArrayList<Node>();
 					
 				}
 				
 			}
+			
+			//now need to find best path
 			
 			
 			rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
