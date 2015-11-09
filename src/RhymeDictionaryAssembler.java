@@ -344,8 +344,36 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-			//now need to find best path
+			//find best path
 			
+			IndexSet bestSet = null;
+			Node nodeBeingExamined = null;
+			
+			for(int l = layers.size()-1; l > 0; l--){
+				
+				for(int n = 0; n < layers.get(l).getNodes().size(); n++){
+					
+					nodeBeingExamined = layers.get(l).getNodes().get(n);
+					
+					nodeBeingExamined.findBestIndexSetAndSendItUp();
+					
+				}
+				
+				if(l == 0 && layers.get(l).getNodes().size() == 1){
+					
+					bestSet = nodeBeingExamined.getBestSet();
+					
+				}
+				
+			}
+			
+			idealRhymeValue = bestSet.getRhymeValueForSet();
+			
+			rhymeValue = idealRhymeValue;
+			
+			//subtract specing to get actual rhyme value
+			
+			rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
 			
 			rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
 			
@@ -414,6 +442,43 @@ public class RhymeDictionaryAssembler {
 			return 0.0;
 			
 		}
+		
+	}
+	
+	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
+		
+		double deduction = 0.0;
+		
+		try{
+			
+			deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
+			
+		}catch(Exception e){
+			
+			System.out.println("Starts at beginning of word");
+			
+		}
+		
+		try{
+			
+			deduction = deduction + Math.log10((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			
+		}catch(Exception e){
+			
+			System.out.println("Ends at end of word");
+			
+		} 
+		
+		for(int i = 0; i < bestSet.getIndexes().size(); i++){
+			
+			int index1 = bestSet.getIndexes().get(i);
+			int index2 = bestSet.getIndexes().get(i + 1);
+			
+			deduction = deduction + (0.25 * (index2 - index1));
+			
+		}
+		
+		return deduction;
 		
 	}
 	

@@ -3,7 +3,8 @@ import java.util.ArrayList;
 public class Node {
 	
 	private ArrayList<IndexSet> indexSets = new ArrayList<IndexSet>();
-	private IndexSet parentIndexSet;
+	private IndexSet parentIndexSet = null;
+	private IndexSet bestSet = null;
 	
 	public void addIndexSet(IndexSet set){
 		
@@ -27,7 +28,15 @@ public class Node {
 		this.parentIndexSet = parentIndexSet;
 	}
 	
-	public IndexSet findBestIndexSet(){
+	public IndexSet getBestSet() {
+		return bestSet;
+	}
+
+	public void setBestSet(IndexSet bestSet) {
+		this.bestSet = bestSet;
+	}
+
+	public void findBestIndexSetAndSendItUp(){
 		
 		IndexSet bestSet = null;
 		
@@ -51,7 +60,19 @@ public class Node {
 			
 		}
 		
-		return bestSet;
+		//bestSet has been found
+		
+		this.setBestSet(bestSet);
+		
+		if(parentIndexSet != null){
+			
+			parentIndexSet.addIndex(bestSet.getIndexes().get(bestSet.getIndexes().size()-1), bestSet.getRhymeValueForSet());
+			
+		}else{
+			
+			
+			
+		}
 		
 	}
 

@@ -46,6 +46,7 @@ public class IndexSet {
 
 	public void attachChildNode(Node childNode) {
 		this.childNode = childNode;
+		this.childNode.setParentIndexSet(this);
 	}
 
 }
