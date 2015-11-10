@@ -367,6 +367,7 @@ public class RhymeDictionaryAssembler {
 				
 				if(l == 0 && layers.get(l).getNodes().size() == 1){
 					
+					debugPrint("LAYER IS 0");
 					bestSet = nodeBeingExamined.getBestSet();
 					
 				}
@@ -379,11 +380,15 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
+			debugPrint("bestSet info: " + bestSet.toString());
+			
 			idealRhymeValue = bestSet.getRhymeValueForSet();
 			
 			rhymeValue = idealRhymeValue;
 			
 			//subtract specing to get actual rhyme value
+			
+			debugPrint("deduction: " + findDeductionForIndexSet(bestSet, longerWord));
 			
 			rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
 			
@@ -461,25 +466,17 @@ public class RhymeDictionaryAssembler {
 		
 		double deduction = 0.0;
 		
-		try{
+		if(bestSet.getIndexes().get(0) > 0){
 			
 			deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
 			
-		}catch(Exception e){
-			
-			System.out.println("Starts at beginning of word");
-			
 		}
 		
-		try{
+		if((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
 			
 			deduction = deduction + Math.log10((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
 			
-		}catch(Exception e){
-			
-			System.out.println("Ends at end of word");
-			
-		} 
+		}
 		
 		for(int i = 0; i < bestSet.getIndexes().size() - 1; i++){
 			
