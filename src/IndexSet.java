@@ -48,5 +48,21 @@ public class IndexSet {
 		this.childNode = childNode;
 		this.childNode.setParentIndexSet(this);
 	}
+	
+	public String toString(){
+		
+		String indexSetInfo = "";
+		
+		for(int i = 0; i < indexes.size(); i++){
+			
+			indexSetInfo = indexSetInfo + indexes.get(i) + ", ";
+			
+		}
+		
+		indexSetInfo = indexSetInfo + getRhymeValueForSet();
+			
+		return indexSetInfo;
+		
+	}
 
 }

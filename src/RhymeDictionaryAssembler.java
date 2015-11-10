@@ -146,7 +146,7 @@ public class RhymeDictionaryAssembler {
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		//find Rhyme Value/Percentile for all Words
-		/*for(int i = 0; i < anchorWords.size(); i++){
+		for(int i = 0; i < anchorWords.size(); i++){
 			
 			debugPrint("Anchor Index: " + i);
 			
@@ -183,9 +183,9 @@ public class RhymeDictionaryAssembler {
 				
 			}
 			
-		}*/
+		}
 		
-		findRhymeValueAndPercentileForWords(anchorWords.get(9), anchorWords.get(133783));
+		//findRhymeValueAndPercentileForWords(anchorWords.get(9), anchorWords.get(133783));
 		
 		System.out.println("done - rhyme dictionary has been created");
 
@@ -295,10 +295,14 @@ public class RhymeDictionaryAssembler {
 					
 					nodesForThisLayer = new ArrayList<Node>();
 					
+					debugPrint(startNode.toString());
+					
 				}else{
 					
 					for(int n = 0; n < layers.get(s-1).getNodes().size(); n++){
 						//loop for each node in the previous layer
+						
+						debugPrint("Layer: " + (s-1) + ", " + "Node: " + n);
 						
 						Node nodeBeingExamined = layers.get(s-1).getNodes().get(n);
 						
@@ -308,6 +312,7 @@ public class RhymeDictionaryAssembler {
 							IndexSet setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
 							Node childNode = new Node(); //node to be attached to the index set being examined.
 							int indexToStartAt = setBeingExamined.getIndexes().get(0);
+							debugPrint("setBeingExamined: " + setBeingExamined.toString());
 							
 							if(indexToStartAt + 1 == longerWord.getListOfPhonemes().size()){
 								
@@ -326,10 +331,11 @@ public class RhymeDictionaryAssembler {
 										
 									}
 									
-									setBeingExamined.attachChildNode(childNode);
-									nodesForThisLayer.add(childNode);
-									
 								}
+								
+								setBeingExamined.attachChildNode(childNode);
+								nodesForThisLayer.add(childNode);
+								debugPrint("childNode: " + childNode.toString());
 								
 							}
 							
@@ -349,7 +355,7 @@ public class RhymeDictionaryAssembler {
 			IndexSet bestSet = null;
 			Node nodeBeingExamined = null;
 			
-			for(int l = layers.size()-1; l > 0; l--){
+			for(int l = layers.size()-1; l >= 0; l--){
 				
 				for(int n = 0; n < layers.get(l).getNodes().size(); n++){
 					
@@ -364,6 +370,12 @@ public class RhymeDictionaryAssembler {
 					bestSet = nodeBeingExamined.getBestSet();
 					
 				}
+				/*
+				 * I don't have time to be down on myself
+				 * I'm on top of things
+				 * */
+				
+				System.out.println("l: " + l);
 				
 			}
 			
@@ -469,7 +481,7 @@ public class RhymeDictionaryAssembler {
 			
 		} 
 		
-		for(int i = 0; i < bestSet.getIndexes().size(); i++){
+		for(int i = 0; i < bestSet.getIndexes().size() - 1; i++){
 			
 			int index1 = bestSet.getIndexes().get(i);
 			int index2 = bestSet.getIndexes().get(i + 1);

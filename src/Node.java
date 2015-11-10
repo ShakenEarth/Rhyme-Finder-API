@@ -75,5 +75,20 @@ public class Node {
 		}
 		
 	}
+	
+	@Override
+	public String toString(){
+		
+		String nodeInfo = "";
+		
+		for(int i = 0; i < indexSets.size(); i++){
+			
+			nodeInfo = nodeInfo + indexSets.get(i).toString() + "; ";
+			
+		}
+			
+		return nodeInfo;
+		
+	}
 
 }
