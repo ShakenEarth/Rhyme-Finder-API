@@ -188,6 +188,8 @@ public class RhymeDictionaryAssembler {
 		//findRhymeValueAndPercentileForWords(anchorWords.get(9), anchorWords.get(133783));
 		
 		System.out.println("done - rhyme dictionary has been created");
+		
+		//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
 
 	}
 
