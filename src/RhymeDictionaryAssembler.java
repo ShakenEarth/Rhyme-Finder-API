@@ -146,6 +146,7 @@ public class RhymeDictionaryAssembler {
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		//find Rhyme Value/Percentile for all Words
+		
 		for(int i = 0; i < anchorWords.size(); i++){
 			
 			debugPrint("Anchor Index: " + i);
@@ -185,7 +186,7 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		//findRhymeValueAndPercentileForWords(anchorWords.get(9), anchorWords.get(133783));
+		//findRhymeValueAndPercentileForWords(anchorWords.get(96378), anchorWords.get(82361));
 		
 		System.out.println("done - rhyme dictionary has been created");
 		
@@ -500,18 +501,81 @@ public class RhymeDictionaryAssembler {
 		debugPrint("Satellite:");
 		satellite.printListOfPhonemes();
 		
+		boolean foundConsonantCluster = false;
+		boolean anchorOrSatellite = false; //true if anchor, false if satellite.
+		
 		double rhymeValue = 0.0;
 		
-		for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+		Word newWord = null;
 			
-			rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
-					satellite.getListOfPhonemes().get(s));
+		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = anchor.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = true;
+				
+		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = satellite.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = false;
+			
+		}
+		
+		if(foundConsonantCluster == false){
+			
+			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+			
+				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
+						satellite.getListOfPhonemes().get(s));
+			
+			}
+			
+		}else{
+			
+			//nothing, it'll be taken care of in the next if-else statement.
 			
 		}
 		
 		debugPrint("Rhyme Value:" + rhymeValue);
 		
-		return (double) findRhymePercentile(rhymeValue, anchor); 
+		if(foundConsonantCluster == false){
+			
+			return (double) findRhymePercentile(rhymeValue, anchor);
+			
+		}else{
+			
+			Word longerWord = null;
+			
+			if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
+				
+				longerWord = satellite;
+				
+			}else{
+				
+				longerWord = anchor;
+				
+			}
+			
+			if(anchorOrSatellite == true){
+				
+				return idealRhymeValue(newWord, satellite);
+				
+			}else{
+				
+				return idealRhymeValue(anchor, newWord);
+				
+			}
+			
+		}
 		
 		
 	}

@@ -9,11 +9,11 @@ import java.util.*;
 public class Word {
 	
 	private String wordName = "";
-	private ArrayList<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
+	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	private int numOfSyllables = 0;
 	
-	public Word(String wordName, ArrayList<Phoneme> phonemes) {
+	public Word(String wordName, List<Phoneme> phonemes) {
 		
 		//RhymeDictionaryAssembler.debugPrint("INITIAL SIZE: " + wordsThisRhymesWith.size());
 		this.setWordName(wordName);
@@ -25,6 +25,7 @@ public class Word {
 		
 		
 		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
+		
 		wordsThisRhymesWith.add(wordToBeInserted);
 		
 		//TODO add some sort of way to sort
@@ -93,11 +94,11 @@ public class Word {
 		this.wordName = wordName;
 	}
 
-	public ArrayList<Phoneme> getListOfPhonemes() {
+	public List<Phoneme> getListOfPhonemes() {
 		return listOfPhonemes;
 	}
 
-	public void setListOfPhonemes(ArrayList<Phoneme> listOfPhonemes) {
+	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
 		this.listOfPhonemes = listOfPhonemes;
 	}
 
