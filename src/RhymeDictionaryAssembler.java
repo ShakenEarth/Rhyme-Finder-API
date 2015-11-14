@@ -198,203 +198,21 @@ public class RhymeDictionaryAssembler {
 	 * @return */
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		//add printlns throughout this to make sure everything is working right
+		debugPrint("---------------------------------------------");
 		System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		
-		//System.out.println();
-		debugPrint("---------------------------------------------");
-		//System.out.println();
-		
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
-			
-			debugPrint("REGULAR RHYME VALUE");
-			
-			debugPrint("Anchor:");
-			anchor.printListOfPhonemes();
-			debugPrint("Satellite:");
-			satellite.printListOfPhonemes();
-			
-			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
-				
-				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
-						satellite.getListOfPhonemes().get(s));
-				
-			}
-			
-			debugPrint("Rhyme Value:" + rhymeValue);
 			
 			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep the focus on
 			 * the anchor word which is the focus word*/
-			rhymePercentile = (double) findRhymePercentile(rhymeValue, anchor); 
+			
+			rhymePercentile = regularRhymeValue(anchor, satellite); 
 			
 		}else{//do ideal Rhyme Value process
 			
-			debugPrint("IDEAL RHYME VALUE");
-			
-			debugPrint("Anchor:");
-			anchor.printListOfPhonemes();
-			debugPrint("Satellite:");
-			satellite.printListOfPhonemes();
-			
-			Word shorterWord = null;
-			Word longerWord = null;
-			
-			//these conditionals find which word is longer and which is shorter
-			if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
-				
-				shorterWord = anchor;
-				longerWord = satellite;
-				
-			}else{
-				
-				shorterWord = satellite;
-				longerWord = anchor;
-				
-			}
-			
-			debugPrint("Shorter Word: " + shorterWord.getWordName());
-			debugPrint("Longer Word: " + longerWord.getWordName());
-			
-			double idealRhymeValue = 0.0;
-			
-			//start here
-			//too much hatred for too long
-			
-			boolean firstSearch = true;
-			boolean foundStartingIndex = false;
-			ArrayList<Layer> layers = new ArrayList<Layer>();
-			ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
-			
-			for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
-				
-				if(firstSearch == true){
-					
-					Node startNode = new Node();
-					for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
-						
-						double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
-						if(RVBetweenPhonemes > 0){
-							
-							foundStartingIndex = true;
-							
-							IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
-							
-							startNode.addIndexSet(indexSet);
-							
-						}
-						
-						
-					}
-					
-					if(foundStartingIndex == true){
-						
-						nodesForThisLayer.add(startNode);
-						layers.add(new Layer(nodesForThisLayer));
-						firstSearch = false;
-						
-					}
-					
-					nodesForThisLayer = new ArrayList<Node>();
-					
-					debugPrint(startNode.toString());
-					
-				}else{
-					
-					for(int n = 0; n < layers.get(s-1).getNodes().size(); n++){
-						//loop for each node in the previous layer
-						
-						debugPrint("Layer: " + (s-1) + ", " + "Node: " + n);
-						
-						Node nodeBeingExamined = layers.get(s-1).getNodes().get(n);
-						
-						for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
-							//loop for the index sets in the node being examined
-							
-							IndexSet setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
-							Node childNode = new Node(); //node to be attached to the index set being examined.
-							int indexToStartAt = setBeingExamined.getIndexes().get(0);
-							debugPrint("setBeingExamined: " + setBeingExamined.toString());
-							
-							if(indexToStartAt + 1 == longerWord.getListOfPhonemes().size()){
-								
-								//do nothing
-								
-							}else{
-								
-								for(int l = indexToStartAt; l < longerWord.getListOfPhonemes().size(); l++){
-									
-									double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
-									
-									if(RVBetweenPhonemes > 0){
-										
-										IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
-										childNode.addIndexSet(indexSet);
-										
-									}
-									
-								}
-								
-								setBeingExamined.attachChildNode(childNode);
-								nodesForThisLayer.add(childNode);
-								debugPrint("childNode: " + childNode.toString());
-								
-							}
-							
-						}
-						
-					}
-					
-					layers.add(new Layer(nodesForThisLayer));
-					nodesForThisLayer = new ArrayList<Node>();
-					
-				}
-				
-			}
-			
-			//find best path
-			
-			IndexSet bestSet = null;
-			Node nodeBeingExamined = null;
-			
-			for(int l = layers.size()-1; l >= 0; l--){
-				
-				for(int n = 0; n < layers.get(l).getNodes().size(); n++){
-					
-					nodeBeingExamined = layers.get(l).getNodes().get(n);
-					
-					nodeBeingExamined.findBestIndexSetAndSendItUp();
-					
-				}
-				
-				if(l == 0 && layers.get(l).getNodes().size() == 1){
-					
-					debugPrint("LAYER IS 0");
-					bestSet = nodeBeingExamined.getBestSet();
-					
-				}
-				/*
-				 * I don't have time to be down on myself
-				 * I'm on top of things
-				 * */
-				
-				System.out.println("l: " + l);
-				
-			}
-			
-			debugPrint("bestSet info: " + bestSet.toString());
-			
-			idealRhymeValue = bestSet.getRhymeValueForSet();
-			
-			rhymeValue = idealRhymeValue;
-			
-			//subtract specing to get actual rhyme value
-			
-			debugPrint("deduction: " + findDeductionForIndexSet(bestSet, longerWord));
-			
-			rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
-			
-			rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
+			rhymePercentile = idealRhymeValue(anchor, satellite);
 			
 		}
 		
@@ -502,4 +320,200 @@ public class RhymeDictionaryAssembler {
 		}
 		
 	}
+	
+	public static double idealRhymeValue(Word anchor, Word satellite){
+		
+		debugPrint("IDEAL RHYME VALUE");
+		
+		debugPrint("Anchor:");
+		anchor.printListOfPhonemes();
+		debugPrint("Satellite:");
+		satellite.printListOfPhonemes();
+		
+		Word shorterWord = null;
+		Word longerWord = null;
+		
+		//these conditionals find which word is longer and which is shorter
+		if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
+			
+			shorterWord = anchor;
+			longerWord = satellite;
+			
+		}else{
+			
+			shorterWord = satellite;
+			longerWord = anchor;
+			
+		}
+		
+		debugPrint("Shorter Word: " + shorterWord.getWordName());
+		debugPrint("Longer Word: " + longerWord.getWordName());
+		
+		double idealRhymeValue = 0.0;
+		
+		//start here
+		//too much hatred for too long
+		
+		boolean firstSearch = true;
+		boolean foundStartingIndex = false;
+		ArrayList<Layer> layers = new ArrayList<Layer>();
+		ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
+		
+		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
+			
+			if(firstSearch == true){
+				
+				Node startNode = new Node();
+				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
+					
+					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+					if(RVBetweenPhonemes > 0){
+						
+						foundStartingIndex = true;
+						
+						IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+						
+						startNode.addIndexSet(indexSet);
+						
+					}
+					
+					
+				}
+				
+				if(foundStartingIndex == true){
+					
+					nodesForThisLayer.add(startNode);
+					layers.add(new Layer(nodesForThisLayer));
+					firstSearch = false;
+					
+				}
+				
+				nodesForThisLayer = new ArrayList<Node>();
+				
+				debugPrint(startNode.toString());
+				
+			}else{
+				
+				for(int n = 0; n < layers.get(s-1).getNodes().size(); n++){
+					//loop for each node in the previous layer
+					
+					debugPrint("Layer: " + (s-1) + ", " + "Node: " + n);
+					
+					Node nodeBeingExamined = layers.get(s-1).getNodes().get(n);
+					
+					for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
+						//loop for the index sets in the node being examined
+						
+						IndexSet setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
+						Node childNode = new Node(); //node to be attached to the index set being examined.
+						int indexToStartAt = setBeingExamined.getIndexes().get(0);
+						debugPrint("setBeingExamined: " + setBeingExamined.toString());
+						
+						if(indexToStartAt + 1 == longerWord.getListOfPhonemes().size()){
+							
+							//do nothing
+							
+						}else{
+							
+							for(int l = indexToStartAt; l < longerWord.getListOfPhonemes().size(); l++){
+								
+								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+								
+								if(RVBetweenPhonemes > 0){
+									
+									IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+									childNode.addIndexSet(indexSet);
+									
+								}
+								
+							}
+							
+							setBeingExamined.attachChildNode(childNode);
+							nodesForThisLayer.add(childNode);
+							debugPrint("childNode: " + childNode.toString());
+							
+						}
+						
+					}
+					
+				}
+				
+				layers.add(new Layer(nodesForThisLayer));
+				nodesForThisLayer = new ArrayList<Node>();
+				
+			}
+			
+		}
+		
+		//find best path
+		
+		IndexSet bestSet = null;
+		Node nodeBeingExamined = null;
+		
+		for(int l = layers.size()-1; l >= 0; l--){
+			
+			for(int n = 0; n < layers.get(l).getNodes().size(); n++){
+				
+				nodeBeingExamined = layers.get(l).getNodes().get(n);
+				
+				nodeBeingExamined.findBestIndexSetAndSendItUp();
+				
+			}
+			
+			if(l == 0 && layers.get(l).getNodes().size() == 1){
+				
+				debugPrint("LAYER IS 0");
+				bestSet = nodeBeingExamined.getBestSet();
+				
+			}
+			/*
+			 * I don't have time to be down on myself
+			 * I'm on top of things
+			 * */
+			
+			System.out.println("l: " + l);
+			
+		}
+		
+		debugPrint("bestSet info: " + bestSet.toString());
+		
+		idealRhymeValue = bestSet.getRhymeValueForSet();
+		
+		double rhymeValue = idealRhymeValue;
+		
+		//subtract specing to get actual rhyme value
+		
+		debugPrint("deduction: " + findDeductionForIndexSet(bestSet, longerWord));
+		
+		rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
+		
+		return (double) findRhymePercentile(rhymeValue, longerWord);
+		
+	}
+	
+	public static double regularRhymeValue(Word anchor, Word satellite){
+		
+		debugPrint("REGULAR RHYME VALUE");
+		
+		debugPrint("Anchor:");
+		anchor.printListOfPhonemes();
+		debugPrint("Satellite:");
+		satellite.printListOfPhonemes();
+		
+		double rhymeValue = 0.0;
+		
+		for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+			
+			rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
+					satellite.getListOfPhonemes().get(s));
+			
+		}
+		
+		debugPrint("Rhyme Value:" + rhymeValue);
+		
+		return (double) findRhymePercentile(rhymeValue, anchor); 
+		
+		
+	}
+	
 }
