@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = true, SAMPLESIZE = true;
+	public final static boolean DEBUGGING = false, SAMPLESIZE = true;
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
@@ -191,6 +191,8 @@ public class RhymeDictionaryAssembler {
 		System.out.println("done - rhyme dictionary has been created");
 		
 		//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
+		
+		
 
 	}
 
@@ -199,7 +201,7 @@ public class RhymeDictionaryAssembler {
 	 * @return */
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		//add printlns throughout this to make sure everything is working right
-		debugPrint("---------------------------------------------");
+		System.out.println("---------------------------------------------");
 		System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
@@ -223,104 +225,7 @@ public class RhymeDictionaryAssembler {
 		
 	}
 	
-	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
-	 * actual Rhyme Value matches with the homophonic RV*/
-	public static double findRhymePercentile(double rhymeValue, Word longerWord){
-		
-		double homophonicRhymeValue = 0.0;
-		double rhymePercentile = 0.0;
-		
-		for(int i = 0; i < longerWord.getListOfPhonemes().size(); i++){
-			
-			homophonicRhymeValue = homophonicRhymeValue + 
-					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i));
-			
-		}
-		debugPrint("RV: " + rhymeValue);
-		debugPrint("HRV: " + homophonicRhymeValue);
-		
-		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
-		
-		return rhymePercentile;
-		
-	}
 	
-	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
-		
-		debugPrint("			In method");
-		debugPrint("			p1 is a vowel:" + p1.isAVowelPhoneme());
-		debugPrint("			p2 is a vowel:" + p2.isAVowelPhoneme());
-		
-		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
-			debugPrint("			-Both vowels");
-			if(p1.isEqualTo(p2)){
-				debugPrint("			--Equal");
-				return 2.0;
-				
-			}else{
-				debugPrint("			--Not equal");
-				return 1.0;
-				
-			}
-		}else if(!p1.isAVowelPhoneme() && !p1.isAVowelPhoneme()){
-			debugPrint("			-Both consonants");
-			if(p1.isEqualTo(p2)){
-				debugPrint("			--Equal");
-				return 1.0;
-				
-			}else{
-				debugPrint("			--Not equal");
-				return 0.5;
-				
-			}
-			
-		}else{
-			debugPrint("			-No reasonable relation");
-			return 0.0;
-			
-		}
-		
-	}
-	
-	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
-		
-		double deduction = 0.0;
-		
-		if(bestSet.getIndexes().get(0) > 0){
-			
-			deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
-			
-		}
-		
-		if((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
-			
-			deduction = deduction + Math.log10((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
-			
-		}
-		
-		for(int i = 0; i < bestSet.getIndexes().size() - 1; i++){
-			
-			int index1 = bestSet.getIndexes().get(i);
-			int index2 = bestSet.getIndexes().get(i + 1);
-			
-			deduction = deduction + (0.25 * (index2 - index1));
-			
-		}
-		
-		return deduction;
-		
-	}
-	
-	public static void debugPrint(Object x){
-		
-		if(DEBUGGING == true){
-			
-			System.out.println(x);
-			
-		}
-		
-	}
 	
 	public static double idealRhymeValue(Word anchor, Word satellite){
 		
@@ -472,7 +377,7 @@ public class RhymeDictionaryAssembler {
 			 * I'm on top of things
 			 * */
 			
-			System.out.println("l: " + l);
+			debugPrint("l: " + l);
 			
 		}
 		
@@ -577,6 +482,107 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
+		
+		
+		
+	}
+	
+	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
+	 * actual Rhyme Value matches with the homophonic RV*/
+	public static double findRhymePercentile(double rhymeValue, Word longerWord){
+		
+		double homophonicRhymeValue = 0.0;
+		double rhymePercentile = 0.0;
+		
+		for(int i = 0; i < longerWord.getListOfPhonemes().size(); i++){
+			
+			homophonicRhymeValue = homophonicRhymeValue + 
+					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i));
+			
+		}
+		debugPrint("RV: " + rhymeValue);
+		debugPrint("HRV: " + homophonicRhymeValue);
+		
+		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
+		
+		return rhymePercentile;
+		
+	}
+	
+	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
+	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
+		
+		debugPrint("			In method");
+		debugPrint("			p1 is a vowel:" + p1.isAVowelPhoneme());
+		debugPrint("			p2 is a vowel:" + p2.isAVowelPhoneme());
+		
+		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+			debugPrint("			-Both vowels");
+			if(p1.isEqualTo(p2)){
+				debugPrint("			--Equal");
+				return 2.0;
+				
+			}else{
+				debugPrint("			--Not equal");
+				return 1.0;
+				
+			}
+		}else if(!p1.isAVowelPhoneme() && !p1.isAVowelPhoneme()){
+			debugPrint("			-Both consonants");
+			if(p1.isEqualTo(p2)){
+				debugPrint("			--Equal");
+				return 1.0;
+				
+			}else{
+				debugPrint("			--Not equal");
+				return 0.5;
+				
+			}
+			
+		}else{
+			debugPrint("			-No reasonable relation");
+			return 0.0;
+			
+		}
+		
+	}
+	
+	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
+		
+		double deduction = 0.0;
+		
+		if(bestSet.getIndexes().get(0) > 0){
+			
+			deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
+			
+		}
+		
+		if((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
+			
+			deduction = deduction + Math.log10((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			
+		}
+		
+		for(int i = 0; i < bestSet.getIndexes().size() - 1; i++){
+			
+			int index1 = bestSet.getIndexes().get(i);
+			int index2 = bestSet.getIndexes().get(i + 1);
+			
+			deduction = deduction + (0.25 * (index2 - index1));
+			
+		}
+		
+		return deduction;
+		
+	}
+	
+	public static void debugPrint(Object x){
+		
+		if(DEBUGGING == true){
+			
+			System.out.println(x);
+			
+		}
 		
 	}
 	
