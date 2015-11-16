@@ -7,7 +7,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = false, SAMPLESIZE = true;
+	public final static boolean DEBUGGING = true, SAMPLESIZE = true, CREATE_DICTIONARY = false;
 	
 	public static void main(String[] args){
 		ArrayList<Phoneme> phonemes = null;
@@ -147,46 +147,49 @@ public class RhymeDictionaryAssembler {
 		
 		//find Rhyme Value/Percentile for all Words
 		
-		for(int i = 0; i < anchorWords.size(); i++){
-			
-			debugPrint("Anchor Index: " + i);
-			
-			for(int j = 0; j < anchorWords.size(); j++){
+		if(CREATE_DICTIONARY == true){
+			for(int i = 0; i < anchorWords.size(); i++){
 				
-				debugPrint("Satellite Index: " + j);
+				debugPrint("Anchor Index: " + i);
 				
-				double rhymePercentile = 0.0;
-				
-				if(j != i){
+				for(int j = 0; j < anchorWords.size(); j++){
 					
-					rhymePercentile = findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
-				
+					debugPrint("Satellite Index: " + j);
+					
+					double rhymePercentile = 0.0;
+					
+					if(j != i){
+						
+						rhymePercentile = findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
+					
+					}
+					
+					if(rhymePercentile >= 0.4){
+						
+						anchorWords.get(i).addWord(j, rhymePercentile);
+						
+					}
+					
 				}
 				
-				if(rhymePercentile >= 0.4){
+				for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
 					
-					anchorWords.get(i).addWord(j, rhymePercentile);
+					debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
+					
+				}
+				
+				if(i == 9 && SAMPLESIZE == true){
+					
+					System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
+					break;
 					
 				}
 				
 			}
-			
-			for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
-				
-				debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
-				
-			}
-			
-			if(i == 9 && SAMPLESIZE == true){
-				
-				System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
-				break;
-				
-			}
-			
 		}
 		
-		//findRhymeValueAndPercentileForWords(anchorWords.get(96378), anchorWords.get(82361));
+		findRhymeValueAndPercentileForWords(anchorWords.get(61942), anchorWords.get(84486));
+		findRhymeValueAndPercentileForWords(anchorWords.get(20892), anchorWords.get(5751));
 		
 		System.out.println("done - rhyme dictionary has been created");
 		
@@ -268,6 +271,8 @@ public class RhymeDictionaryAssembler {
 		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
 			if(firstSearch == true){
+				
+				debugPrint("firstSearch");
 				
 				Node startNode = new Node();
 				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
@@ -512,9 +517,9 @@ public class RhymeDictionaryAssembler {
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
 	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
 		
-		debugPrint("			In method");
-		debugPrint("			p1 is a vowel:" + p1.isAVowelPhoneme());
-		debugPrint("			p2 is a vowel:" + p2.isAVowelPhoneme());
+		debugPrint("			In method findRVBetweenPhonemes");
+		debugPrint("			p1 (" + p1.getPhoneme() +") is a vowel:" + p1.isAVowelPhoneme());
+		debugPrint("			p2 (" + p2.getPhoneme() +") is a vowel:" + p2.isAVowelPhoneme());
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			debugPrint("			-Both vowels");
@@ -527,7 +532,8 @@ public class RhymeDictionaryAssembler {
 				return 1.0;
 				
 			}
-		}else if(!p1.isAVowelPhoneme() && !p1.isAVowelPhoneme()){
+			
+		}else if(!p1.isAVowelPhoneme() && !p2.isAVowelPhoneme()){
 			debugPrint("			-Both consonants");
 			if(p1.isEqualTo(p2)){
 				debugPrint("			--Equal");
