@@ -7,9 +7,68 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = true, SAMPLESIZE = true, CREATE_DICTIONARY = false;
+	public final static boolean DEBUGGING = true, SAMPLESIZE = true, CREATE_DICTIONARY = true;
+	
+	public static ArrayList<Word> anchors = null, anchorWords;
 	
 	public static void main(String[] args){
+		
+		buildWords();
+		
+		//find Rhyme Value/Percentile for all Words
+		
+				if(CREATE_DICTIONARY == true){
+					for(int i = 0; i < anchorWords.size(); i++){
+						
+						debugPrint("Anchor Index: " + i);
+						
+						for(int j = 0; j < anchorWords.size(); j++){
+							
+							debugPrint("Satellite Index: " + j);
+							
+							double rhymePercentile = 0.0;
+							
+							if(j != i){
+								
+								rhymePercentile = findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
+							
+							}
+							
+							if(rhymePercentile >= 0.4){
+								
+								anchorWords.get(i).addWord(j, rhymePercentile);
+								
+							}
+							
+						}
+						
+						for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
+							
+							debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
+							
+						}
+						
+						if(i == 9 && SAMPLESIZE == true){
+							
+							System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
+							break;
+							
+						}
+						
+					}
+				}
+				
+				/*findRhymeValueAndPercentileForWords(anchorWords.get(61942), anchorWords.get(84486));
+				findRhymeValueAndPercentileForWords(anchorWords.get(20892), anchorWords.get(5751));*/
+				
+				System.out.println("done - rhyme dictionary has been created");
+				
+				//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
+		
+	}
+	
+	public static void buildWords(){
+		
 		ArrayList<Phoneme> phonemes = null;
 		//1
 		List<String> linesOfDictionary = null;
@@ -145,58 +204,10 @@ public class RhymeDictionaryAssembler {
 		
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
-		//find Rhyme Value/Percentile for all Words
-		
-		if(CREATE_DICTIONARY == true){
-			for(int i = 0; i < anchorWords.size(); i++){
-				
-				debugPrint("Anchor Index: " + i);
-				
-				for(int j = 0; j < anchorWords.size(); j++){
-					
-					debugPrint("Satellite Index: " + j);
-					
-					double rhymePercentile = 0.0;
-					
-					if(j != i){
-						
-						rhymePercentile = findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
-					
-					}
-					
-					if(rhymePercentile >= 0.4){
-						
-						anchorWords.get(i).addWord(j, rhymePercentile);
-						
-					}
-					
-				}
-				
-				for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
-					
-					debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
-					
-				}
-				
-				if(i == 9 && SAMPLESIZE == true){
-					
-					System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
-					break;
-					
-				}
-				
-			}
-		}
-		
-		findRhymeValueAndPercentileForWords(anchorWords.get(61942), anchorWords.get(84486));
-		findRhymeValueAndPercentileForWords(anchorWords.get(20892), anchorWords.get(5751));
-		
-		System.out.println("done - rhyme dictionary has been created");
-		
-		//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
+		anchors = anchorWords;
 		
 		
-
+		
 	}
 
 	/**This method goes through the entire process of finding how well two words rhyme with one another.
