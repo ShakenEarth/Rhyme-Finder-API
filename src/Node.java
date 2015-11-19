@@ -66,6 +66,11 @@ public class Node {
 		
 		if(parentIndexSet != null){
 			
+			System.out.println(bestSet.getIndexes().size()-1);
+			System.out.println("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			System.out.println("second " + bestSet.getRhymeValueForSet());
+			System.out.println(parentIndexSet.getIndexes());
+			
 			parentIndexSet.addIndex(bestSet.getIndexes().get(bestSet.getIndexes().size()-1), bestSet.getRhymeValueForSet());
 			
 		}else{

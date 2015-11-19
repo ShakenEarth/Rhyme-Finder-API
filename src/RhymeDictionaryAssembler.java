@@ -378,13 +378,20 @@ public class RhymeDictionaryAssembler {
 				
 				nodeBeingExamined = layers.get(l).getNodes().get(n);
 				
-				nodeBeingExamined.findBestIndexSetAndSendItUp();
+				if(nodeBeingExamined.getIndexSets().size()>0){
+					
+					nodeBeingExamined.findBestIndexSetAndSendItUp();
+					
+				}
 				
 			}
 			
 			if(l == 0 && layers.get(l).getNodes().size() == 1){
 				
 				debugPrint("LAYER IS 0");
+				
+				System.out.println("IndexSets in top node: " + nodeBeingExamined.toString());
+				
 				bestSet = nodeBeingExamined.getBestSet();
 				
 			}
@@ -567,6 +574,7 @@ public class RhymeDictionaryAssembler {
 	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
 		
 		double deduction = 0.0;
+		System.out.println(bestSet.toString());
 		
 		if(bestSet.getIndexes().get(0) > 0){
 			
@@ -585,7 +593,9 @@ public class RhymeDictionaryAssembler {
 			int index1 = bestSet.getIndexes().get(i);
 			int index2 = bestSet.getIndexes().get(i + 1);
 			
-			deduction = deduction + (0.25 * (index2 - index1));
+			debugPrint("index subtraction" + (index2 - index1-1));
+			
+			deduction = deduction + (0.25 * (index2 - index1-1));
 			
 		}
 		

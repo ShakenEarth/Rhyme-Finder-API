@@ -55,11 +55,11 @@ public class IndexSet {
 		
 		for(int i = 0; i < indexes.size(); i++){
 			
-			indexSetInfo = indexSetInfo + indexes.get(i) + ", ";
+			indexSetInfo = indexSetInfo + "Index " + i + ": " + indexes.get(i) + ", ";
 			
 		}
 		
-		indexSetInfo = indexSetInfo + getRhymeValueForSet();
+		indexSetInfo = indexSetInfo + "RV for Set: " + getRhymeValueForSet();
 			
 		return indexSetInfo;
 		
