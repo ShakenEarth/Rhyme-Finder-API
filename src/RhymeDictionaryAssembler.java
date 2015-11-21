@@ -337,7 +337,7 @@ public class RhymeDictionaryAssembler {
 							
 						}else{
 							
-							for(int l = indexToStartAt; l < longerWord.getListOfPhonemes().size(); l++){
+							for(int l = indexToStartAt + 1; l < longerWord.getListOfPhonemes().size(); l++){
 								
 								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
 								
@@ -578,7 +578,18 @@ public class RhymeDictionaryAssembler {
 		
 		if(bestSet.getIndexes().get(0) > 0){
 			
-			deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
+			if(bestSet.getIndexes().get(0) > 1){
+				
+				deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
+				
+			}else{
+				
+				deduction = deduction + 0.25;
+				
+			}
+			
+			debugPrint("first index: " + bestSet.getIndexes().get(0));
+			debugPrint("DEDUCTION FROM FRONT: " + deduction);
 			
 		}
 		

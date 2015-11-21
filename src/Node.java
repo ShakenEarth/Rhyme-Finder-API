@@ -71,7 +71,7 @@ public class Node {
 			System.out.println("second " + bestSet.getRhymeValueForSet());
 			System.out.println(parentIndexSet.getIndexes());
 			
-			parentIndexSet.addIndex(bestSet.getIndexes().get(bestSet.getIndexes().size()-1), bestSet.getRhymeValueForSet());
+			parentIndexSet.addIndexes(bestSet.getIndexes(), bestSet.getRhymeValueForSet());
 			
 		}else{
 			

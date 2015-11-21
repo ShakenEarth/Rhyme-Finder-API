@@ -8,13 +8,19 @@ public class IndexSet {
 	
 	public IndexSet(int index, double RVBetweenPhonemes) {
 		
-		this.addIndex(index, RVBetweenPhonemes);
+		this.getIndexes().add(index);
+		this.setRhymeValueForSet(getRhymeValueForSet() + RVBetweenPhonemes);
 		
 	}
 	
-	public void addIndex(int index, double RVBetweenPhonemes){
+	public void addIndexes(ArrayList<Integer> indexesToAdd, double RVBetweenPhonemes){
 		
-		indexes.add(index);
+		for(int i = 0; i < indexesToAdd.size(); i++){
+			
+			indexes.add(indexesToAdd.get(i));
+			
+		}
+		
 		rhymeValueForSet = rhymeValueForSet + RVBetweenPhonemes;
 		
 	}
@@ -51,7 +57,7 @@ public class IndexSet {
 	
 	public String toString(){
 		
-		String indexSetInfo = "";
+		String indexSetInfo = "INDEX SET INFO: ";
 		
 		for(int i = 0; i < indexes.size(); i++){
 			
