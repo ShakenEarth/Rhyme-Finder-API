@@ -205,8 +205,7 @@ public class RhymeDictionaryAssembler {
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		anchors = anchorWords;
-		
-		
+		RhymeDictionaryAssembler.anchorWords = anchorWords;
 		
 	}
 
