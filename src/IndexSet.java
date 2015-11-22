@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class IndexSet {
+public class IndexSet implements Serializable {
 	
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();
 	private double rhymeValueForSet = 0.0;

@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Query {
+public class Query implements Serializable{
 	
 	private ArrayList<Word> wordsForThisQuery = new ArrayList<Word>();
 	private String name = null;

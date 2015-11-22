@@ -1,4 +1,5 @@
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -6,7 +7,7 @@ import java.util.*;
  * @author Thomas Lisankie
  */
 
-public class Word {
+public class Word implements Serializable{
 	
 	private String wordName = "";
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
@@ -127,6 +128,28 @@ public class Word {
 
 	public void setNumOfSyllables(int numOfSyllables) {
 		this.numOfSyllables = numOfSyllables;
+	}
+	
+	public String toString(){
+		
+		String wordInfo = wordName + ": ";
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			if(i != listOfPhonemes.size()-1){
+				
+				wordInfo = wordInfo + listOfPhonemes.get(i).getPhoneme() + ", ";
+				
+			}else{
+				
+				wordInfo = wordInfo + listOfPhonemes.get(i).getPhoneme();
+				
+			}
+			
+		}
+		
+		return wordInfo;
+		
 	}
 
 }

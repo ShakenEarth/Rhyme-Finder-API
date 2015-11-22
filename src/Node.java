@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Node {
+public class Node implements Serializable{
 	
 	private ArrayList<IndexSet> indexSets = new ArrayList<IndexSet>();
 	private IndexSet parentIndexSet = null;

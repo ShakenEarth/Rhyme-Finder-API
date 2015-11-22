@@ -1,9 +1,11 @@
+import java.io.Serializable;
+
 
 /**
  * Class for representing phonemes
  * @author Thomas Lisankie
  */
-public class Phoneme {
+public class Phoneme implements Serializable {
 	
 	private boolean isAVowelPhoneme ;
 	private String phoneme = "";
