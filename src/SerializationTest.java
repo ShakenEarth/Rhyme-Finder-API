@@ -33,7 +33,7 @@ public class SerializationTest {
 		
 		try{
 			
-	         FileOutputStream fileOut = new FileOutputStream("/tmp/words.ser");
+	         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Desktop/words.prhyme");
 	         
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         
@@ -43,7 +43,7 @@ public class SerializationTest {
 	         
 	         fileOut.close();
 	         
-	         System.out.printf("Serialized data is saved in /tmp/words.ser");
+	         System.out.printf("Serialized data is saved in /Users/thomas/Desktop/words.prhyme");
 	         
 	      }catch(IOException i)
 	      {
@@ -58,7 +58,7 @@ public class SerializationTest {
 		
 		try
 	      {
-	         FileInputStream fileIn = new FileInputStream("/tmp/words.ser");
+	         FileInputStream fileIn = new FileInputStream("/Users/thomas/Desktop/words.prhyme");
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         deserializedWords = (ArrayList<Word>) in.readObject();
 	         in.close();

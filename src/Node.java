@@ -67,10 +67,10 @@ public class Node implements Serializable{
 		
 		if(parentIndexSet != null){
 			
-			System.out.println(bestSet.getIndexes().size()-1);
-			System.out.println("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
-			System.out.println("second " + bestSet.getRhymeValueForSet());
-			System.out.println(parentIndexSet.getIndexes());
+			RhymeDictionaryAssembler.debugPrint(bestSet.getIndexes().size()-1);
+			RhymeDictionaryAssembler.debugPrint("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			RhymeDictionaryAssembler.debugPrint("second " + bestSet.getRhymeValueForSet());
+			RhymeDictionaryAssembler.debugPrint(parentIndexSet.getIndexes());
 			
 			parentIndexSet.addIndexes(bestSet.getIndexes(), bestSet.getRhymeValueForSet());
 			

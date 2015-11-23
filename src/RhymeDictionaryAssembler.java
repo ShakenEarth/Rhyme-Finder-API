@@ -1,4 +1,7 @@
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -7,7 +10,7 @@ import java.util.*;
 
 public class RhymeDictionaryAssembler {
 	
-	public final static boolean DEBUGGING = true, SAMPLESIZE = true, CREATE_DICTIONARY = true;
+	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
 	
 	public static ArrayList<Word> anchors = null, anchorWords;
 	
@@ -61,7 +64,24 @@ public class RhymeDictionaryAssembler {
 				/*findRhymeValueAndPercentileForWords(anchorWords.get(61942), anchorWords.get(84486));
 				findRhymeValueAndPercentileForWords(anchorWords.get(20892), anchorWords.get(5751));*/
 				
-				System.out.println("done - rhyme dictionary has been created");
+				try{
+					
+			         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Desktop/RhymeDictionary.prhyme");
+			         
+			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			         
+			         out.writeObject(anchorWords);
+			         
+			         out.close();
+			         
+			         fileOut.close();
+			         
+			         System.out.printf("done - rhyme dictionary has been created and saved at /Users/thomas/Desktop/RhymeDictionary.prhyme.prhyme");
+			         
+			      }catch(IOException i)
+			      {
+			          i.printStackTrace();
+			      }
 				
 				//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
 		
@@ -389,7 +409,7 @@ public class RhymeDictionaryAssembler {
 				
 				debugPrint("LAYER IS 0");
 				
-				System.out.println("IndexSets in top node: " + nodeBeingExamined.toString());
+				debugPrint("IndexSets in top node: " + nodeBeingExamined.toString());
 				
 				bestSet = nodeBeingExamined.getBestSet();
 				
@@ -573,7 +593,7 @@ public class RhymeDictionaryAssembler {
 	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
 		
 		double deduction = 0.0;
-		System.out.println(bestSet.toString());
+		debugPrint(bestSet.toString());
 		
 		if(bestSet.getIndexes().get(0) > 0){
 			

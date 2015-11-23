@@ -7,7 +7,7 @@ public class IndexSet implements Serializable {
 	private double rhymeValueForSet = 0.0;
 	private Node childNode;
 	
-	public IndexSet(int index, double RVBetweenPhonemes) {
+	public IndexSet(int index, double RVBetweenPhonemes){
 		
 		this.getIndexes().add(index);
 		this.setRhymeValueForSet(getRhymeValueForSet() + RVBetweenPhonemes);
