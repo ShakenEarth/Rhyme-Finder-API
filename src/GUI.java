@@ -147,23 +147,23 @@ public class GUI extends JFrame {
 			
 			if(rhymePercentile > 0.85){
 				
-				result.setText("Result: Extremely well, " + rhymePercentile);
+				result.setText("Result: " + rhymePercentile + " - Extremely well");
 				
 			}else if(rhymePercentile > 0.6){
 				
-				result.setText("Result: Pretty well, " + rhymePercentile);
+				result.setText("Result: " + rhymePercentile + " - Pretty well");
 				
 			}else if(rhymePercentile > 0.4){
 				
-				result.setText("Result: Decently, " + rhymePercentile);
+				result.setText("Result: " + rhymePercentile + " - Decently");
 				
 			}else if(rhymePercentile > 0.2){
 				
-				result.setText("Result: Mediocre, " + rhymePercentile);
+				result.setText("Result: " + rhymePercentile + " - Mediocre");
 				
 			}else if(rhymePercentile > 0){
 				
-				result.setText("Result: Not at all, " + rhymePercentile);
+				result.setText("Result: " + rhymePercentile + " - Not at all");
 				
 			}
 			

@@ -44,6 +44,7 @@ public class RhymeDictionaryAssembler {
 							}
 							
 						}
+						System.out.println("done with '" + anchorWords.get(i).getWordName() + "'");
 						
 						for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
 							
@@ -94,7 +95,7 @@ public class RhymeDictionaryAssembler {
 		List<String> linesOfDictionary = null;
 	//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
 		try{
-			linesOfDictionary = Files.readAllLines(Paths.get("cmudict-0.7b_modified.txt"), Charset.defaultCharset());
+			linesOfDictionary = Files.readAllLines(Paths.get("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt"), Charset.defaultCharset());
 			
 		 	/*for (String line : linesOfDictionary) {
 			 	debugPrint(line);
@@ -233,9 +234,9 @@ public class RhymeDictionaryAssembler {
 	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.
 	 * @return */
 	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
-		//add printlns throughout this to make sure everything is working right
-		System.out.println("---------------------------------------------");
-		System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
+		
+		//System.out.println("---------------------------------------------");
+		//System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
 		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		
@@ -252,7 +253,7 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		System.out.println("Rhyme Percentile: " + rhymePercentile);
+		//System.out.println("Rhyme Percentile: " + rhymePercentile);
 		
 		return rhymePercentile;
 		
