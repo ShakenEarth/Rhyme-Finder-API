@@ -18,7 +18,6 @@ public class GUI extends JFrame {
 		
 		GUI frame = new GUI();
 		
-		
 	}
 	
 	public GUI(){
