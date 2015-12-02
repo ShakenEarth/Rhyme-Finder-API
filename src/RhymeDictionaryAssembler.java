@@ -309,6 +309,7 @@ public class RhymeDictionaryAssembler {
 				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 					
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+					
 					if(RVBetweenPhonemes > 0){
 						
 						foundStartingIndex = true;
