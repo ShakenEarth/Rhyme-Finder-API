@@ -1,6 +1,8 @@
 import java.io.Serializable;
 import java.util.*;
 
+/**@author Thomas Lisankie*/
+
 public class IndexSet implements Serializable {
 	
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();

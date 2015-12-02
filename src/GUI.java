@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+/**@author Thomas Lisankie*/
+
 public class GUI extends JFrame {
 	JPanel panel = new JPanel();
 	

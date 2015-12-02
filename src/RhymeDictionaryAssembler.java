@@ -319,7 +319,6 @@ public class RhymeDictionaryAssembler {
 						
 					}
 					
-					
 				}
 				
 				if(foundStartingIndex == true){

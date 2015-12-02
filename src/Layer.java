@@ -1,6 +1,8 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**@author Thomas Lisankie*/
+
 public class Layer implements Serializable {
 	
 	private ArrayList<Node> nodes = new ArrayList<Node>();

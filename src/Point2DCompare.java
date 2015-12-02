@@ -1,6 +1,7 @@
 import java.awt.geom.Point2D;
 import java.util.Comparator;
 
+/**@author Thomas Lisankie*/
 
 public class Point2DCompare
         implements Comparator<Point2D> {
