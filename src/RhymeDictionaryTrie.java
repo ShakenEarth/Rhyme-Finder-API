@@ -3,10 +3,18 @@ public class RhymeDictionaryTrie implements Trie {
 
 	public boolean addWord(Word word) {
 		
-		/*
-		 * 
-		 * 
-		 * */
+		/*if (wordString==null || wordString.isEmpty()) {
+            return false;
+        }
+        wordString = wordString.toLowerCase();
+        char[] wordCharArr = wordString.toCharArray();
+        TrieNode tempRoot = trieRoot;
+        for (char charValue : wordCharArr) {
+            tempRoot.addChild(charValue);
+            tempRoot = tempRoot.getChild(charValue);
+        }
+        tempRoot.setFinalChar(true);
+        return true;*/
 		
 		return false;
 	}

@@ -37,13 +37,21 @@ public class RhymeDictionaryTrieNode {
 	public boolean addChild(char charValue) {
 		// only create children when you're adding first child
 		if (childrenMap == null) {
+			
 			childrenMap = new TreeMap<Character, RhymeDictionaryTrieNode>();
+			
 		}
+		
 		Character charValueObject = Character.valueOf(charValue);
+		
 		if (childrenMap.containsKey(charValueObject)) {
+			
 			return false;
+			
 		}
+		
 		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(charValue).setDepth(this.depth+1));
+		
 		return true;
 	}
 
