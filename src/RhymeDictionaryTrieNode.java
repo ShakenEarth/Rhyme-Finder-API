@@ -14,7 +14,8 @@ import java.util.TreeMap;
 public class RhymeDictionaryTrieNode {
 	// to be set by Trie implementor
 	private boolean isFinalChar;
-	private char charValue;
+	private Word word;
+	private char charValue; //last character of Word name
 	private int depth;
 	private Map<Character, RhymeDictionaryTrieNode> childrenMap;
 
@@ -23,7 +24,8 @@ public class RhymeDictionaryTrieNode {
 	}
 
 	// this should be called by addChild only
-	private RhymeDictionaryTrieNode(char charValue) {
+	private RhymeDictionaryTrieNode(Word word, char charValue) {
+		this.word = word;
 		this.charValue = charValue;
 		childrenMap = null;
 	}
@@ -50,9 +52,10 @@ public class RhymeDictionaryTrieNode {
 			
 		}
 		
-		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(charValue).setDepth(this.depth+1));
+		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(charValue).setDepth(this.depth + 1));
 		
 		return true;
+		
 	}
 
 	/**

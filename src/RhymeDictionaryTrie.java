@@ -1,6 +1,13 @@
 
 public class RhymeDictionaryTrie implements Trie {
 
+	protected RhymeDictionaryTrieNode trieRoot;
+    public RhymeDictionaryTrie() {
+    	
+        trieRoot = new RhymeDictionaryTrieNode();
+        
+    }
+	
 	public boolean addWord(Word word) {
 		
 		/*if (wordString==null || wordString.isEmpty()) {
