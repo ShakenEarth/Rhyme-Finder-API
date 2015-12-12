@@ -39,7 +39,7 @@ public class RhymeDictionaryAssembler {
 							
 							if(rhymePercentile >= 0.4){
 								
-								anchorWords.get(i).addWord(j, rhymePercentile);
+								anchorWords.get(i).addWordThisRhymesWith(j, rhymePercentile);
 								
 							}
 							

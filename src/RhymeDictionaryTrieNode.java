@@ -25,7 +25,7 @@ public class RhymeDictionaryTrieNode {
 
 	// this should be called by addChild only
 	private RhymeDictionaryTrieNode(Word word, char charValue) {
-		this.word = word;
+		this.setWord(word);
 		this.charValue = charValue;
 		childrenMap = null;
 	}
@@ -36,7 +36,7 @@ public class RhymeDictionaryTrieNode {
 	 * @param charValue
 	 * @return returns true if the add is successful, false if there was already a child with that charValue
 	 */
-	public boolean addChild(char charValue) {
+	public boolean addChild(Word word, char charValue) {
 		// only create children when you're adding first child
 		if (childrenMap == null) {
 			
@@ -52,7 +52,9 @@ public class RhymeDictionaryTrieNode {
 			
 		}
 		
-		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(charValue).setDepth(this.depth + 1));
+		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(word, charValue).setDepth(this.depth + 1));
+		
+		//TODO Need to fix this so words aren't added to every child
 		
 		return true;
 		
@@ -146,14 +148,23 @@ public class RhymeDictionaryTrieNode {
 		return charValue + (childrenMap!=null ? childrenMap.hashCode() : 0);
 	}
 
+	public Word getWord() {
+		return word;
+	}
+
+	public void setWord(Word word) {
+		this.word = word;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder toString = new StringBuilder();
 		toString.append("nodeValue: " + charValue + "; isFinalChar: "
-				+ isFinalChar + "; depth: " + depth + "; children: ");
+				+ isFinalChar + "; Word: "
+						+ word + "; depth: " + depth + "; children: ");
 		if (childrenMap != null) {
 			return toString.append(childrenMap.keySet().toString()).toString();
 		}
-		return toString.append("no childrens").toString();
+		return toString.append("no children").toString();
 	}
 }

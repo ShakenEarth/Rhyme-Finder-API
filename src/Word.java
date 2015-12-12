@@ -22,7 +22,7 @@ public class Word implements Serializable{
 		
 	}
 	
-	public void addWord(int index, double rhymePercentile){
+	public void addWordThisRhymesWith(int index, double rhymePercentile){
 		
 		
 		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);

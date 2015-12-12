@@ -10,20 +10,19 @@ public class RhymeDictionaryTrie implements Trie {
 	
 	public boolean addWord(Word word) {
 		
-		/*if (wordString==null || wordString.isEmpty()) {
+		if (word==null || word.getWordName().isEmpty()) {
             return false;
         }
-        wordString = wordString.toLowerCase();
-        char[] wordCharArr = wordString.toCharArray();
-        TrieNode tempRoot = trieRoot;
+        
+        char[] wordCharArr = word.getWordName().toCharArray();
+        RhymeDictionaryTrieNode tempRoot = trieRoot;
         for (char charValue : wordCharArr) {
-            tempRoot.addChild(charValue);
+            tempRoot.addChild(word, charValue);
             tempRoot = tempRoot.getChild(charValue);
         }
         tempRoot.setFinalChar(true);
-        return true;*/
+        return true;
 		
-		return false;
 	}
 
 	public boolean removeWord(Word word) {
@@ -39,6 +38,15 @@ public class RhymeDictionaryTrie implements Trie {
 	public char[] getNextCharacters(String prefixString) {
 		
 		return null;
+	}
+	
+	@Override
+	public String toString(){
+		
+		String string = trieRoot.getChild('a').getChild('c').toString();
+		
+		return string;
+		
 	}
 
 }
