@@ -1,6 +1,11 @@
+import java.io.Serializable;
 
-public class RhymeDictionaryTrie implements Trie {
+public class RhymeDictionaryTrie implements Trie, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected RhymeDictionaryTrieNode trieRoot;
     public RhymeDictionaryTrie() {
     	
@@ -11,15 +16,22 @@ public class RhymeDictionaryTrie implements Trie {
 	public boolean addWord(Word word) {
 		
 		if (word==null || word.getWordName().isEmpty()) {
+			
             return false;
+            
         }
         
         char[] wordCharArr = word.getWordName().toCharArray();
         RhymeDictionaryTrieNode tempRoot = trieRoot;
+        
         for (char charValue : wordCharArr) {
-            tempRoot.addChild(word, charValue);
+        	
+            tempRoot.addChild(charValue);
             tempRoot = tempRoot.getChild(charValue);
+            
         }
+        
+        tempRoot.setWord(word);
         tempRoot.setFinalChar(true);
         return true;
 		
@@ -43,7 +55,7 @@ public class RhymeDictionaryTrie implements Trie {
 	@Override
 	public String toString(){
 		
-		String string = trieRoot.getChild('a').getChild('c').toString();
+		String string = trieRoot.getChild('a').getChild('c').getChild('a').getChild('e').toString();
 		
 		return string;
 		

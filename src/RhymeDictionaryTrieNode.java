@@ -24,10 +24,11 @@ public class RhymeDictionaryTrieNode {
 	}
 
 	// this should be called by addChild only
-	private RhymeDictionaryTrieNode(Word word, char charValue) {
-		this.setWord(word);
+	private RhymeDictionaryTrieNode(char charValue) {
+		
 		this.charValue = charValue;
 		childrenMap = null;
+		
 	}
 
 	/**
@@ -36,13 +37,15 @@ public class RhymeDictionaryTrieNode {
 	 * @param charValue
 	 * @return returns true if the add is successful, false if there was already a child with that charValue
 	 */
-	public boolean addChild(Word word, char charValue) {
+	public boolean addChild(char charValue) {
 		// only create children when you're adding first child
 		if (childrenMap == null) {
 			
 			childrenMap = new TreeMap<Character, RhymeDictionaryTrieNode>();
 			
 		}
+		
+		this.setFinalChar(false);
 		
 		Character charValueObject = Character.valueOf(charValue);
 		
@@ -52,7 +55,7 @@ public class RhymeDictionaryTrieNode {
 			
 		}
 		
-		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(word, charValue).setDepth(this.depth + 1));
+		childrenMap.put(charValueObject, new RhymeDictionaryTrieNode(charValue).setDepth(this.depth + 1));
 		
 		//TODO Need to fix this so words aren't added to every child
 		
