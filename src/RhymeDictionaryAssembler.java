@@ -12,7 +12,7 @@ public class RhymeDictionaryAssembler {
 	
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
 	
-	public static ArrayList<Word> anchors = null, anchorWords;
+	public static ArrayList<Word> anchors = null, words;
 	
 	public static void main(String[] args){
 		
@@ -21,11 +21,13 @@ public class RhymeDictionaryAssembler {
 		//find Rhyme Value/Percentile for all Words
 		
 				if(CREATE_DICTIONARY == true){
-					for(int i = 0; i < anchorWords.size(); i++){
+					
+					for(int i = 0; i < words.size(); i++){
 						
 						debugPrint("Anchor Index: " + i);
+						Word currentWord = words.get(i);
 						
-						for(int j = 0; j < anchorWords.size(); j++){
+						for(int j = 0; j < words.size(); j++){
 							
 							debugPrint("Satellite Index: " + j);
 							
@@ -33,56 +35,50 @@ public class RhymeDictionaryAssembler {
 							
 							if(j != i){
 								
-								rhymePercentile = findRhymeValueAndPercentileForWords(anchorWords.get(i), anchorWords.get(j));
+								rhymePercentile = findRhymeValueAndPercentileForWords(words.get(i), words.get(j));
 							
 							}
 							
 							if(rhymePercentile >= 0.4){
 								
-								anchorWords.get(i).addWordThisRhymesWith(j, rhymePercentile);
+								currentWord.addWordThisRhymesWith(j, rhymePercentile);
 								
 							}
 							
 						}
-						System.out.println("done with '" + anchorWords.get(i).getWordName() + "'");
 						
-						for(int k = 0; k < anchorWords.get(i).getWordsThisRhymesWith().size(); k++){
+						//save each word
+						try{
 							
-							debugPrint(anchorWords.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + anchorWords.get(i).getWordsThisRhymesWith().get(k).getY());
-							
-						}
+					         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Google Drive/Rhyme Machine Resources/Words/" + i + ".prhyme");
+					         
+					         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+					         
+					         out.writeObject(currentWord);
+					         
+					         out.close();
+					         
+					         fileOut.close();
+					         
+					         System.out.printf("correctly saved, ");
+					         
+					      }catch(IOException ex)
+					      {
+					          ex.printStackTrace();
+					      }
 						
-						if(i == 9 && SAMPLESIZE == true){
+						currentWord = null;
+						
+						System.out.println("done with '" + words.get(i).getWordName() + "'");
+						
+						for(int k = 0; k < words.get(i).getWordsThisRhymesWith().size(); k++){
 							
-							System.out.println("Number of words this rhymes with: " + anchorWords.get(i).getWordsThisRhymesWith().size());
-							break;
+							debugPrint(words.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + words.get(i).getWordsThisRhymesWith().get(k).getY());
 							
 						}
 						
 					}
 				}
-				
-				/*findRhymeValueAndPercentileForWords(anchorWords.get(61942), anchorWords.get(84486));
-				findRhymeValueAndPercentileForWords(anchorWords.get(20892), anchorWords.get(5751));*/
-				
-				try{
-					
-			         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Desktop/RhymeDictionary.prhyme");
-			         
-			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			         
-			         out.writeObject(anchorWords);
-			         
-			         out.close();
-			         
-			         fileOut.close();
-			         
-			         System.out.printf("done - rhyme dictionary has been created and saved at /Users/thomas/Desktop/RhymeDictionary.prhyme.prhyme");
-			         
-			      }catch(IOException i)
-			      {
-			          i.printStackTrace();
-			      }
 				
 				//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
 		
@@ -226,7 +222,7 @@ public class RhymeDictionaryAssembler {
 		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
 		
 		anchors = anchorWords;
-		RhymeDictionaryAssembler.anchorWords = anchorWords;
+		RhymeDictionaryAssembler.words = anchorWords;
 		
 	}
 

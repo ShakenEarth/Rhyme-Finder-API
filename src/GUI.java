@@ -41,6 +41,8 @@ public class GUI extends JFrame {
 		setSize(400, 400);
 		setVisible(true);
 		
+		RhymeDictionaryAssembler.buildWords();
+		
 	}
 	
 	class FindRhymePercentileListener implements ActionListener{
@@ -84,8 +86,6 @@ public class GUI extends JFrame {
 				
 			}
 			secondStrings.add(wordToAdd2);
-			
-			RhymeDictionaryAssembler.buildWords();
 			
 			ArrayList<Word> firstWords = new ArrayList<Word>(), secondWords = new ArrayList<Word>();
 			
