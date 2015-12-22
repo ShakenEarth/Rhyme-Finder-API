@@ -24,6 +24,8 @@ public class GUI extends JFrame {
 	
 	public GUI(){
 		
+		RhymeDictionaryAssembler.buildWords();
+		
 		setTitle("Find How Well Two Words Rhyme");
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
@@ -40,8 +42,6 @@ public class GUI extends JFrame {
 		add(panel);
 		setSize(400, 400);
 		setVisible(true);
-		
-		RhymeDictionaryAssembler.buildWords();
 		
 	}
 	

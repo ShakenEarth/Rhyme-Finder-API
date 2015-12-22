@@ -13,7 +13,7 @@ public class GUI2 extends JFrame {
 	
 	JTextField firstTextField = new JTextField();
 	
-	JTable wordsThatRhyme = new JTable();
+	JTable wordsThatRhyme = new JTable(new Object[][]{{"hello"}}, new String[]{"h"});
 	
 	JButton findRhymingWords = new JButton("Find Words That Rhyme");
 	
@@ -24,6 +24,8 @@ public class GUI2 extends JFrame {
 	}
 	
 	public GUI2(){
+		
+		RhymeDictionaryAssembler.buildWords();
 		
 		setTitle("Find Rhyming Words");
 		
@@ -39,8 +41,6 @@ public class GUI2 extends JFrame {
 		add(panel);
 		setSize(400, 400);
 		setVisible(true);
-		
-		RhymeDictionaryAssembler.buildWords();
 		
 	}
 	
@@ -112,11 +112,23 @@ public class GUI2 extends JFrame {
 				
 			}
 			
-			for(int i = 0; i < 50; i++){
+			System.out.println("----------------------------------------------");
+			
+			if(word1.getWordsThisRhymesWith().size() >= 50){
 				
-				DefaultTableModel model = (DefaultTableModel) wordsThatRhyme.getModel();
-				Object[] name = new Object[]{RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName()};
-				model.addRow(name);
+				for(int i = 0; i < 50; i++){
+					
+					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					
+				}
+				
+			}else{
+				
+				for(int i = 0; i < word1.getWordsThisRhymesWith().size(); i++){
+					
+					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					
+				}
 				
 			}
 			

@@ -20,65 +20,66 @@ public class RhymeDictionaryAssembler {
 		
 		//find Rhyme Value/Percentile for all Words
 		
-				if(CREATE_DICTIONARY == true){
+		if(CREATE_DICTIONARY == true){
+			
+			for(int i = 0; i < words.size(); i++){
+				
+				debugPrint("Anchor Index: " + i);
+				Word currentWord = words.get(i);
+				
+				for(int j = 0; j < words.size(); j++){
 					
-					for(int i = 0; i < words.size(); i++){
+					debugPrint("Satellite Index: " + j);
+					
+					double rhymePercentile = 0.0;
+					
+					if(j != i){
 						
-						debugPrint("Anchor Index: " + i);
-						Word currentWord = words.get(i);
+						rhymePercentile = findRhymeValueAndPercentileForWords(words.get(i), words.get(j));
+					
+					}
+					
+					if(rhymePercentile >= 0.4){
 						
-						for(int j = 0; j < words.size(); j++){
-							
-							debugPrint("Satellite Index: " + j);
-							
-							double rhymePercentile = 0.0;
-							
-							if(j != i){
-								
-								rhymePercentile = findRhymeValueAndPercentileForWords(words.get(i), words.get(j));
-							
-							}
-							
-							if(rhymePercentile >= 0.4){
-								
-								currentWord.addWordThisRhymesWith(j, rhymePercentile);
-								
-							}
-							
-						}
-						
-						//save each word
-						try{
-							
-					         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Google Drive/Rhyme Machine Resources/Words/" + i + ".prhyme");
-					         
-					         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-					         
-					         out.writeObject(currentWord);
-					         
-					         out.close();
-					         
-					         fileOut.close();
-					         
-					         System.out.printf("correctly saved, ");
-					         
-					      }catch(IOException ex)
-					      {
-					          ex.printStackTrace();
-					      }
-						
-						currentWord = null;
-						
-						System.out.println("done with '" + words.get(i).getWordName() + "'");
-						
-						for(int k = 0; k < words.get(i).getWordsThisRhymesWith().size(); k++){
-							
-							debugPrint(words.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + words.get(i).getWordsThisRhymesWith().get(k).getY());
-							
-						}
+						currentWord.addWordThisRhymesWith(j, rhymePercentile);
 						
 					}
+					
 				}
+				
+				//save each word
+				try{
+					
+			         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Google Drive/Rhyme Machine Resources/Words/" + i + ".prhyme");
+			         
+			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			         
+			         out.writeObject(currentWord);
+			         
+			         out.close();
+			         
+			         fileOut.close();
+			         
+			         System.out.printf("correctly saved, ");
+			         
+			      }catch(IOException ex)
+			      {
+			          ex.printStackTrace();
+			      }
+				
+				currentWord = null;
+				
+				System.out.println("done with '" + words.get(i).getWordName() + "'");
+				
+				for(int k = 0; k < words.get(i).getWordsThisRhymesWith().size(); k++){
+					
+					debugPrint(words.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + words.get(i).getWordsThisRhymesWith().get(k).getY());
+					
+				}
+				
+			}
+			
+		}
 				
 				//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
 		
@@ -295,6 +296,8 @@ public class RhymeDictionaryAssembler {
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 		ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
 		
+		int pastLayer = 0;
+		
 		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
 			if(firstSearch == true){
@@ -332,12 +335,12 @@ public class RhymeDictionaryAssembler {
 				
 			}else{
 				
-				for(int n = 0; n < layers.get(s-1).getNodes().size(); n++){
+				for(int n = 0; n < layers.get(pastLayer).getNodes().size(); n++){
 					//loop for each node in the previous layer
 					
-					debugPrint("Layer: " + (s-1) + ", " + "Node: " + n);
+					debugPrint("Layer: " + (pastLayer) + ", " + "Node: " + n);
 					
-					Node nodeBeingExamined = layers.get(s-1).getNodes().get(n);
+					Node nodeBeingExamined = layers.get(pastLayer).getNodes().get(n);
 					
 					for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
 						//loop for the index sets in the node being examined
@@ -378,6 +381,8 @@ public class RhymeDictionaryAssembler {
 				
 				layers.add(new Layer(nodesForThisLayer));
 				nodesForThisLayer = new ArrayList<Node>();
+				
+				pastLayer = pastLayer + 1;
 				
 			}
 			
