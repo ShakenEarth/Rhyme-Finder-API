@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Phoneme implements Serializable {
 	
-	private boolean isAVowelPhoneme ;
+	private boolean isAVowelPhoneme;
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
