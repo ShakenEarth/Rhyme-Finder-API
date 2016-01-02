@@ -91,31 +91,13 @@ public class GUI extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
-					
-					if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(firstStrings.get(w))){
-						
-						firstWords.add(RhymeDictionaryAssembler.anchors.get(i));
-						break;
-						
-					}
-					
-				}
+				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
 				
 			}
 			
 			for(int w = 0; w < secondStrings.size(); w++){
 				
-				for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
-					
-					if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(secondStrings.get(w))){
-						
-						secondWords.add(RhymeDictionaryAssembler.anchors.get(i));
-						break;
-						
-					}
-					
-				}
+				secondWords.add(RhymeDictionaryAssembler.trie.getWord(secondStrings.get(w)));
 				
 			}
 			

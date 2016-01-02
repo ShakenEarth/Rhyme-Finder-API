@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class RhymeDictionaryTrie implements Trie, Serializable {
 
@@ -36,6 +38,49 @@ public class RhymeDictionaryTrie implements Trie, Serializable {
         return true;
 		
 	}
+	
+	public Word getWord(String wordName){
+		
+		Word word = null;
+		RhymeDictionaryTrieNode currentNode = trieRoot;
+		
+		for(int i = 0; i < wordName.length(); i++){
+			
+			char current = wordName.charAt(i);
+			ArrayList<RhymeDictionaryTrieNode> children = new ArrayList<RhymeDictionaryTrieNode>(currentNode.getChildrenNodes());
+			boolean foundChar = false;
+			
+			for(int j = 0; j < children.size(); j++){
+				
+				foundChar = false;
+				
+				RhymeDictionaryTrieNode child = children.get(j);
+				Character childChar = child.getCharValue();
+				
+				if(childChar.equals(current)){
+					
+					currentNode = child;
+					foundChar = true;
+					break;
+					
+				}
+				
+			}
+			
+			if(foundChar == false){
+				
+				break;
+				
+			}
+			
+			
+		}
+		
+		word = currentNode.getWord();
+		
+		return word;
+		
+	}
 
 	public boolean removeWord(Word word) {
 		
@@ -55,7 +100,7 @@ public class RhymeDictionaryTrie implements Trie, Serializable {
 	@Override
 	public String toString(){
 		
-		String string = trieRoot.getChild('a').getChild('c').getChild('a').getChild('e').toString();
+		String string = trieRoot.getChild('a').getChild('r').getChild('e').toString();
 		
 		return string;
 		

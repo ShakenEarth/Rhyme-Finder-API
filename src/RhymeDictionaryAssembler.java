@@ -13,6 +13,7 @@ public class RhymeDictionaryAssembler {
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
 	
 	public static ArrayList<Word> anchors = null, words;
+	static RhymeDictionaryTrie trie = null;
 	
 	public static void main(String[] args){
 		
@@ -224,6 +225,16 @@ public class RhymeDictionaryAssembler {
 		
 		anchors = anchorWords;
 		RhymeDictionaryAssembler.words = anchorWords;
+		
+		trie = new RhymeDictionaryTrie();
+		
+		for(int i = 0; i < anchors.size(); i++){
+			
+			trie.addWord(anchors.get(i));
+			
+		}
+		
+		System.out.println(trie);
 		
 	}
 

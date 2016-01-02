@@ -80,8 +80,8 @@ public class Prototype extends JFrame {
 			ArrayList<Word> firstWords = new ArrayList<Word>(), secondWords = new ArrayList<Word>();
 			
 			for(int w = 0; w < firstStrings.size(); w++){
-				
-				for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
+				//this whole following loop needs to be taken out to deal with tries
+				/*for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
 					
 					if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(firstStrings.get(w))){
 						
@@ -89,8 +89,10 @@ public class Prototype extends JFrame {
 						break;
 						
 					}
-					
-				}
+				
+				}*/
+				
+				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
 				
 			}
 			
