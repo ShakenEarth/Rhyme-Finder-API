@@ -104,7 +104,7 @@ public class RhymeDictionaryAssembler {
 		
 		}
 		
-		//2
+		//2 - Sets up resources for dictionary
 		//ArrayList for the word names
 		ArrayList<String> wordNames = new ArrayList<String>();
 		
@@ -155,16 +155,13 @@ public class RhymeDictionaryAssembler {
 				
 				char charBeingExamined = lineBeingExamined.charAt(k);
 				//if the character is a letter
-				if(Character.isLetter(charBeingExamined)
-						/*this didn't work for whatever reason:
-						 * charBeingExamined != ' ' || Character.isDigit(charBeingExamined) == false*/){ 
+				if(Character.isLetter(charBeingExamined)){ 
 					
 					phonemeName = phonemeName + charBeingExamined;
 					//debugPrint(phonemeName);
 					
 				}else if(Character.isDigit(charBeingExamined)){
-					//IF THERE IS A CONSONANT BEFORE A VOWEL IT'S MAKING THE VOWEL ISAVOWEL FALSE for some reason
-					//it's somewhere around here
+					
 					int stress = Character.getNumericValue(charBeingExamined);
 					phoneme.setStress(stress);
 					
@@ -190,38 +187,17 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		
-		/*for(int h = 0; h < wordNames.size(); h++){
-			
-			debugPrint(wordNames.get(h));
-			ArrayList<Phoneme> listSample = listsOfPhonemesForWords.get(h);
-			
-			for(int l = 0; l < listSample.size(); l++){
-				
-				debugPrint(listSample.get(l).getPhoneme());
-				
-			}
-			
-		}*/
-		
-		//3
+		//3 - builds dictionary
 		ArrayList<Word> anchorWords = new ArrayList<Word>();
 		
 		for(int f = 0; f < wordNames.size(); f++){
-			
+			//TODO add something to deal with alternative pronunciations of words
 			anchorWords.add(new Word((wordNames.get(f)).toLowerCase(), listsOfPhonemesForWords.get(f)));
 			
 		}
 		
-		/*for(int q = 0; q < wordNames.size(); q++){
-			
-			debugPrint("Word Name (Anchor): " + anchorWords.get(q).getWordName());
-			debugPrint("Phonemes (Anchor):");
-			anchorWords.get(q).printListOfPhonemes();
-			
-		}
-		
-		debugPrint(anchorWords.get(20).getWordName()); //prints out "aardvarks"*/
+		wordNames = null;
+		listsOfPhonemesForWords = null;
 		
 		anchors = anchorWords;
 		RhymeDictionaryAssembler.words = anchorWords;
@@ -234,7 +210,9 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
-		System.out.println(trie);
+		anchors = null;
+		
+		System.out.println(trie.trieRoot);
 		
 	}
 

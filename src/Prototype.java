@@ -14,12 +14,14 @@ import javax.swing.table.DefaultTableModel;
 
 public class Prototype extends JFrame {
 	JPanel panel = new JPanel();
+	JPanel panel2 = new JPanel();
 	
 	JLabel instructionsLabel = new JLabel("Enter the text of your piece below:");
 	
 	JTextArea textArea = new JTextArea();
+	JTextField findRhymesFor = new JTextField();
 	
-	JTable wordsThatRhyme = new JTable(new Object[][]{{"hello"}}, new String[]{"h"});
+	JTextArea wordsThatRhyme = new JTextArea(" ");
 	
 	JButton findRhymingWords = new JButton("Find Words That Rhyme"), saveButton = new JButton("Save Poem"), openButton = new JButton("Open Poem");
 	
@@ -32,6 +34,10 @@ public class Prototype extends JFrame {
 	public Prototype(){
 		
 		RhymeDictionaryAssembler.buildWords();
+		wordsThatRhyme.setEditable(false);
+		JFrame frame = new JFrame();
+		frame.setSize(500, 600);
+		frame.setVisible(true);
 		
 		setTitle("Find Rhyming Words");
 		
@@ -41,12 +47,16 @@ public class Prototype extends JFrame {
 		saveButton.addActionListener(new SaveTextListener());
 		openButton.addActionListener(new OpenTextListener());
 		
+		panel2.add(wordsThatRhyme);
+		
 		panel.add(instructionsLabel);
 		panel.add(textArea);
-		panel.add(wordsThatRhyme);
+		panel.add(findRhymesFor);
 		panel.add(findRhymingWords);
 		panel.add(saveButton);
 		panel.add(openButton);
+		
+		frame.add(panel2);
 		
 		add(panel);
 		setSize(600, 400);
@@ -58,7 +68,7 @@ public class Prototype extends JFrame {
 		
 		public void actionPerformed(ActionEvent e) {
 			
-			String string1 = textArea.getText();
+			String string1 = findRhymesFor.getText();
 			ArrayList<String> firstStrings = new ArrayList<String>();
 			String wordToAdd1 = "";
 			for(int i = 0; i < string1.length(); i++){
@@ -80,17 +90,6 @@ public class Prototype extends JFrame {
 			ArrayList<Word> firstWords = new ArrayList<Word>(), secondWords = new ArrayList<Word>();
 			
 			for(int w = 0; w < firstStrings.size(); w++){
-				//this whole following loop needs to be taken out to deal with tries
-				/*for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
-					
-					if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(firstStrings.get(w))){
-						
-						firstWords.add(RhymeDictionaryAssembler.anchors.get(i));
-						break;
-						
-					}
-				
-				}*/
 				
 				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
 				
@@ -124,13 +123,13 @@ public class Prototype extends JFrame {
 				
 			}
 			
-			System.out.println("----------------------------------------------");
+			wordsThatRhyme.setText("");
 			
 			if(word1.getWordsThisRhymesWith().size() >= 50){
 				
 				for(int i = 0; i < 50; i++){
 					
-					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					wordsThatRhyme.setText(wordsThatRhyme.getText() + RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName() + ", " + word1.getWordsThisRhymesWith().get(i).getY() + "\n");
 					
 				}
 				
@@ -138,7 +137,7 @@ public class Prototype extends JFrame {
 				
 				for(int i = 0; i < word1.getWordsThisRhymesWith().size(); i++){
 					
-					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					wordsThatRhyme.setText(wordsThatRhyme.getText() + RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName() + ", " + word1.getWordsThisRhymesWith().get(i).getY() + "\n");
 					
 				}
 				
