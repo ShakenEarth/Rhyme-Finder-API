@@ -289,6 +289,8 @@ public class RhymeDictionaryAssembler {
 		
 		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
+			double weightTowardsWordEnd = 0.1;
+			
 			//firstSearch
 			if(firstSearch == true){
 				
@@ -297,7 +299,7 @@ public class RhymeDictionaryAssembler {
 				Node startNode = new Node();
 				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 					
-					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
 					if(RVBetweenPhonemes > 0){
 						
@@ -348,7 +350,7 @@ public class RhymeDictionaryAssembler {
 							
 							for(int l = indexToStartAt + 1; l < longerWord.getListOfPhonemes().size(); l++){
 								
-								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l));
+								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
 								if(RVBetweenPhonemes > 0){
 									
@@ -446,6 +448,8 @@ public class RhymeDictionaryAssembler {
 		double rhymeValue = 0.0;
 		
 		Word newWord = null;
+		
+		double weightTowardsWordEnd = 0.1;
 			
 		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false
 				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
@@ -476,7 +480,7 @@ public class RhymeDictionaryAssembler {
 			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
 			
 				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
-						satellite.getListOfPhonemes().get(s));
+						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
 			
 			}
 			
@@ -530,10 +534,12 @@ public class RhymeDictionaryAssembler {
 		double homophonicRhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		
+		double weightTowardsWordEnd = 0.1;
+		
 		for(int i = 0; i < longerWord.getListOfPhonemes().size(); i++){
 			
 			homophonicRhymeValue = homophonicRhymeValue + 
-					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i));
+					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i), true, i*weightTowardsWordEnd);
 			
 		}
 		debugPrint("RV: " + rhymeValue);
@@ -546,7 +552,7 @@ public class RhymeDictionaryAssembler {
 	}
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight){
+	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		debugPrint("			In method findRVBetweenPhonemes");
 		debugPrint("			p1 (" + p1.getPhoneme() +") is a vowel:" + p1.isAVowelPhoneme());
@@ -556,11 +562,11 @@ public class RhymeDictionaryAssembler {
 			debugPrint("			-Both vowels");
 			if(p1.isEqualTo(p2)){
 				debugPrint("			--Equal");
-				return 2.0;
+				return 2.0 + weight;
 				
 			}else{
 				debugPrint("			--Not equal");
-				return 1.0;
+				return 1.0 + weight;
 				
 			}
 			
@@ -568,11 +574,11 @@ public class RhymeDictionaryAssembler {
 			debugPrint("			-Both consonants");
 			if(p1.isEqualTo(p2)){
 				debugPrint("			--Equal");
-				return 1.0;
+				return 1.0 + weight;
 				
 			}else{
 				debugPrint("			--Not equal");
-				return 0.5;
+				return 0.5 + weight;
 				
 			}
 			
