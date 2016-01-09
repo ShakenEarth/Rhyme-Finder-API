@@ -285,10 +285,11 @@ public class RhymeDictionaryAssembler {
 		ArrayList<Layer> layers = new ArrayList<Layer>();
 		ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
 		
-		int pastLayer = 0;
+		int pastLayerNum = 0;
 		
 		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
+			//firstSearch
 			if(firstSearch == true){
 				
 				debugPrint("firstSearch");
@@ -324,12 +325,12 @@ public class RhymeDictionaryAssembler {
 				
 			}else{
 				
-				for(int n = 0; n < layers.get(pastLayer).getNodes().size(); n++){
-					//loop for each node in the previous layer
+				for(int n = 0; n < layers.get(pastLayerNum).getNodes().size(); n++){
+					//loop for each node in the previous layer (aka every group of possibilites found)
 					
-					debugPrint("Layer: " + (pastLayer) + ", " + "Node: " + n);
+					debugPrint("Layer: " + (pastLayerNum) + ", " + "Node: " + n);
 					
-					Node nodeBeingExamined = layers.get(pastLayer).getNodes().get(n);
+					Node nodeBeingExamined = layers.get(pastLayerNum).getNodes().get(n);
 					
 					for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
 						//loop for the index sets in the node being examined
@@ -371,7 +372,7 @@ public class RhymeDictionaryAssembler {
 				layers.add(new Layer(nodesForThisLayer));
 				nodesForThisLayer = new ArrayList<Node>();
 				
-				pastLayer = pastLayer + 1;
+				pastLayerNum = pastLayerNum + 1;
 				
 			}
 			
@@ -446,7 +447,8 @@ public class RhymeDictionaryAssembler {
 		
 		Word newWord = null;
 			
-		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false){
+		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
 			
 			foundConsonantCluster = true;
 			
@@ -456,7 +458,8 @@ public class RhymeDictionaryAssembler {
 			
 			anchorOrSatellite = true;
 				
-		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false){
+		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
 			
 			foundConsonantCluster = true;
 			
@@ -543,7 +546,7 @@ public class RhymeDictionaryAssembler {
 	}
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
+	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight){
 		
 		debugPrint("			In method findRVBetweenPhonemes");
 		debugPrint("			p1 (" + p1.getPhoneme() +") is a vowel:" + p1.isAVowelPhoneme());

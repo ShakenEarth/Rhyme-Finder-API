@@ -1,7 +1,10 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**@author Thomas Lisankie*/
+/**@author Thomas Lisankie
+ * @description Used to store indexes of phonemes in the longer word that have some sort of rhyme value with a phoneme in the shorter word*/
+
+
 
 public class Node implements Serializable{
 	
