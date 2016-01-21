@@ -20,6 +20,16 @@ public class Word implements Serializable{
 		this.setWordName(wordName);
 		setListOfPhonemes(phonemes);
 		
+		for(int i = 0; i < getListOfPhonemes().size(); i++){
+			
+			if(getListOfPhonemes().get(i).isAVowelPhoneme() == true){
+				
+				setNumOfSyllables(getNumOfSyllables() + 1);
+				
+			}
+			
+		}
+		
 	}
 	
 	public void addWordThisRhymesWith(int index, double rhymePercentile){

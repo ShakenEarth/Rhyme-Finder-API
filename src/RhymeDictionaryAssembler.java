@@ -95,9 +95,6 @@ public class RhymeDictionaryAssembler {
 		try{
 			linesOfDictionary = Files.readAllLines(Paths.get("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt"), Charset.defaultCharset());
 			
-		 	/*for (String line : linesOfDictionary) {
-			 	debugPrint(line);
-         	}*/
 		}catch(Exception e){
 			
 			debugPrint("there was an exception");
@@ -202,6 +199,7 @@ public class RhymeDictionaryAssembler {
 		anchors = anchorWords;
 		RhymeDictionaryAssembler.words = anchorWords;
 		
+		//now put this list of Words into a trie
 		trie = new RhymeDictionaryTrie();
 		
 		for(int i = 0; i < anchors.size(); i++){
