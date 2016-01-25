@@ -1,3 +1,6 @@
+
+package com.shakenearth.rhyme_essentials;
+
 import java.io.Serializable;
 
 

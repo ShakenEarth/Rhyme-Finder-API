@@ -1,5 +1,7 @@
 
 
+package com.shakenearth.rhyme_essentials;
+
 /**
  * Interface for Trie - defines the basic functions that a Trie should have
  * 

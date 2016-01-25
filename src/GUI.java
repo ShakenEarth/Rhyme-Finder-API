@@ -2,6 +2,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import com.shakenearth.rhyme_essentials.*;
 
 import javax.swing.*;
 
@@ -91,13 +92,13 @@ public class GUI extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
+				firstWords.add(RhymeDictionaryAssembler.getTrie().getWord(firstStrings.get(w)));
 				
 			}
 			
 			for(int w = 0; w < secondStrings.size(); w++){
 				
-				secondWords.add(RhymeDictionaryAssembler.trie.getWord(secondStrings.get(w)));
+				secondWords.add(RhymeDictionaryAssembler.getTrie().getWord(secondStrings.get(w)));
 				
 			}
 			

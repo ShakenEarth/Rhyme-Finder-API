@@ -1,4 +1,5 @@
 import java.awt.event.ActionEvent;
+import com.shakenearth.rhyme_essentials.*;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
@@ -91,7 +92,7 @@ public class Prototype extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
+				firstWords.add(RhymeDictionaryAssembler.getTrie().getWord(firstStrings.get(w)));
 				
 			}
 			

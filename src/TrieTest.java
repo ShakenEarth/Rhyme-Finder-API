@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import com.shakenearth.rhyme_essentials.*;
 
 public class TrieTest {
 

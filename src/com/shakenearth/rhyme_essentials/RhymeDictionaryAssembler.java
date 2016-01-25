@@ -1,4 +1,6 @@
 
+package com.shakenearth.rhyme_essentials;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,7 +15,7 @@ public class RhymeDictionaryAssembler {
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
 	
 	public static ArrayList<Word> anchors = null, words;
-	static RhymeDictionaryTrie trie = null;
+	private static RhymeDictionaryTrie trie = null;
 	
 	public static void main(String[] args){
 		
@@ -200,17 +202,17 @@ public class RhymeDictionaryAssembler {
 		RhymeDictionaryAssembler.words = anchorWords;
 		
 		//now put this list of Words into a trie
-		trie = new RhymeDictionaryTrie();
+		setTrie(new RhymeDictionaryTrie());
 		
 		for(int i = 0; i < anchors.size(); i++){
 			
-			trie.addWord(anchors.get(i));
+			getTrie().addWord(anchors.get(i));
 			
 		}
 		
 		anchors = null;
 		
-		System.out.println(trie.trieRoot);
+		System.out.println(getTrie().trieRoot);
 		
 	}
 
@@ -639,6 +641,14 @@ public class RhymeDictionaryAssembler {
 			
 		}
 		
+	}
+
+	public static RhymeDictionaryTrie getTrie() {
+		return trie;
+	}
+
+	public static void setTrie(RhymeDictionaryTrie trie) {
+		RhymeDictionaryAssembler.trie = trie;
 	}
 	
 }

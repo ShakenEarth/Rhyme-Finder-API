@@ -1,9 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import com.shakenearth.rhyme_essentials.*;
 
 
 public class GUI2 extends JFrame {
@@ -71,7 +71,7 @@ public class GUI2 extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				firstWords.add(RhymeDictionaryAssembler.trie.getWord(firstStrings.get(w)));
+				firstWords.add(RhymeDictionaryAssembler.getTrie().getWord(firstStrings.get(w)));
 				
 			}
 			
