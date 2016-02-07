@@ -107,7 +107,7 @@ public class RhymeDictionaryAssembler {
 		//ArrayList for the word names
 		ArrayList<String> wordNames = new ArrayList<String>();
 		
-		/**ArrayList of lists of phonemes that compose a word**/
+		/*ArrayList of lists of phonemes that compose a word*/
 		ArrayList<ArrayList<Phoneme>> listsOfPhonemesForWords = new ArrayList<ArrayList<Phoneme>>();
 		String word = "";
 		
