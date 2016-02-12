@@ -212,7 +212,7 @@ public class RhymeDictionaryAssembler {
 		
 		anchors = null;
 		
-		System.out.println(getTrie().trieRoot);
+		//System.out.println(getTrie().trieRoot);
 		
 	}
 
@@ -521,9 +521,6 @@ public class RhymeDictionaryAssembler {
 			}
 			
 		}
-		
-		
-		
 		
 	}
 	
