@@ -88,7 +88,7 @@ public class RhymeDictionaryAssembler {
 		
 	}
 	
-	public static void buildWords(){
+	public static void buildWords(){ //builds the list of Word objects that can be compared to one another
 		
 		ArrayList<Phoneme> phonemes = null;
 		//1
