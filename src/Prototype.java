@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-
 public class Prototype extends JFrame {
 	JPanel panel = new JPanel();
 	JPanel panel2 = new JPanel();
