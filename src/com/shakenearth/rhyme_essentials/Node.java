@@ -11,43 +11,43 @@ import java.util.ArrayList;
 
 public class Node implements Serializable{
 	
-	private ArrayList<IndexSet> indexSets = new ArrayList<IndexSet>();
-	private IndexSet parentIndexSet = null;
-	private IndexSet bestSet = null;
+	private ArrayList<RVIndexPair> indexSets = new ArrayList<RVIndexPair>();
+	private RVIndexPair parentIndexSet = null;
+	private RVIndexPair bestSet = null;
 	
-	public void addIndexSet(IndexSet set){
+	public void addIndexSet(RVIndexPair set){
 		
 		indexSets.add(set);
 		
 	}
 
-	public ArrayList<IndexSet> getIndexSets() {
+	public ArrayList<RVIndexPair> getIndexSets() {
 		return indexSets;
 	}
 
-	public void setIndexSets(ArrayList<IndexSet> indexSets) {
+	public void setIndexSets(ArrayList<RVIndexPair> indexSets) {
 		this.indexSets = indexSets;
 	}
 
-	public IndexSet getParentIndexSet() {
+	public RVIndexPair getParentIndexSet() {
 		return parentIndexSet;
 	}
 
-	public void setParentIndexSet(IndexSet parentIndexSet) {
+	public void setParentIndexSet(RVIndexPair parentIndexSet) {
 		this.parentIndexSet = parentIndexSet;
 	}
 	
-	public IndexSet getBestSet() {
+	public RVIndexPair getBestSet() {
 		return bestSet;
 	}
 
-	public void setBestSet(IndexSet bestSet) {
+	public void setBestSet(RVIndexPair bestSet) {
 		this.bestSet = bestSet;
 	}
 
 	public void findBestIndexSetAndSendItUp(){
 		
-		IndexSet bestSet = null;
+		RVIndexPair bestSet = null;
 		
 		//finds which index set has highest RV
 		
@@ -75,10 +75,10 @@ public class Node implements Serializable{
 		
 		if(parentIndexSet != null){
 			
-			RhymeDictionaryAssembler.debugPrint(bestSet.getIndexes().size()-1);
-			RhymeDictionaryAssembler.debugPrint("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
-			RhymeDictionaryAssembler.debugPrint("second " + bestSet.getRhymeValueForSet());
-			RhymeDictionaryAssembler.debugPrint(parentIndexSet.getIndexes());
+			RhymeFinder.debugPrint(bestSet.getIndexes().size()-1);
+			RhymeFinder.debugPrint("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			RhymeFinder.debugPrint("second " + bestSet.getRhymeValueForSet());
+			RhymeFinder.debugPrint(parentIndexSet.getIndexes());
 			
 			parentIndexSet.addIndexes(bestSet.getIndexes(), bestSet.getRhymeValueForSet());
 			

@@ -25,7 +25,7 @@ public class GUI2 extends JFrame {
 	
 	public GUI2(){
 		
-		RhymeDictionaryAssembler.buildWords();
+		RhymeFinder.buildWords();
 		
 		setTitle("Find Rhyming Words");
 		
@@ -71,7 +71,7 @@ public class GUI2 extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				firstWords.add(RhymeDictionaryAssembler.getTrie().getWord(firstStrings.get(w)));
+				firstWords.add(RhymeFinder.getTrie().getWord(firstStrings.get(w)));
 				
 			}
 			
@@ -89,11 +89,11 @@ public class GUI2 extends JFrame {
 			}
 			Word word1 = new Word(string1, firstListOfPhonemes);
 			
-			for(int j = 0; j < RhymeDictionaryAssembler.words.size(); j++){
+			for(int j = 0; j < RhymeFinder.words.size(); j++){
 				
 				double rhymePercentile = 0.0;
 				
-				rhymePercentile = RhymeDictionaryAssembler.findRhymeValueAndPercentileForWords(word1, RhymeDictionaryAssembler.words.get(j));
+				rhymePercentile = RhymeFinder.findRhymeValueAndPercentileForWords(word1, RhymeFinder.words.get(j));
 				
 				if(rhymePercentile >= 0.4){
 					
@@ -109,7 +109,7 @@ public class GUI2 extends JFrame {
 				
 				for(int i = 0; i < 50; i++){
 					
-					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					System.out.println(RhymeFinder.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
 					
 				}
 				
@@ -117,7 +117,7 @@ public class GUI2 extends JFrame {
 				
 				for(int i = 0; i < word1.getWordsThisRhymesWith().size(); i++){
 					
-					System.out.println(RhymeDictionaryAssembler.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
+					System.out.println(RhymeFinder.words.get((int) word1.getWordsThisRhymesWith().get(i).getX()).getWordName());
 					
 				}
 				

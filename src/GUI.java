@@ -25,7 +25,7 @@ public class GUI extends JFrame {
 	
 	public GUI(){
 		
-		RhymeDictionaryAssembler.buildWords();
+		RhymeFinder.buildWords();
 		
 		setTitle("Find How Well Two Words Rhyme");
 		
@@ -92,13 +92,13 @@ public class GUI extends JFrame {
 			
 			for(int w = 0; w < firstStrings.size(); w++){
 				
-				firstWords.add(RhymeDictionaryAssembler.getTrie().getWord(firstStrings.get(w)));
+				firstWords.add(RhymeFinder.getTrie().getWord(firstStrings.get(w)));
 				
 			}
 			
 			for(int w = 0; w < secondStrings.size(); w++){
 				
-				secondWords.add(RhymeDictionaryAssembler.getTrie().getWord(secondStrings.get(w)));
+				secondWords.add(RhymeFinder.getTrie().getWord(secondStrings.get(w)));
 				
 			}
 			
@@ -127,7 +127,7 @@ public class GUI extends JFrame {
 			}
 			Word word2 = new Word(string2, secondListOfPhonemes);
 			
-			double rhymePercentile = RhymeDictionaryAssembler.findRhymeValueAndPercentileForWords(word1, word2);
+			double rhymePercentile = RhymeFinder.findRhymeValueAndPercentileForWords(word1, word2);
 			
 			if(rhymePercentile > 0.85){
 				

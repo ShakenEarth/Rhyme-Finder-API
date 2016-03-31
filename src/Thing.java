@@ -1,11 +1,11 @@
-import com.shakenearth.rhyme_essentials.RhymeDictionaryAssembler;
+import com.shakenearth.rhyme_essentials.RhymeFinder;
 
 
 public class Thing {
 
 	public static void main(String[] args){
 		
-		RhymeDictionaryAssembler.buildWords();
+		RhymeFinder.buildWords();
 		System.out.print("done");
 		
 	}

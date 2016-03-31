@@ -10,7 +10,7 @@ import java.util.*;
 
 /**@author Thomas Lisankie*/
 
-public class RhymeDictionaryAssembler {
+public class RhymeFinder {
 	
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
 	
@@ -199,7 +199,7 @@ public class RhymeDictionaryAssembler {
 		listsOfPhonemesForWords = null;
 		
 		anchors = anchorWords;
-		RhymeDictionaryAssembler.words = anchorWords;
+		RhymeFinder.words = anchorWords;
 		
 		//now put this list of Words into a trie
 		setTrie(new RhymeDictionaryTrie());
@@ -305,7 +305,7 @@ public class RhymeDictionaryAssembler {
 						
 						foundStartingIndex = true;
 						
-						IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+						RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 						
 						startNode.addIndexSet(indexSet);
 						
@@ -337,7 +337,7 @@ public class RhymeDictionaryAssembler {
 					for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
 						//loop for the index sets in the node being examined
 						
-						IndexSet setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
+						RVIndexPair setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
 						Node childNode = new Node(); //node to be attached to the index set being examined.
 						int indexToStartAt = setBeingExamined.getIndexes().get(0);
 						debugPrint("setBeingExamined: " + setBeingExamined.toString());
@@ -354,7 +354,7 @@ public class RhymeDictionaryAssembler {
 								
 								if(RVBetweenPhonemes > 0){
 									
-									IndexSet indexSet = new IndexSet(l, RVBetweenPhonemes);
+									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 									childNode.addIndexSet(indexSet);
 									
 								}
@@ -382,7 +382,7 @@ public class RhymeDictionaryAssembler {
 		
 		//find best path
 		
-		IndexSet bestSet = null;
+		RVIndexPair bestSet = null;
 		Node nodeBeingExamined = null;
 		
 		for(int l = layers.size()-1; l >= 0; l--){
@@ -587,7 +587,7 @@ public class RhymeDictionaryAssembler {
 		
 	}
 	
-	public static double findDeductionForIndexSet(IndexSet bestSet, Word longerWord){
+	public static double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
 		
 		double deduction = 0.0;
 		debugPrint(bestSet.toString());
@@ -645,7 +645,7 @@ public class RhymeDictionaryAssembler {
 	}
 
 	public static void setTrie(RhymeDictionaryTrie trie) {
-		RhymeDictionaryAssembler.trie = trie;
+		RhymeFinder.trie = trie;
 	}
 	
 }

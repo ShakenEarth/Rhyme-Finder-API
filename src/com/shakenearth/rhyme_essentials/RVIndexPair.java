@@ -6,13 +6,13 @@ import java.util.*;
 
 /**@author Thomas Lisankie*/
 
-public class IndexSet implements Serializable {
+public class RVIndexPair implements Serializable {
 	
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();
 	private double rhymeValueForSet = 0.0;
 	private Node childNode;
 	
-	public IndexSet(int index, double RVBetweenPhonemes){
+	public RVIndexPair(int index, double RVBetweenPhonemes){
 		
 		this.getIndexes().add(index);
 		this.setRhymeValueForSet(getRhymeValueForSet() + RVBetweenPhonemes);

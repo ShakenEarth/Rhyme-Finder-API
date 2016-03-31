@@ -48,17 +48,17 @@ public class FindRPBetweenWords {
 		}
 		secondStrings.add(wordToAdd2);
 		
-		RhymeDictionaryAssembler.buildWords();
+		RhymeFinder.buildWords();
 		
 		ArrayList<Word> firstWords = new ArrayList<Word>(), secondWords = new ArrayList<Word>();
 		
 		for(int w = 0; w < firstStrings.size(); w++){
 			
-			for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
+			for(int i = 0; i < RhymeFinder.anchors.size(); i++){
 				
-				if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(firstStrings.get(w))){
+				if(RhymeFinder.anchors.get(i).getWordName().equalsIgnoreCase(firstStrings.get(w))){
 					
-					firstWords.add(RhymeDictionaryAssembler.anchors.get(i));
+					firstWords.add(RhymeFinder.anchors.get(i));
 					break;
 					
 				}
@@ -69,11 +69,11 @@ public class FindRPBetweenWords {
 		
 		for(int w = 0; w < secondStrings.size(); w++){
 			
-			for(int i = 0; i < RhymeDictionaryAssembler.anchors.size(); i++){
+			for(int i = 0; i < RhymeFinder.anchors.size(); i++){
 				
-				if(RhymeDictionaryAssembler.anchors.get(i).getWordName().equalsIgnoreCase(secondStrings.get(w))){
+				if(RhymeFinder.anchors.get(i).getWordName().equalsIgnoreCase(secondStrings.get(w))){
 					
-					secondWords.add(RhymeDictionaryAssembler.anchors.get(i));
+					secondWords.add(RhymeFinder.anchors.get(i));
 					break;
 					
 				}
@@ -107,7 +107,7 @@ public class FindRPBetweenWords {
 		}
 		Word word2 = new Word(string2, secondListOfPhonemes);
 		
-		System.out.println(RhymeDictionaryAssembler.findRhymeValueAndPercentileForWords(word1, word2));
+		System.out.println(RhymeFinder.findRhymeValueAndPercentileForWords(word1, word2));
 		
 	}
 
