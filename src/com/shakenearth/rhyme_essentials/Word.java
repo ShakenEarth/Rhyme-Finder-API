@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Class for representing words. This includes a word's spelling and its phonemic translation (sequence of phonemes).
+ * Class for representing words. This includes a word's spelling, a list of the Phonemes that compose it, and the number of syllables 
+ * that make up the word.
  * @author Thomas Lisankie
  */
-
 public class Word implements Serializable{
 	
 	private String wordName = "";
@@ -17,6 +17,9 @@ public class Word implements Serializable{
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	private int numOfSyllables = 0;
 	
+	/**Creates a new Word object using the spelling of the word itself as well as a list of the Phonemes that compose it.
+	 * @param wordName The spelling of the word
+	 * @param phonemes A list of the Phonemes that compose the word*/
 	public Word(String wordName, List<Phoneme> phonemes) {
 		
 		//RhymeDictionaryAssembler.debugPrint("INITIAL SIZE: " + wordsThisRhymesWith.size());

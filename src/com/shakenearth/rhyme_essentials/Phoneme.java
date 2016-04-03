@@ -5,7 +5,8 @@ import java.io.Serializable;
 
 
 /**
- * Class for representing phonemes
+ * Class for representing phonemes. Includes a text representation of the phoneme itself, whether or not the phoneme is a vowel phoneme, 
+ * and the stress placed during the pronunciation of the phoneme (-1 if phoneme is a consonant).
  * @author Thomas Lisankie
  */
 public class Phoneme implements Serializable {
@@ -18,6 +19,9 @@ public class Phoneme implements Serializable {
 		return phoneme;
 	}
 
+	/**
+	 * Sets the text representation of the phoneme and determines whether or not the phoneme is a vowel.
+	 */
 	public void setPhoneme(String phoneme) {
 		this.phoneme = phoneme;
 		
