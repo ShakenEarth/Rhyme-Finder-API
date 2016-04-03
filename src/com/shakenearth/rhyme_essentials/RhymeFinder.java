@@ -8,8 +8,10 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
 
-/**@author Thomas Lisankie*/
-
+/**
+ * This class contains a set of methods to find how well two words rhyme with one another.
+ *@author Thomas Lisankie
+ */
 public class RhymeFinder {
 	
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false;
@@ -17,13 +19,20 @@ public class RhymeFinder {
 	public static ArrayList<Word> anchors = null, words;
 	private static RhymeDictionaryTrie trie = null;
 	
+	/**
+	 * Creates a new RhymeFinder object.
+	 *@param pathToDict The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.
+	 */
 	public RhymeFinder(String pathToDict){
 		
 		buildWords(pathToDict);
 		
 	}
 	
-	public void buildWords(String path){ //builds the list of Word objects that can be compared to one another
+	/**
+	 * builds the list of Word objects that can be compared to one another.
+	 * @param path The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.*/
+	public void buildWords(String path){ 
 		
 		ArrayList<Phoneme> phonemes = null;
 		//1
@@ -152,8 +161,8 @@ public class RhymeFinder {
 	}
 
 	/**This method goes through the entire process of finding how well two words rhyme with one another.
-	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.
-	 * @return */
+	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better the two words rhyme.
+	 * @return Rhyme Percentile between two Words*/
 	public double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
 		//System.out.println("---------------------------------------------");
@@ -180,8 +189,9 @@ public class RhymeFinder {
 		
 	}
 	
-	
-	public double idealRhymeValue(Word anchor, Word satellite){
+	/**This method is called when two words have differing phonemic lengths (contain the same number of phonemes).
+	 * @return Ideal Rhyme Value between two Words*/
+	private double idealRhymeValue(Word anchor, Word satellite){
 		
 		debugPrint("IDEAL RHYME VALUE");
 		
@@ -367,7 +377,9 @@ public class RhymeFinder {
 		
 	}
 	
-	public double regularRhymeValue(Word anchor, Word satellite){
+	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
+	 * @return Regular Rhyme Value between two Words*/
+	private double regularRhymeValue(Word anchor, Word satellite){
 		
 		debugPrint("REGULAR RHYME VALUE");
 		
@@ -459,8 +471,9 @@ public class RhymeFinder {
 	}
 	
 	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
-	 * actual Rhyme Value matches with the homophonic RV*/
-	public double findRhymePercentile(double rhymeValue, Word longerWord){
+	 * actual Rhyme Value matches with the homophonic RV
+	 * @return Rhyme Percentile between two Words*/
+	private double findRhymePercentile(double rhymeValue, Word longerWord){
 		
 		double homophonicRhymeValue = 0.0;
 		double rhymePercentile = 0.0;
@@ -482,8 +495,9 @@ public class RhymeFinder {
 		
 	}
 	
-	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
+	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
+	 * @return The Rhyme Value between two phonemes*/
+	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		debugPrint("			In method findRVBetweenPhonemes");
 		debugPrint("			p1 (" + p1.getPhoneme() +") is a vowel:" + p1.isAVowelPhoneme());
@@ -521,7 +535,10 @@ public class RhymeFinder {
 		
 	}
 	
-	public double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
+	/**To be used with Ideal Rhyme Value. Finds the amount that should be subtracted from the Ideal Rhyme Value based on the number of 
+	 * spaces between phonemes.
+	 * @return The number to subtract from Ideal Rhyme Value*/
+	private double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
 		
 		double deduction = 0.0;
 		debugPrint(bestSet.toString());
@@ -574,10 +591,15 @@ public class RhymeFinder {
 		
 	}
 
+	/**Returns the trie of the CMU Dictionary
+	 * @return A trie of the CMU Dictionary*/
 	public RhymeDictionaryTrie getTrie() {
 		return trie;
 	}
 
+	/**
+	 * Sets this object's trie of the CMU Dictionary
+	 * @param trie a RhymeDictionaryTrie*/
 	public void setTrie(RhymeDictionaryTrie trie) {
 		RhymeFinder.trie = trie;
 	}
