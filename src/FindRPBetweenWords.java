@@ -48,7 +48,7 @@ public class FindRPBetweenWords {
 		}
 		secondStrings.add(wordToAdd2);
 		
-		RhymeFinder.buildWords();
+		RhymeFinder.buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 		
 		ArrayList<Word> firstWords = new ArrayList<Word>(), secondWords = new ArrayList<Word>();
 		

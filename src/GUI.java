@@ -25,7 +25,7 @@ public class GUI extends JFrame {
 	
 	public GUI(){
 		
-		RhymeFinder.buildWords();
+		RhymeFinder.buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 		
 		setTitle("Find How Well Two Words Rhyme");
 		

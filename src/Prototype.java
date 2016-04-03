@@ -33,7 +33,7 @@ public class Prototype extends JFrame {
 	
 	public Prototype(){
 		
-		RhymeFinder.buildWords();
+		RhymeFinder.buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 		wordsThatRhyme.setEditable(false);
 		JFrame frame = new JFrame();
 		frame.setSize(500, 600);

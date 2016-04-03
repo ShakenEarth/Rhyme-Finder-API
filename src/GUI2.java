@@ -25,7 +25,7 @@ public class GUI2 extends JFrame {
 	
 	public GUI2(){
 		
-		RhymeFinder.buildWords();
+		RhymeFinder.buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 		
 		setTitle("Find Rhyming Words");
 		

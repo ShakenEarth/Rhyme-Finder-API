@@ -12,90 +12,25 @@ import java.util.*;
 
 public class RhymeFinder {
 	
-	public final static boolean DEBUGGING = false, SAMPLESIZE = false, CREATE_DICTIONARY = true;
+	public final static boolean DEBUGGING = false, SAMPLESIZE = false;
 	
 	public static ArrayList<Word> anchors = null, words;
 	private static RhymeDictionaryTrie trie = null;
 	
-	public static void main(String[] args){
+	public RhymeFinder(){
 		
-		buildWords();
-		
-		//find Rhyme Value/Percentile for all Words
-		
-		if(CREATE_DICTIONARY == true){
-			
-			for(int i = 0; i < words.size(); i++){
-				
-				debugPrint("Anchor Index: " + i);
-				Word currentWord = words.get(i);
-				
-				for(int j = 0; j < words.size(); j++){
-					
-					debugPrint("Satellite Index: " + j);
-					
-					double rhymePercentile = 0.0;
-					
-					if(j != i){
-						
-						rhymePercentile = findRhymeValueAndPercentileForWords(words.get(i), words.get(j));
-					
-					}
-					
-					if(rhymePercentile >= 0.4){
-						
-						currentWord.addWordThisRhymesWith(j, rhymePercentile);
-						
-					}
-					
-				}
-				
-				//save each word
-				try{
-					
-			         FileOutputStream fileOut = new FileOutputStream("/Users/thomas/Google Drive/Rhyme Machine Resources/Words/" + i + ".prhyme");
-			         
-			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			         
-			         out.writeObject(currentWord);
-			         
-			         out.close();
-			         
-			         fileOut.close();
-			         
-			         System.out.printf("correctly saved, ");
-			         
-			      }catch(IOException ex)
-			      {
-			          ex.printStackTrace();
-			      }
-				
-				currentWord = null;
-				
-				System.out.println("done with '" + words.get(i).getWordName() + "'");
-				
-				for(int k = 0; k < words.get(i).getWordsThisRhymesWith().size(); k++){
-					
-					debugPrint(words.get(i).getWordsThisRhymesWith().get(k).getX() + ", " + words.get(i).getWordsThisRhymesWith().get(k).getY());
-					
-				}
-				
-			}
-			
-		}
-				
-				//now that the rhyme dictionary has been created, it's necessary to organize the words into a tree structure
+		buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 		
 	}
 	
-	public static void buildWords(){ //builds the list of Word objects that can be compared to one another
+	public void buildWords(String path){ //builds the list of Word objects that can be compared to one another
 		
 		ArrayList<Phoneme> phonemes = null;
 		//1
 		List<String> linesOfDictionary = null;
-	//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
+		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
 		try{
-			linesOfDictionary = Files.readAllLines(Paths.get("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt"), Charset.defaultCharset());
+			linesOfDictionary = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
 			
 		}catch(Exception e){
 			
@@ -219,7 +154,7 @@ public class RhymeFinder {
 	/**This method goes through the entire process of finding how well two words rhyme with one another.
 	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better they rhyme.
 	 * @return */
-	public static double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
+	public double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
 		//System.out.println("---------------------------------------------");
 		//System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
@@ -246,8 +181,7 @@ public class RhymeFinder {
 	}
 	
 	
-	
-	public static double idealRhymeValue(Word anchor, Word satellite){
+	public double idealRhymeValue(Word anchor, Word satellite){
 		
 		debugPrint("IDEAL RHYME VALUE");
 		
@@ -433,7 +367,7 @@ public class RhymeFinder {
 		
 	}
 	
-	public static double regularRhymeValue(Word anchor, Word satellite){
+	public double regularRhymeValue(Word anchor, Word satellite){
 		
 		debugPrint("REGULAR RHYME VALUE");
 		
@@ -526,7 +460,7 @@ public class RhymeFinder {
 	
 	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
 	 * actual Rhyme Value matches with the homophonic RV*/
-	public static double findRhymePercentile(double rhymeValue, Word longerWord){
+	public double findRhymePercentile(double rhymeValue, Word longerWord){
 		
 		double homophonicRhymeValue = 0.0;
 		double rhymePercentile = 0.0;
@@ -549,7 +483,7 @@ public class RhymeFinder {
 	}
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.*/
-	public static double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
+	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		debugPrint("			In method findRVBetweenPhonemes");
 		debugPrint("			p1 (" + p1.getPhoneme() +") is a vowel:" + p1.isAVowelPhoneme());
@@ -587,7 +521,7 @@ public class RhymeFinder {
 		
 	}
 	
-	public static double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
+	public double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
 		
 		double deduction = 0.0;
 		debugPrint(bestSet.toString());
@@ -630,7 +564,7 @@ public class RhymeFinder {
 		
 	}
 	
-	public static void debugPrint(Object x){
+	public void debugPrint(Object x){
 		
 		if(DEBUGGING == true){
 			
@@ -640,11 +574,11 @@ public class RhymeFinder {
 		
 	}
 
-	public static RhymeDictionaryTrie getTrie() {
+	public RhymeDictionaryTrie getTrie() {
 		return trie;
 	}
 
-	public static void setTrie(RhymeDictionaryTrie trie) {
+	public void setTrie(RhymeDictionaryTrie trie) {
 		RhymeFinder.trie = trie;
 	}
 	
