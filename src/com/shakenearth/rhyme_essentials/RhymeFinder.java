@@ -17,9 +17,9 @@ public class RhymeFinder {
 	public static ArrayList<Word> anchors = null, words;
 	private static RhymeDictionaryTrie trie = null;
 	
-	public RhymeFinder(){
+	public RhymeFinder(String pathToDict){
 		
-		buildWords("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+		buildWords(pathToDict);
 		
 	}
 	

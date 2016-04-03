@@ -74,8 +74,8 @@ public class Word implements Serializable{
 		
 		for(int i = 0; i < getListOfPhonemes().size(); i++){
 			
-			RhymeFinder.debugPrint(getListOfPhonemes().get(i).getPhoneme() + ", " 
-					+ getListOfPhonemes().get(i).getStress());
+//			RhymeFinder.debugPrint(getListOfPhonemes().get(i).getPhoneme() + ", " 
+//					+ getListOfPhonemes().get(i).getStress());
 			
 		}
 		

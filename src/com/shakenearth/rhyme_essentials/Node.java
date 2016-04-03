@@ -75,10 +75,10 @@ public class Node implements Serializable{
 		
 		if(parentIndexSet != null){
 			
-			RhymeFinder.debugPrint(bestSet.getIndexes().size()-1);
+			/*RhymeFinder.debugPrint(bestSet.getIndexes().size()-1);
 			RhymeFinder.debugPrint("first " + bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
 			RhymeFinder.debugPrint("second " + bestSet.getRhymeValueForSet());
-			RhymeFinder.debugPrint(parentIndexSet.getIndexes());
+			RhymeFinder.debugPrint(parentIndexSet.getIndexes());*/
 			
 			parentIndexSet.addIndexes(bestSet.getIndexes(), bestSet.getRhymeValueForSet());
 			
