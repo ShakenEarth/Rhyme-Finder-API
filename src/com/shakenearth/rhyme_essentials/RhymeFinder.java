@@ -559,11 +559,11 @@ public class RhymeFinder {
 			debugPrint("			-Both vowels");
 			if(p1.isEqualTo(p2)){
 				debugPrint("			--Equal");
-				return 5.0 + weight;
+				return 2.0 + weight;
 				
 			}else{
 				debugPrint("			--Not equal");
-				return 2.5 + weight;
+				return 1.0 + weight;
 				
 			}
 			
