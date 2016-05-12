@@ -175,7 +175,7 @@ public class RhymeFinder {
 			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep the focus on
 			 * the anchor word which is the focus word*/
 			
-			rhymePercentile = regularRhymeValue(anchor, satellite); 
+			rhymePercentile = regularRhymeValue(anchor, satellite);
 			
 		}else{//do ideal Rhyme Value process
 			
@@ -190,6 +190,7 @@ public class RhymeFinder {
 	}
 	
 	/**This method is called when two words have differing phonemic lengths (contain the same number of phonemes).
+	 * Ideal Rhyme Value is just the rhyme value before spacing between phoneme matches is taken into account.
 	 * @return Ideal Rhyme Value between two Words*/
 	private double idealRhymeValue(Word anchor, Word satellite){
 		
