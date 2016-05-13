@@ -4,7 +4,10 @@ package com.shakenearth.rhyme_essentials;
 import java.io.Serializable;
 import java.util.*;
 
-/**@author Thomas Lisankie*/
+/**Used to store an index of a phoneme in the longer word that has some sort of rhyme value with a phoneme in the shorter word.
+ * When the best rhyme value is trying to be found of a child node, the rhyme value for an RVIndexPair is increased by the highest RV in
+ * the child node.
+ * @author Thomas Lisankie*/
 
 public class RVIndexPair implements Serializable {
 	
