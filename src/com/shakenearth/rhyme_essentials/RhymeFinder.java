@@ -59,7 +59,7 @@ public class RhymeFinder {
 			
 			dictionary.put(components[0].toLowerCase(), components[1]);
 			
-		} 
+		}
 		
 	}
 

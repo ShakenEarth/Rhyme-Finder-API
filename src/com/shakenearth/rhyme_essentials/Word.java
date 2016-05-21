@@ -24,6 +24,11 @@ public class Word implements Serializable{
 		for(int i = 0; i < phonemes.length; i++){
 			
 			listOfPhonemes.add(new Phoneme(phonemes[i]));
+			if(listOfPhonemes.get(i).isAVowelPhoneme()){
+				
+				numOfSyllables = numOfSyllables + 1;
+				
+			}
 			
 		}
 		
