@@ -17,6 +17,18 @@ public class Word implements Serializable{
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	private int numOfSyllables = 0;
 	
+	public Word(String wordName, String phonemeString){
+		
+		this.wordName = wordName;
+		String[] phonemes = phonemeString.split(" ");
+		for(int i = 0; i < phonemes.length; i++){
+			
+			listOfPhonemes.add(new Phoneme(phonemes[i]));
+			
+		}
+		
+	}
+	
 	/**Creates a new Word object using the spelling of the word itself as well as a list of the Phonemes that compose it.
 	 * @param wordName The spelling of the word
 	 * @param phonemes A list of the Phonemes that compose the word*/

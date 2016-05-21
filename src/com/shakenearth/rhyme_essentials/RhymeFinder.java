@@ -1,9 +1,6 @@
 
 package com.shakenearth.rhyme_essentials;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -16,8 +13,8 @@ public class RhymeFinder {
 	
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false;
 	
-	public static ArrayList<Word> anchors = null, words;
-	private static RhymeDictionaryTrie trie = null;
+	public ArrayList<Word> anchors = null, words;
+	private Hashtable<String, String> dictionary = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
@@ -47,116 +44,22 @@ public class RhymeFinder {
 		
 		}
 		
-		//2 - Sets up resources for dictionary
-		//ArrayList for the word names
-		ArrayList<String> wordNames = new ArrayList<String>();
+		setDictionary(new Hashtable<String, String>());
 		
-		/*ArrayList of lists of phonemes that compose a word*/
-		ArrayList<ArrayList<Phoneme>> listsOfPhonemesForWords = new ArrayList<ArrayList<Phoneme>>();
-		String word = "";
-		
-		//creates word names
-		int spacesToSkip = 2;
-		for (int i = 0; i < linesOfDictionary.size(); i++){
+		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
-			spacesToSkip = 2;
+			String[] components = linesOfDictionary.get(l).split(" ");
 			
-			String lineBeingExamined = linesOfDictionary.get(i);
-			int indexOfCharBeingExamined = 0;
-			for (int j = 0; j < lineBeingExamined.length(); j++){
+			if(components.length != 2){
 				
-				indexOfCharBeingExamined = j;
-				char charBeingExamined = lineBeingExamined.charAt(j);
-				
-				if(charBeingExamined != ' ' && charBeingExamined != '('){
-					
-					word = word + charBeingExamined;
-					
-				}else if(charBeingExamined == '('){
-					
-					spacesToSkip = spacesToSkip + 3;
-					wordNames.add(word);
-					word = "";
-					break;
-					
-				}else{
-					
-					wordNames.add(word);
-					word = "";
-					break;
-					
-				}
+				System.out.println("The lines aren't separated by two spaces.");
+				break;
 				
 			}
 			
-			indexOfCharBeingExamined = indexOfCharBeingExamined + spacesToSkip;
-			phonemes = new ArrayList<Phoneme>();
-			Phoneme phoneme = new Phoneme();
-			String phonemeName = "";
-			//creates list of phonemes
-			for (int k = indexOfCharBeingExamined; k < lineBeingExamined.length(); k++){
-				
-				char charBeingExamined = lineBeingExamined.charAt(k);
-				//if the character is a letter
-				if(Character.isLetter(charBeingExamined)){ 
-					
-					phonemeName = phonemeName + charBeingExamined;
-					//debugPrint(phonemeName);
-					
-				}else if(Character.isDigit(charBeingExamined)){
-					
-					int stress = Character.getNumericValue(charBeingExamined);
-					phoneme.setStress(stress);
-					
-				}else if(charBeingExamined == ' '){
-					
-					phoneme.setPhoneme(phonemeName);
-					phonemes.add(phoneme);
-					phoneme = new Phoneme();
-					phonemeName = "";
-					
-					
-				}else{}
-				
-			}
+			dictionary.put(components[0].toLowerCase(), components[1]);
 			
-			//this is for the last phoneme
-			phoneme.setPhoneme(phonemeName);
-			phonemes.add(phoneme);
-			phoneme = new Phoneme();
-			phonemeName = "";
-			
-			listsOfPhonemesForWords.add(phonemes);
-			
-		}
-		
-		//3 - builds dictionary
-		ArrayList<Word> anchorWords = new ArrayList<Word>();
-		
-		for(int f = 0; f < wordNames.size(); f++){
-			//TODO add something to deal with alternative pronunciations of words
-			anchorWords.add(new Word((wordNames.get(f)).toLowerCase(), listsOfPhonemesForWords.get(f)));
-			
-		}
-		
-		wordNames = null;
-		listsOfPhonemesForWords = null;
-		
-		anchors = anchorWords;
-		RhymeFinder.words = anchorWords;
-		
-		//now put this list of Words into a trie
-		setTrie(new RhymeDictionaryTrie());
-		
-		for(int i = 0; i < anchors.size(); i++){
-			
-			getTrie().addWord(anchors.get(i));
-			
-		}
-		
-		anchors = null;
-		
-		//System.out.println(getTrie().trieRoot);
+		} 
 		
 	}
 
@@ -594,15 +497,15 @@ public class RhymeFinder {
 
 	/**Returns the trie of the CMU Dictionary
 	 * @return A trie of the CMU Dictionary*/
-	public RhymeDictionaryTrie getTrie() {
-		return trie;
+	public Hashtable<String, String> getDictionary() {
+		return dictionary;
 	}
 
 	/**
 	 * Sets this object's trie of the CMU Dictionary
 	 * @param trie a RhymeDictionaryTrie*/
-	public void setTrie(RhymeDictionaryTrie trie) {
-		RhymeFinder.trie = trie;
+	public void setDictionary(Hashtable<String, String> dictionary) {
+		this.dictionary = dictionary;
 	}
 	
 }

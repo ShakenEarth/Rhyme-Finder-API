@@ -15,6 +15,31 @@ public class Phoneme implements Serializable {
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
+	public Phoneme(String phoneme) {
+		
+		this.phoneme = phoneme;
+		
+		if(phoneme.endsWith("1") || phoneme.endsWith("2") || phoneme.endsWith("3") || phoneme.endsWith("4") 
+				|| phoneme.endsWith("5")){
+			
+			String stressText = phoneme.substring(phoneme.length()-1);
+			String thePhoneme = phoneme.substring(0, phoneme.length()-1);
+			this.phoneme = thePhoneme;
+			stress = Integer.parseInt(stressText);
+			
+		}
+		
+		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
+				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
+				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
+				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
+			
+			setIsAVowelPhoneme(true);
+			
+		}
+		
+	}
+
 	public String getPhoneme() {
 		return phoneme;
 	}
