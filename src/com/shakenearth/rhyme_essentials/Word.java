@@ -10,10 +10,11 @@ import java.util.*;
  * that make up the word.
  * @author Thomas Lisankie
  */
-public class Word implements Serializable{
+public class Word extends PhonemeSequence implements Serializable{
 	
 	private String wordName = "";
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
+	private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	private int numOfSyllables = 0;
 	
@@ -35,6 +36,52 @@ public class Word implements Serializable{
 			}
 			
 		}
+		
+		splitIntoSyllables();
+		
+	}
+	
+	private void splitIntoSyllables(){
+		
+		Syllable currentSyllable = null;
+		ArrayList<Phoneme> phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
+			
+			phonemesForCurrentSyllable.add(phonemeBeingExamined);
+			
+			/*
+			 * Are two (or more) consonants next to each other?
+			 * 		Divide between the 1st and 2nd consonants.
+			 * Is the consonant surrounded by vowels?
+			 * 		Does the vowel have a long sound?  (Like the 'i' in line)
+			 * 			Divide before the consonant.
+			 * 		Does the vowel have a short sound?  (Like the 'i' in mill)
+			 * 			Divide after the consonant.
+			 * Does the word end with 'ckle'?
+			 * 		Divide right before the 'le.'
+			 * Does the word end with 'le' (not 'ckle')?
+			 * 		Is the letter before the 'le' a consonant?
+			 * 			Divide 1 letter before the 'le.'
+			 * 		Is the letter before the 'le' a vowel?
+			 * 			Do nothing.*/
+			
+			if(i + 1 != listOfPhonemes.size()){
+					
+				if(phonemeBeingExamined.isAVowelPhoneme() == false && listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
+					
+					currentSyllable = new Syllable(phonemesForCurrentSyllable);
+					listOfSyllables.add(currentSyllable);
+					
+				}
+				
+			}
+			
+		}
+		
+		listOfPhonemes = null;
 		
 	}
 	
