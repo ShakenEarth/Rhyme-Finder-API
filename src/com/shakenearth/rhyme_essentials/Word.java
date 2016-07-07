@@ -48,10 +48,6 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		for(int i = 0; i < listOfPhonemes.size(); i++){
 			
-			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
-			
-			phonemesForCurrentSyllable.add(phonemeBeingExamined);
-			
 			/*
 			 * Are two (or more) consonants next to each other?
 			 * 		Divide between the 1st and 2nd consonants.
@@ -68,6 +64,10 @@ public class Word extends PhonemeSequence implements Serializable{
 			 * 		Is the letter before the 'le' a vowel?
 			 * 			Do nothing.*/
 			
+			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
+			
+			phonemesForCurrentSyllable.add(phonemeBeingExamined);
+			
 			if(i + 1 != listOfPhonemes.size()){
 					
 				if(phonemeBeingExamined.isAVowelPhoneme() == false && listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
@@ -76,6 +76,8 @@ public class Word extends PhonemeSequence implements Serializable{
 					listOfSyllables.add(currentSyllable);
 					
 				}
+				
+				
 				
 			}
 			
