@@ -31,8 +31,8 @@ public class Phoneme implements Serializable {
 		
 		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
 				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
-				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
-				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
+				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("OW")
+				|| this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
 			
 			setIsAVowelPhoneme(true);
 			

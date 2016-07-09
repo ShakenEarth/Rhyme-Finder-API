@@ -66,20 +66,67 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
 			
-			phonemesForCurrentSyllable.add(phonemeBeingExamined);
-			
-			if(i + 1 != listOfPhonemes.size()){
+			if(phonemeBeingExamined.isAVowelPhoneme() == false){
+				
+				if( i + 1 != listOfPhonemes.size()){
 					
-				if(phonemeBeingExamined.isAVowelPhoneme() == false && listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
-					
-					currentSyllable = new Syllable(phonemesForCurrentSyllable);
-					listOfSyllables.add(currentSyllable);
+					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false && i != 0){
+						
+						phonemesForCurrentSyllable.add(phonemeBeingExamined);
+						currentSyllable = new Syllable(phonemesForCurrentSyllable);
+						listOfSyllables.add(currentSyllable);
+						phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+						currentSyllable = null;
+						
+					}else{
+						
+						if(i - 1 != -1){
+							
+							if(listOfPhonemes.get(i-1).isAVowelPhoneme() && listOfPhonemes.get(i+1).isAVowelPhoneme()){
+								//if the previous vowel is long
+								if(listOfPhonemes.get(i-1).getPhoneme().equals("AO") || listOfPhonemes.get(i-1).getPhoneme().equals("AW")
+										|| listOfPhonemes.get(i-1).getPhoneme().equals("AY") || listOfPhonemes.get(i-1).getPhoneme().equals("EY")
+										|| listOfPhonemes.get(i-1).getPhoneme().equals("IY") || listOfPhonemes.get(i-1).getPhoneme().equals("OW")
+										|| listOfPhonemes.get(i-1).getPhoneme().equals("OY") || listOfPhonemes.get(i-1).getPhoneme().equals("UW")){
+									
+									currentSyllable = new Syllable(phonemesForCurrentSyllable);
+									listOfSyllables.add(currentSyllable);
+									phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+									phonemesForCurrentSyllable.add(phonemeBeingExamined);
+									currentSyllable = null;
+									
+								}else{
+									
+									phonemesForCurrentSyllable.add(phonemeBeingExamined);
+									currentSyllable = new Syllable(phonemesForCurrentSyllable);
+									listOfSyllables.add(currentSyllable);
+									phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+									currentSyllable = null;
+									
+								}
+								
+							}
+							
+						}
+						
+					}
 					
 				}
 				
+			}else{
 				
+				phonemesForCurrentSyllable.add(phonemeBeingExamined);
 				
 			}
+			
+		}
+		
+		if(phonemesForCurrentSyllable.size() > 0){
+			
+			currentSyllable = new Syllable(phonemesForCurrentSyllable);
+			listOfSyllables.add(currentSyllable);
+			phonemesForCurrentSyllable = null;
+			currentSyllable = null;
 			
 		}
 		
