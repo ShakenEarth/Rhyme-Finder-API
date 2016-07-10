@@ -11,4 +11,14 @@ public class Syllable extends PhonemeSequence {
 		
 	}
 	
+	public void printListOfPhonemes(){
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			System.out.println(listOfPhonemes.get(i).getPhoneme() + " ");
+			
+		}
+		
+	}
+	
 }

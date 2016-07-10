@@ -45,32 +45,44 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		Syllable currentSyllable = null;
 		ArrayList<Phoneme> phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+		ArrayList<Integer> vowelIndices = new ArrayList<Integer>();
 		
 		for(int i = 0; i < listOfPhonemes.size(); i++){
 			
-			/*
-			 * Are two (or more) consonants next to each other?
-			 * 		Divide between the 1st and 2nd consonants.
-			 * Is the consonant surrounded by vowels?
-			 * 		Does the vowel have a long sound?  (Like the 'i' in line)
-			 * 			Divide before the consonant.
-			 * 		Does the vowel have a short sound?  (Like the 'i' in mill)
-			 * 			Divide after the consonant.
-			 * Does the word end with 'ckle'?
-			 * 		Divide right before the 'le.'
-			 * Does the word end with 'le' (not 'ckle')?
-			 * 		Is the letter before the 'le' a consonant?
-			 * 			Divide 1 letter before the 'le.'
-			 * 		Is the letter before the 'le' a vowel?
-			 * 			Do nothing.*/
-			
 			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
 			
-			if(phonemeBeingExamined.isAVowelPhoneme() == false){
+			if(phonemeBeingExamined.isAVowelPhoneme()){
 				
-				if( i + 1 != listOfPhonemes.size()){
+				if(i + 2 != listOfPhonemes.size()-1){ /*if we're not reaching the end of the word and the next phoneme is a consonant 
+				follow the consonant rules to see where to split*/
 					
-					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false && i != 0){
+					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
+						
+						if(phonemeBeingExamined.getPhoneme().equals("AA") || phonemeBeingExamined.getPhoneme().equals("AO")
+								|| phonemeBeingExamined.getPhoneme().equals("AW") || phonemeBeingExamined.getPhoneme().equals("AY")
+								|| phonemeBeingExamined.getPhoneme().equals("EY") || phonemeBeingExamined.getPhoneme().equals("IY")
+								|| phonemeBeingExamined.getPhoneme().equals("OW") || phonemeBeingExamined.getPhoneme().equals("OY")
+								|| phonemeBeingExamined.getPhoneme().equals("UW")){
+							
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
+							
+						}else{
+							
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+							i = i + 1;
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
+							
+						}
+						
+					}else{/*it's a vowel so you're gonna have to split*/
 						
 						phonemesForCurrentSyllable.add(phonemeBeingExamined);
 						currentSyllable = new Syllable(phonemesForCurrentSyllable);
@@ -78,38 +90,18 @@ public class Word extends PhonemeSequence implements Serializable{
 						phonemesForCurrentSyllable = new ArrayList<Phoneme>();
 						currentSyllable = null;
 						
-					}else{
-						
-						if(i - 1 != -1){
-							
-							if(listOfPhonemes.get(i-1).isAVowelPhoneme() && listOfPhonemes.get(i+1).isAVowelPhoneme()){
-								//if the previous vowel is long
-								if(listOfPhonemes.get(i-1).getPhoneme().equals("AO") || listOfPhonemes.get(i-1).getPhoneme().equals("AW")
-										|| listOfPhonemes.get(i-1).getPhoneme().equals("AY") || listOfPhonemes.get(i-1).getPhoneme().equals("EY")
-										|| listOfPhonemes.get(i-1).getPhoneme().equals("IY") || listOfPhonemes.get(i-1).getPhoneme().equals("OW")
-										|| listOfPhonemes.get(i-1).getPhoneme().equals("OY") || listOfPhonemes.get(i-1).getPhoneme().equals("UW")){
-									
-									currentSyllable = new Syllable(phonemesForCurrentSyllable);
-									listOfSyllables.add(currentSyllable);
-									phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-									phonemesForCurrentSyllable.add(phonemeBeingExamined);
-									currentSyllable = null;
-									
-								}else{
-									
-									phonemesForCurrentSyllable.add(phonemeBeingExamined);
-									currentSyllable = new Syllable(phonemesForCurrentSyllable);
-									listOfSyllables.add(currentSyllable);
-									phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-									currentSyllable = null;
-									
-								}
-								
-							}
-							
-						}
-						
 					}
+					
+				}else{/*make sure to include that final consonant as well*/
+					
+					phonemesForCurrentSyllable.add(phonemeBeingExamined);
+					phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+					phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
+					i = i + 2;
+					currentSyllable = new Syllable(phonemesForCurrentSyllable);
+					listOfSyllables.add(currentSyllable);
+					phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+					currentSyllable = null;
 					
 				}
 				
@@ -118,15 +110,6 @@ public class Word extends PhonemeSequence implements Serializable{
 				phonemesForCurrentSyllable.add(phonemeBeingExamined);
 				
 			}
-			
-		}
-		
-		if(phonemesForCurrentSyllable.size() > 0){
-			
-			currentSyllable = new Syllable(phonemesForCurrentSyllable);
-			listOfSyllables.add(currentSyllable);
-			phonemesForCurrentSyllable = null;
-			currentSyllable = null;
 			
 		}
 		
@@ -180,6 +163,14 @@ public class Word extends PhonemeSequence implements Serializable{
 
 	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
 		this.listOfPhonemes = listOfPhonemes;
+	}
+	
+	public List<Syllable> getListOfSyllables() {
+		return listOfSyllables;
+	}
+
+	public void setListOfSyllables(List<Syllable> listOfSyllables) {
+		this.listOfSyllables = listOfSyllables;
 	}
 
 	public ArrayList<Point2D.Double> getWordsThisRhymesWith() {

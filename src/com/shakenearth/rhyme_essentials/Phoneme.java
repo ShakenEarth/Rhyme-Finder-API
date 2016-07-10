@@ -19,7 +19,7 @@ public class Phoneme implements Serializable {
 		
 		this.phoneme = phoneme;
 		
-		if(phoneme.endsWith("1") || phoneme.endsWith("2") || phoneme.endsWith("3") || phoneme.endsWith("4") 
+		if(phoneme.endsWith("0") || phoneme.endsWith("1") || phoneme.endsWith("2") || phoneme.endsWith("3") || phoneme.endsWith("4") 
 				|| phoneme.endsWith("5")){
 			
 			String stressText = phoneme.substring(phoneme.length()-1);

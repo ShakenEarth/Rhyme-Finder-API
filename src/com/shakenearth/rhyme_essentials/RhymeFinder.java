@@ -48,7 +48,7 @@ public class RhymeFinder {
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
-			String[] components = linesOfDictionary.get(l).split(" ");
+			String[] components = linesOfDictionary.get(l).split("  ");
 			
 			if(components.length != 2){
 				
