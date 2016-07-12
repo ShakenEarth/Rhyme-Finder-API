@@ -53,75 +53,75 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 			if(phonemeBeingExamined.isAVowelPhoneme()){
 				
-					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ /*if we're not reaching the end of the word and the next phoneme is a consonant 
-					follow the consonant rules to see where to split*/
+				if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ /*if we're not reaching the end of the word and the next phoneme is a consonant 
+				follow the consonant rules to see where to split*/
+					
+					if(i + 2 != listOfPhonemes.size()-1){
 						
-						if(i + 2 != listOfPhonemes.size()-1){
+						if(phonemeBeingExamined.getPhoneme().equals("AA") || phonemeBeingExamined.getPhoneme().equals("AO")
+								|| phonemeBeingExamined.getPhoneme().equals("AW") || phonemeBeingExamined.getPhoneme().equals("AY")
+								|| phonemeBeingExamined.getPhoneme().equals("EY") || phonemeBeingExamined.getPhoneme().equals("IY")
+								|| phonemeBeingExamined.getPhoneme().equals("OW") || phonemeBeingExamined.getPhoneme().equals("OY")
+								|| phonemeBeingExamined.getPhoneme().equals("UW")){
 							
-							if(phonemeBeingExamined.getPhoneme().equals("AA") || phonemeBeingExamined.getPhoneme().equals("AO")
-									|| phonemeBeingExamined.getPhoneme().equals("AW") || phonemeBeingExamined.getPhoneme().equals("AY")
-									|| phonemeBeingExamined.getPhoneme().equals("EY") || phonemeBeingExamined.getPhoneme().equals("IY")
-									|| phonemeBeingExamined.getPhoneme().equals("OW") || phonemeBeingExamined.getPhoneme().equals("OY")
-									|| phonemeBeingExamined.getPhoneme().equals("UW")){
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}else{
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								i = i + 1;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
 							
-						}else{/*make sure to include that final consonant as well*/
+						}else{
 							
-							if(listOfPhonemes.get(i + 2).isAVowelPhoneme() == false){
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
-								i = i + 2;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}else{
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
-								i = i + 2;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+							i = i + 1;
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
 							
 						}
 						
-					}else{/*it's a vowel so you're gonna have to split*/
+					}else{/*make sure to include that final consonant as well*/
 						
-						phonemesForCurrentSyllable.add(phonemeBeingExamined);
-						currentSyllable = new Syllable(phonemesForCurrentSyllable);
-						listOfSyllables.add(currentSyllable);
-						phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-						currentSyllable = null;
+						if(listOfPhonemes.get(i + 2).isAVowelPhoneme() == false){
+							
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
+							i = i + 2;
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
+							
+						}else{
+							
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+							phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
+							i = i + 2;
+							currentSyllable = new Syllable(phonemesForCurrentSyllable);
+							listOfSyllables.add(currentSyllable);
+							phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+							currentSyllable = null;
+							
+						}
 						
 					}
+					
+				}else{/*it's a vowel so you're gonna have to split*/
+					
+					phonemesForCurrentSyllable.add(phonemeBeingExamined);
+					currentSyllable = new Syllable(phonemesForCurrentSyllable);
+					listOfSyllables.add(currentSyllable);
+					phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+					currentSyllable = null;
+					
+				}
 				
 			}else{
 				
