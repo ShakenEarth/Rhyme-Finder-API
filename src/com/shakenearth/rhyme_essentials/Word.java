@@ -10,17 +10,14 @@ import java.util.*;
  * that make up the word.
  * @author Thomas Lisankie
  */
-public class Word implements Serializable{
+public class Word extends PhonemeSequence implements Serializable{
 	
 	private String wordName = "";
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
+	private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	private int numOfSyllables = 0;
 	
-	/**Creates a new Word object using the spelling of the word itself as well as a string of the Phonemes that compose it 
-	 * (separated by a space character).
-	 * @param wordName The spelling of the word
-	 * @param phonemes A string of the Phonemes that compose it (separated by a space character)*/
 	public Word(String wordName, String phonemeString){
 		
 		this.wordName = wordName;
@@ -35,6 +32,119 @@ public class Word implements Serializable{
 			}
 			
 		}
+		
+		splitIntoSyllables();
+		
+	}
+	
+	private void splitIntoSyllables(){
+		
+		Syllable currentSyllable = null;
+		ArrayList<Phoneme> phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
+			
+			if(phonemeBeingExamined.isAVowelPhoneme()){
+				
+				if(i + 1 != listOfPhonemes.size()){
+						
+					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ /*if we're not reaching the end of the word and the next phoneme is a consonant 
+					follow the consonant rules to see where to split*/
+						
+						if(i + 2 != listOfPhonemes.size()-1){
+							
+							if(phonemeBeingExamined.getPhoneme().equals("AO") || phonemeBeingExamined.getPhoneme().equals("AW")
+									|| phonemeBeingExamined.getPhoneme().equals("AY") || phonemeBeingExamined.getPhoneme().equals("EY")
+									|| phonemeBeingExamined.getPhoneme().equals("IY") || phonemeBeingExamined.getPhoneme().equals("OW")
+									|| phonemeBeingExamined.getPhoneme().equals("OY") || phonemeBeingExamined.getPhoneme().equals("UW")){ //is long phoneme, cut before next consonant.
+								
+								phonemesForCurrentSyllable.add(phonemeBeingExamined);
+								currentSyllable = new Syllable(phonemesForCurrentSyllable);
+								listOfSyllables.add(currentSyllable);
+								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+								currentSyllable = null;
+								
+							}else{
+								
+								phonemesForCurrentSyllable.add(phonemeBeingExamined);
+								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+								i = i + 1;
+								currentSyllable = new Syllable(phonemesForCurrentSyllable);
+								listOfSyllables.add(currentSyllable);
+								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+								currentSyllable = null;
+								
+							}
+							
+						}else{/*make sure to include that final consonant as well*/
+							
+							if(listOfPhonemes.get(i + 2).isAVowelPhoneme() == false){
+								
+								phonemesForCurrentSyllable.add(phonemeBeingExamined);
+								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
+								i = i + 2;
+								currentSyllable = new Syllable(phonemesForCurrentSyllable);
+								listOfSyllables.add(currentSyllable);
+								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+								currentSyllable = null;
+								
+							}else{
+								
+								phonemesForCurrentSyllable.add(phonemeBeingExamined);
+								currentSyllable = new Syllable(phonemesForCurrentSyllable);
+								listOfSyllables.add(currentSyllable);
+								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
+								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
+								i = i + 2;
+								currentSyllable = new Syllable(phonemesForCurrentSyllable);
+								listOfSyllables.add(currentSyllable);
+								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+								currentSyllable = null;
+								
+							}
+							
+						}
+						
+					}else{/*it's a vowel so you're gonna have to split*/
+						
+						phonemesForCurrentSyllable.add(phonemeBeingExamined);
+						currentSyllable = new Syllable(phonemesForCurrentSyllable);
+						listOfSyllables.add(currentSyllable);
+						phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+						currentSyllable = null;
+						
+					}
+					
+				}else{
+					
+					phonemesForCurrentSyllable.add(phonemeBeingExamined);
+					currentSyllable = new Syllable(phonemesForCurrentSyllable);
+					listOfSyllables.add(currentSyllable);
+					phonemesForCurrentSyllable = new ArrayList<Phoneme>();
+					currentSyllable = null;
+					
+				}
+				
+			}else{
+				
+				phonemesForCurrentSyllable.add(phonemeBeingExamined);
+				
+			}
+			
+		}
+		
+		//add leftover consonants to most recently added syllable
+		for(int i = 0; i < phonemesForCurrentSyllable.size(); i++){
+			
+			getListOfSyllables().get(getListOfSyllables().size() - 1).getListOfPhonemes().add(phonemesForCurrentSyllable.get(i));
+			
+		}
+		
+		listOfPhonemes = null;
 		
 	}
 	
@@ -84,6 +194,14 @@ public class Word implements Serializable{
 
 	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
 		this.listOfPhonemes = listOfPhonemes;
+	}
+	
+	public List<Syllable> getListOfSyllables() {
+		return listOfSyllables;
+	}
+
+	public void setListOfSyllables(List<Syllable> listOfSyllables) {
+		this.listOfSyllables = listOfSyllables;
 	}
 
 	public ArrayList<Point2D.Double> getWordsThisRhymesWith() {

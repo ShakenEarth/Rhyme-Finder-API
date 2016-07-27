@@ -21,4 +21,12 @@ public class Syllable extends PhonemeSequence {
 		
 	}
 	
+	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
+		this.listOfPhonemes = listOfPhonemes;
+	}
+	
+	public List<Phoneme> getListOfPhonemes() {
+		return listOfPhonemes;
+	}
+	
 }
