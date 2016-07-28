@@ -70,7 +70,7 @@ public class RhymeFinder {
 		
 		//System.out.println("---------------------------------------------");
 		//System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
-		double rhymeValue = 0.0;
+		
 		double rhymePercentile = 0.0;
 		
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
