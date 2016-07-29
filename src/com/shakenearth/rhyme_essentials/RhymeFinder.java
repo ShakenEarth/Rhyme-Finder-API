@@ -31,7 +31,6 @@ public class RhymeFinder {
 	 * @param path The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.*/
 	public void buildWords(String path){ 
 		
-		ArrayList<Phoneme> phonemes = null;
 		//1
 		List<String> linesOfDictionary = null;
 		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
