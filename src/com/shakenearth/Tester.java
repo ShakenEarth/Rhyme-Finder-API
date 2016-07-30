@@ -8,20 +8,43 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		Scanner reader = new Scanner(System.in);  // Reading from System.in
-		System.out.println("Enter a word: ");
-		String wordSpelling = reader.nextLine();
-		reader.close();
+		final int TESTING = 1;
 		
-		RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
-		System.out.println(finder.getDictionary().get(wordSpelling));
-		Word word = new Word(wordSpelling, finder.getDictionary().get(wordSpelling));
-		System.out.println("Initial Syllable Count: " + word.getNumOfSyllables());
-		
-		for(int i = 0; i < word.getListOfSyllables().size(); i++){
+		if(TESTING == 0){
 			
-			System.out.println("Syllable " + (i+1) + ": ");
-			word.getListOfSyllables().get(i).printListOfPhonemes();
+			Scanner reader = new Scanner(System.in);  // Reading from System.in
+			System.out.println("Enter a word: ");
+			String wordSpelling = reader.nextLine();
+			reader.close();
+			
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			System.out.println(finder.getDictionary().get(wordSpelling));
+			Word word = new Word(wordSpelling, finder.getDictionary().get(wordSpelling));
+			System.out.println("Initial Syllable Count: " + word.getNumOfSyllables());
+			
+			for(int i = 0; i < word.getListOfSyllables().size(); i++){
+				
+				System.out.println("Syllable " + (i+1) + ": ");
+				word.getListOfSyllables().get(i).printListOfPhonemes();
+				
+			}
+			
+		}else if(TESTING == 1){
+			
+			Scanner reader = new Scanner(System.in);
+			System.out.println("Enter first word: ");
+			String firstWordSpelling = reader.nextLine();
+			
+			System.out.println("Enter second word: ");
+			String secondWordSpelling = reader.nextLine();
+			reader.close();
+			
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			
+			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(firstWordSpelling));
+			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(secondWordSpelling));
+			
+			System.out.println(finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
 			
 		}
 		

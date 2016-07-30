@@ -211,17 +211,6 @@ public class Word extends PhonemeSequence implements Serializable{
 	public void setWordsThisRhymesWith(ArrayList<Point2D.Double> wordsThisRhymesWith) {
 		this.wordsThisRhymesWith = wordsThisRhymesWith;
 	}
-	
-	public void printListOfPhonemes(){
-		
-		for(int i = 0; i < getListOfPhonemes().size(); i++){
-			
-//			RhymeFinder.debugPrint(getListOfPhonemes().get(i).getPhoneme() + ", " 
-//					+ getListOfPhonemes().get(i).getStress());
-			
-		}
-		
-	}
 
 	public int getNumOfSyllables() {
 		return numOfSyllables;
