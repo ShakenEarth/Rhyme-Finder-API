@@ -285,8 +285,6 @@ public class RhymeFinder {
 		RVIndexPair bestSet = null;
 		Node nodeBeingExamined = null;
 		
-		System.out.println(layers.size());
-		
 		for(int l = layers.size()-1; l >= 0; l--){ //this isn't being ran.
 			
 			for(int n = 0; n < layers.get(l).getNodes().size(); n++){

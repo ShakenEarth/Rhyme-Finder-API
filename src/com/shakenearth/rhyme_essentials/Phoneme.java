@@ -67,6 +67,21 @@ public class Phoneme implements Serializable {
 	public void setIsAVowelPhoneme(boolean isAVowel) {
 		this.isAVowelPhoneme = isAVowel;
 	}
+	
+	public boolean isALongVowelPhoneme() {
+		
+		if(getPhoneme().equals("AO") || getPhoneme().equals("AW") || getPhoneme().equals("AY") || getPhoneme().equals("EY") || getPhoneme().equals("IY")
+				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW")){
+			
+			return true;
+			
+		}else{
+			
+			return false;
+			
+		}
+		
+	}
 
 	public int getStress() {
 		return stress;

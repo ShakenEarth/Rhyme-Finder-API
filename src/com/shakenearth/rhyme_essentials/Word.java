@@ -33,6 +33,25 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 		}
 		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+//			if(i+1 != listOfPhonemes.size()){
+//				
+//				if(listOfPhonemes.get(i).isAVowelPhoneme()){
+//					
+//					if(listOfPhonemes.get(i).getPhoneme().equals("AA") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
+//						
+//						listOfPhonemes.get(i).setPhoneme("AR");
+//						
+//						
+//					}
+//					
+//				}
+//				
+//			}
+			
+		}
+		
 		splitIntoSyllables();
 		
 	}
@@ -55,10 +74,7 @@ public class Word extends PhonemeSequence implements Serializable{
 						
 						if(i + 2 != listOfPhonemes.size()-1){
 							
-							if(phonemeBeingExamined.getPhoneme().equals("AO") || phonemeBeingExamined.getPhoneme().equals("AW")
-									|| phonemeBeingExamined.getPhoneme().equals("AY") || phonemeBeingExamined.getPhoneme().equals("EY")
-									|| phonemeBeingExamined.getPhoneme().equals("IY") || phonemeBeingExamined.getPhoneme().equals("OW")
-									|| phonemeBeingExamined.getPhoneme().equals("OY") || phonemeBeingExamined.getPhoneme().equals("UW")){ //is long phoneme, cut before next consonant.
+							if(phonemeBeingExamined.isALongVowelPhoneme()){ //is long phoneme, cut before next consonant.
 								
 								phonemesForCurrentSyllable.add(phonemeBeingExamined);
 								currentSyllable = new Syllable(phonemesForCurrentSyllable);
@@ -131,7 +147,31 @@ public class Word extends PhonemeSequence implements Serializable{
 				
 			}else{
 				
-				phonemesForCurrentSyllable.add(phonemeBeingExamined);
+				if(i + 1 != listOfPhonemes.size()){
+					
+					if(listOfSyllables.size() != 0){
+						
+						if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
+							
+							listOfSyllables.get(listOfSyllables.size() - 1).addPhoneme(listOfPhonemes.get(i));
+							
+						}else{
+							
+							phonemesForCurrentSyllable.add(phonemeBeingExamined);
+							
+						}
+						
+					}else{
+						
+						phonemesForCurrentSyllable.add(phonemeBeingExamined);
+						
+					}
+					
+				}else{
+						
+					phonemesForCurrentSyllable.add(phonemeBeingExamined);
+					
+				}
 				
 			}
 			
@@ -140,7 +180,7 @@ public class Word extends PhonemeSequence implements Serializable{
 		//add leftover consonants to most recently added syllable
 		for(int i = 0; i < phonemesForCurrentSyllable.size(); i++){
 			
-			getListOfSyllables().get(getListOfSyllables().size() - 1).getListOfPhonemes().add(phonemesForCurrentSyllable.get(i));
+			getListOfSyllables().get(getListOfSyllables().size() - 1).addPhoneme(phonemesForCurrentSyllable.get(i));
 			
 		}
 		

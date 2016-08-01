@@ -21,6 +21,18 @@ public class Syllable extends PhonemeSequence {
 		
 	}
 	
+	public void addPhoneme(Phoneme p){
+		
+		if(p.getPhoneme().equals("N")){
+			
+			p.setPhoneme("M");
+			
+		}
+		
+		listOfPhonemes.add(p);
+		
+	}
+	
 	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
 		this.listOfPhonemes = listOfPhonemes;
 	}
