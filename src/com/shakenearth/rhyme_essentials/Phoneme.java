@@ -53,7 +53,9 @@ public class Phoneme implements Serializable {
 		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
 				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
 				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
-				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
+				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")
+				|| this.phoneme.equals("AR") || this.phoneme.equals("EL") || this.phoneme.equals("OL") || this.phoneme.equals("OR") 
+				|| this.phoneme.equals("ALE")){
 			
 			setIsAVowelPhoneme(true);
 			
@@ -71,7 +73,8 @@ public class Phoneme implements Serializable {
 	public boolean isALongVowelPhoneme() {
 		
 		if(getPhoneme().equals("AO") || getPhoneme().equals("AW") || getPhoneme().equals("AY") || getPhoneme().equals("EY") || getPhoneme().equals("IY")
-				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW")){
+				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW") || getPhoneme().equals("OL") || getPhoneme().equals("OR")
+				|| getPhoneme().equals("ALE") ){
 			
 			return true;
 			
