@@ -65,6 +65,11 @@ public class Word extends PhonemeSequence implements Serializable{
 						listOfPhonemes.get(i).setPhoneme("ALE");
 						listOfPhonemes.remove(i+1);
 						
+					}else if(listOfPhonemes.get(i).getPhoneme().equals("IY") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
+						
+						listOfPhonemes.get(i).setPhoneme("EAR");
+						listOfPhonemes.remove(i+1);
+						
 					}
 					
 				}

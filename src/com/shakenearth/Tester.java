@@ -8,7 +8,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 1;
+		final int TESTING = 0;
 		
 		if(TESTING == 0){
 			

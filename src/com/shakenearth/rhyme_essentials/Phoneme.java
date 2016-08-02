@@ -55,7 +55,7 @@ public class Phoneme implements Serializable {
 				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
 				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")
 				|| this.phoneme.equals("AR") || this.phoneme.equals("EL") || this.phoneme.equals("OL") || this.phoneme.equals("OR") 
-				|| this.phoneme.equals("ALE")){
+				|| this.phoneme.equals("ALE") || this.phoneme.equals("EAR")){
 			
 			setIsAVowelPhoneme(true);
 			
@@ -74,7 +74,7 @@ public class Phoneme implements Serializable {
 		
 		if(getPhoneme().equals("AO") || getPhoneme().equals("AW") || getPhoneme().equals("AY") || getPhoneme().equals("EY") || getPhoneme().equals("IY")
 				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW") || getPhoneme().equals("OL") || getPhoneme().equals("OR")
-				|| getPhoneme().equals("ALE") ){
+				|| getPhoneme().equals("ALE") || getPhoneme().equals("EAR") ){
 			
 			return true;
 			
