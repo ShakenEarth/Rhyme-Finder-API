@@ -60,13 +60,10 @@ public class RhymeFinder {
 			}
 			
 			WordName wordName = new WordName(components[0].toLowerCase());
-			System.out.println(wordName.hashCode());
-			System.out.println(components[1]);
+			
 			dictionary.put(wordName, components[1]);
 			
-			System.out.println(wordName.hashCode());
-			
-			Word word = new Word(wordName, dictionary.get(wordName));
+			Word word = new Word(wordName, components[1]);
 			
 			getTrie().addWord(word);
 			

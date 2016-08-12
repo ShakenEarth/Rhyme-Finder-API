@@ -29,6 +29,7 @@ public class PhonemicSearchTrieNode {
 	private PhonemicSearchTrieNode(String phoneme) {
 		
 		this.phonemeName = phoneme;
+		wordNames = new ArrayList<WordName>();
 		childrenMap = null;
 		
 	}
