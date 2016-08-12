@@ -14,7 +14,8 @@ public class RhymeFinder {
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false;
 	
 	public ArrayList<Word> anchors = null, words;
-	private Hashtable<String, String> dictionary = null;
+	private Hashtable<WordName, String> dictionary = null;
+	private PhonemicSearchTrie trie = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
@@ -34,6 +35,7 @@ public class RhymeFinder {
 		//1
 		List<String> linesOfDictionary = null;
 		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
+		//System.out.println(path);
 		try{
 			linesOfDictionary = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
 			
@@ -43,20 +45,30 @@ public class RhymeFinder {
 		
 		}
 		
-		setDictionary(new Hashtable<String, String>());
+		setDictionary(new Hashtable<WordName, String>());
+		setTrie(new PhonemicSearchTrie(dictionary));
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
 			String[] components = linesOfDictionary.get(l).split("  ");
 			
-			if(components.length != 2){
+			if(components.length != 3){
 				
 				System.out.println("The lines aren't separated by two spaces.");
 				break;
 				
 			}
 			
-			dictionary.put(components[0].toLowerCase(), components[1]);
+			WordName wordName = new WordName(components[0].toLowerCase());
+			System.out.println(wordName.hashCode());
+			System.out.println(components[1]);
+			dictionary.put(wordName, components[1]);
+			
+			System.out.println(wordName.hashCode());
+			
+			Word word = new Word(wordName, dictionary.get(wordName));
+			
+			getTrie().addWord(word);
 			
 		}
 		
@@ -125,16 +137,6 @@ public class RhymeFinder {
 			
 			Word longerWord = null;
 			
-			if(anchor.getListOfSyllables().size() < satellite.getListOfSyllables().size()){
-				
-				longerWord = satellite;
-				
-			}else{
-				
-				longerWord = anchor;
-				
-			}
-			
 			if(anchorOrSatellite == true){
 				
 				return idealRhymeValueBetweenWords(newWord, satellite);
@@ -189,7 +191,7 @@ public class RhymeFinder {
 		
 		for(int s = 0; s < shorterWord.getListOfSyllables().size(); s++){
 			
-			double weightTowardsWordEnd = 0.1;
+			double weightTowardsWordEnd = 0.5;
 			
 			//firstSearch
 			if(firstSearch == true){
@@ -645,7 +647,7 @@ public class RhymeFinder {
 			
 			debugPrint("index subtraction" + (index2 - index1-1));
 			
-			deduction = deduction + (0.25 * (index2 - index1-1));
+			deduction = deduction + (0.25 * (index2 - index1 - 1));
 			
 		}
 		
@@ -708,15 +710,23 @@ public class RhymeFinder {
 
 	/**Returns the trie of the CMU Dictionary
 	 * @return A trie of the CMU Dictionary*/
-	public Hashtable<String, String> getDictionary() {
+	public Hashtable<WordName, String> getDictionary() {
 		return dictionary;
 	}
 
 	/**
 	 * Sets this object's trie of the CMU Dictionary
 	 * @param trie a RhymeDictionaryTrie*/
-	public void setDictionary(Hashtable<String, String> dictionary) {
+	public void setDictionary(Hashtable<WordName, String> dictionary) {
 		this.dictionary = dictionary;
+	}
+
+	public PhonemicSearchTrie getTrie() {
+		return trie;
+	}
+
+	public void setTrie(PhonemicSearchTrie trie) {
+		this.trie = trie;
 	}
 	
 }

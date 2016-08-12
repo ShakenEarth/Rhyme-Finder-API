@@ -13,6 +13,7 @@ import java.util.*;
 public class Word extends PhonemeSequence implements Serializable{
 	
 	private String wordName = "";
+	private WordName wordNameObj = null;
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
 	private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
@@ -21,6 +22,72 @@ public class Word extends PhonemeSequence implements Serializable{
 	public Word(String wordName, String phonemeString){
 		
 		this.wordName = wordName;
+		wordNameObj = new WordName(this.wordName);
+		String[] phonemes = phonemeString.split(" ");
+		for(int i = 0; i < phonemes.length; i++){
+			
+			listOfPhonemes.add(new Phoneme(phonemes[i]));
+			if(listOfPhonemes.get(i).isAVowelPhoneme()){
+				
+				numOfSyllables = numOfSyllables + 1;
+				
+			}
+			
+		}
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			if(i+1 != listOfPhonemes.size()){
+				
+				if(listOfPhonemes.get(i).isAVowelPhoneme()){
+					
+					if(listOfPhonemes.get(i).getPhoneme().equals("AA") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
+						
+						listOfPhonemes.get(i).setPhoneme("AR");
+						listOfPhonemes.remove(i+1);
+						
+					}else if(listOfPhonemes.get(i).getPhoneme().equals("EH") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
+						
+						listOfPhonemes.get(i).setPhoneme("EL");
+						listOfPhonemes.remove(i+1);
+						
+					}else if(listOfPhonemes.get(i).getPhoneme().equals("OW") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
+						
+						listOfPhonemes.get(i).setPhoneme("OL");
+						listOfPhonemes.remove(i+1);
+						
+					}else if((listOfPhonemes.get(i).getPhoneme().equals("AO") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))
+							|| (listOfPhonemes.get(i).getPhoneme().equals("UW") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))){
+						
+						listOfPhonemes.get(i).setPhoneme("OR");
+						listOfPhonemes.remove(i+1);
+						
+					}else if(listOfPhonemes.get(i).getPhoneme().equals("EY") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
+						
+						listOfPhonemes.get(i).setPhoneme("ALE");
+						listOfPhonemes.remove(i+1);
+						
+					}else if(listOfPhonemes.get(i).getPhoneme().equals("IY") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
+						
+						listOfPhonemes.get(i).setPhoneme("EAR");
+						listOfPhonemes.remove(i+1);
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		splitIntoSyllables();
+		
+	}
+	
+	public Word(WordName wordName, String phonemeString) {
+		
+		this.wordName = wordName.getWordName();
+		setWordNameObj(wordName);
 		String[] phonemes = phonemeString.split(" ");
 		for(int i = 0; i < phonemes.length; i++){
 			
@@ -219,7 +286,6 @@ public class Word extends PhonemeSequence implements Serializable{
 	 * @param phonemes A list of the Phonemes that compose the word*/
 	public Word(String wordName, List<Phoneme> phonemes) {
 		
-		//RhymeDictionaryAssembler.debugPrint("INITIAL SIZE: " + wordsThisRhymesWith.size());
 		this.setWordName(wordName);
 		setListOfPhonemes(phonemes);
 		
@@ -234,7 +300,7 @@ public class Word extends PhonemeSequence implements Serializable{
 		}
 		
 	}
-	
+
 	public void addWordThisRhymesWith(int index, double rhymePercentile){
 		
 		
@@ -306,6 +372,14 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		return wordInfo;
 		
+	}
+
+	public WordName getWordNameObj() {
+		return wordNameObj;
+	}
+
+	public void setWordNameObj(WordName wordNameObj) {
+		this.wordNameObj = wordNameObj;
 	}
 
 }

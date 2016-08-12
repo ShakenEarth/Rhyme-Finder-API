@@ -4,10 +4,22 @@ import java.util.*;
 public class Syllable extends PhonemeSequence {
 
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
+	private Phoneme vowelPhoneme = null;
 	
 	public Syllable(List<Phoneme> phonemes){
 		
 		listOfPhonemes = phonemes;
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			if(listOfPhonemes.get(i).isAVowelPhoneme()){
+				
+				setVowelPhoneme(listOfPhonemes.get(i));
+				break;
+				
+			}
+			
+		}
 		
 	}
 	
@@ -39,6 +51,14 @@ public class Syllable extends PhonemeSequence {
 	
 	public List<Phoneme> getListOfPhonemes() {
 		return listOfPhonemes;
+	}
+
+	public Phoneme getVowelPhoneme() {
+		return vowelPhoneme;
+	}
+
+	public void setVowelPhoneme(Phoneme vowelPhoneme) {
+		this.vowelPhoneme = vowelPhoneme;
 	}
 	
 }
