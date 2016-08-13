@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 0;
+		final int TESTING = 1;
 		
 		if(TESTING == 0){
 			
@@ -22,7 +22,9 @@ public class Tester {
 			
 			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 			System.out.println(finder.getDictionary().get(wordSpelling));
-			Word word = new Word(wordSpelling, finder.getDictionary().get(new WordName(wordSpelling)));
+			WordName name = new WordName(wordSpelling);
+			
+			Word word = new Word(wordSpelling, finder.getDictionary().get(name));
 			System.out.println("Initial Syllable Count: " + word.getNumOfSyllables());
 			
 			for(int i = 0; i < word.getListOfSyllables().size(); i++){
@@ -44,8 +46,8 @@ public class Tester {
 			
 			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 			
-			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(firstWordSpelling));
-			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(secondWordSpelling));
+			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(new WordName(firstWordSpelling)));
+			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(new WordName(secondWordSpelling)));
 			
 			System.out.println(finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
 			

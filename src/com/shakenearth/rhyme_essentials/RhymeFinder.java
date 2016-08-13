@@ -61,6 +61,13 @@ public class RhymeFinder {
 			
 			WordName wordName = new WordName(components[0].toLowerCase());
 			
+			if(components[0].toLowerCase().equals("basket")){
+				
+				System.out.println("ORIGINAL HASH CODE: " + wordName.hashCode());
+				System.out.println(components[1]);
+				
+			}
+			
 			dictionary.put(wordName, components[1]);
 			
 			Word word = new Word(wordName, components[1]);

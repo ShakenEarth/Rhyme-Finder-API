@@ -18,7 +18,27 @@ public class WordName {
 	
 	public boolean equals(Object o){
 		
-		if(wordName.equals(o)){
+		if(o == null){
+			
+			return false;
+			
+		}
+		
+		if(o == this){
+			
+			return true;
+			
+		}
+		
+		if(o instanceof WordName == false){
+			
+			return false;
+			
+		}
+		
+		WordName w = (WordName) o;
+		
+		if(wordName.equals(w.getWordName())){
 			
 			return true;
 			
