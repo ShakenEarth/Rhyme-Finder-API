@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 1;
+		final int TESTING = 3;
 		
 		if(TESTING == 0){
 			
@@ -21,7 +21,6 @@ public class Tester {
 			reader.close();
 			
 			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
-			System.out.println(finder.getDictionary().get(wordSpelling));
 			WordName name = new WordName(wordSpelling);
 			
 			Word word = new Word(wordSpelling, finder.getDictionary().get(name));
@@ -91,6 +90,26 @@ public class Tester {
 					System.out.println(syllableCounts[i] + " words with " + (i+1) + " syllable.");
 					
 				}
+				
+			}
+			
+		}else if(TESTING == 3){
+			
+			Scanner reader = new Scanner(System.in);  // Reading from System.in
+			System.out.println("Enter a word to find rhymes for: ");
+			String wordSpelling = reader.nextLine();
+			reader.close();
+			
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			ArrayList<WordName> returnedWords = finder.getTrie().getWordsWithSimilarVowelStructure(new WordName(wordSpelling));
+			
+			Word originalWord = new Word(wordSpelling, finder.getDictionary().get(new WordName(wordSpelling)));
+			
+			for(int i = 0; i < returnedWords.size(); i++){
+				
+				Word secondWord = new Word(returnedWords.get(i), finder.getDictionary().get(returnedWords.get(i)));
+				
+				System.out.println(returnedWords.get(i).getWordName() + ", " + finder.findRhymeValueAndPercentileForWords(originalWord, secondWord) * 100 + "%");
 				
 			}
 			
