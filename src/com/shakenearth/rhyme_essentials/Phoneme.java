@@ -74,7 +74,7 @@ public class Phoneme implements Serializable {
 		
 		if(getPhoneme().equals("AO") || getPhoneme().equals("AW") || getPhoneme().equals("AY") || getPhoneme().equals("EY") || getPhoneme().equals("IY")
 				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW") || getPhoneme().equals("OL") || getPhoneme().equals("OR")
-				|| getPhoneme().equals("ALE") || getPhoneme().equals("EAR") ){
+				|| getPhoneme().equals("ALE") || getPhoneme().equals("EAR") || getPhoneme().equals("AR")){
 			
 			return true;
 			
