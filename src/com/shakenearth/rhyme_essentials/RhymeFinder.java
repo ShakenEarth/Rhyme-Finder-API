@@ -1,4 +1,3 @@
-
 package com.shakenearth.rhyme_essentials;
 
 import java.nio.charset.*;
@@ -35,7 +34,6 @@ public class RhymeFinder {
 		//1
 		List<String> linesOfDictionary = null;
 		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
-		//System.out.println(path);
 		try{
 			linesOfDictionary = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
 			
@@ -76,90 +74,47 @@ public class RhymeFinder {
 	 * @return Rhyme Percentile between two Words*/
 	public double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
+		//System.out.println("---------------------------------------------");
+		//System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
+		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		
-		if(anchor.getListOfSyllables().size() == satellite.getListOfSyllables().size()){
+		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
 			
 			/*rhyme percentile for words of same phonemic length uses the anchor word as the denominator. This is to keep the focus on
 			 * the anchor word which is the focus word*/
 			
-			rhymePercentile = regularRhymeValueBetweenWords(anchor, satellite);
+			rhymePercentile = regularRhymeValue(anchor, satellite);
 			
 		}else{//do ideal Rhyme Value process
 			
-			rhymePercentile = idealRhymeValueBetweenWords(anchor, satellite);
+			rhymePercentile = idealRhymeValue(anchor, satellite);
 			
 		}
+		
+		//System.out.println("Rhyme Percentile: " + rhymePercentile);
 		
 		return rhymePercentile;
-		
-	}
-	
-	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
-	 * @return Regular Rhyme Value between two Words*/
-	private double regularRhymeValueBetweenWords(Word anchor, Word satellite){
-		
-		debugPrint("REGULAR RHYME VALUE");
-		
-		boolean foundConsonantCluster = false;
-		boolean anchorOrSatellite = false; //true if anchor, false if satellite.
-		
-		double rhymeValue = 0.0;
-		
-		Word newWord = null;
-		
-		double weightTowardsWordEnd = 0.5;
-		
-		if(foundConsonantCluster == false){
-			
-			for(int s = 0; s < anchor.getListOfSyllables().size(); s++){
-				
-				rhymeValue = rhymeValue + findRVBetweenSyllables(anchor.getListOfSyllables().get(s), satellite.getListOfSyllables().get(s), true, s*weightTowardsWordEnd);
-				
-			}
-			
-		}else{
-			
-			//nothing, it'll be taken care of in the next if-else statement.
-			
-		}
-		
-		debugPrint("Rhyme Value:" + rhymeValue);
-		
-		if(foundConsonantCluster == false){
-			
-			return (double) findRhymePercentile(rhymeValue, anchor);
-			
-		}else{
-			
-			Word longerWord = null;
-			
-			if(anchorOrSatellite == true){
-				
-				return idealRhymeValueBetweenWords(newWord, satellite);
-				
-			}else{
-				
-				return idealRhymeValueBetweenWords(anchor, newWord);
-				
-			}
-			
-		}
 		
 	}
 	
 	/**This method is called when two words have differing phonemic lengths (contain the same number of phonemes).
 	 * Ideal Rhyme Value is just the rhyme value before spacing between phoneme matches is taken into account.
 	 * @return Ideal Rhyme Value between two Words*/
-	private double idealRhymeValueBetweenWords(Word anchor, Word satellite){
+	private double idealRhymeValue(Word anchor, Word satellite){
 		
 		debugPrint("IDEAL RHYME VALUE");
+		
+		debugPrint("Anchor:");
+		anchor.printListOfPhonemes();
+		debugPrint("Satellite:");
+		satellite.printListOfPhonemes();
 		
 		Word shorterWord = null;
 		Word longerWord = null;
 		
 		//these conditionals find which word is longer and which is shorter
-		if(anchor.getListOfSyllables().size() < satellite.getListOfSyllables().size()){
+		if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
 			
 			shorterWord = anchor;
 			longerWord = satellite;
@@ -186,243 +141,7 @@ public class RhymeFinder {
 		
 		int pastLayerNum = 0;
 		
-		for(int s = 0; s < shorterWord.getListOfSyllables().size(); s++){
-			
-			double weightTowardsWordEnd = 0.5;
-			
-			//firstSearch
-			if(firstSearch == true){
-				
-				debugPrint("firstSearch");
-				
-				Node startNode = new Node();
-				for(int l = 0; l < longerWord.getListOfSyllables().size(); l++){
-					
-					double RVBetweenSyllables = findRVBetweenSyllables(shorterWord.getListOfSyllables().get(s), longerWord.getListOfSyllables().get(l), true, weightTowardsWordEnd);
-					
-					if(RVBetweenSyllables > 0){
-						
-						foundStartingIndex = true;
-						
-						RVIndexPair indexSet = new RVIndexPair(l, RVBetweenSyllables);
-						
-						startNode.addIndexSet(indexSet);
-						
-					}
-					
-				}
-				
-				if(foundStartingIndex == true){
-					
-					nodesForThisLayer.add(startNode);
-					layers.add(new Layer(nodesForThisLayer));
-					firstSearch = false;
-					
-				}
-				
-				nodesForThisLayer = new ArrayList<Node>();
-				
-				debugPrint(startNode.toString());
-				
-			}else{
-				
-				for(int n = 0; n < layers.get(pastLayerNum).getNodes().size(); n++){
-					//loop for each node in the previous layer (aka every group of possibilites found)
-					
-					debugPrint("Layer: " + (pastLayerNum) + ", " + "Node: " + n);
-					
-					Node nodeBeingExamined = layers.get(pastLayerNum).getNodes().get(n);
-					
-					for(int i = 0; i < nodeBeingExamined.getIndexSets().size(); i++){
-						//loop for the index sets in the node being examined
-						
-						RVIndexPair setBeingExamined = nodeBeingExamined.getIndexSets().get(i);
-						Node childNode = new Node(); //node to be attached to the index set being examined.
-						int indexToStartAt = setBeingExamined.getIndexes().get(0);
-						debugPrint("setBeingExamined: " + setBeingExamined.toString());
-						
-						if(indexToStartAt + 1 == longerWord.getListOfSyllables().size()){
-							
-							//do nothing
-							
-						}else{
-							
-							for(int l = indexToStartAt + 1; l < longerWord.getListOfSyllables().size(); l++){
-								
-								double RVBetweenSyllables = findRVBetweenSyllables(shorterWord.getListOfSyllables().get(s), longerWord.getListOfSyllables().get(l), true, weightTowardsWordEnd);
-								
-								if(RVBetweenSyllables > 0){
-									
-									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenSyllables);
-									childNode.addIndexSet(indexSet);
-									
-								}
-								
-							}
-							
-							setBeingExamined.attachChildNode(childNode);
-							nodesForThisLayer.add(childNode);
-							debugPrint("childNode: " + childNode.toString());
-							
-						}
-						
-					}
-					
-				}
-				
-				layers.add(new Layer(nodesForThisLayer));
-				nodesForThisLayer = new ArrayList<Node>();
-				
-				pastLayerNum = pastLayerNum + 1;
-				
-			}
-			
-		}
-		
-		//find best path
-		
-		RVIndexPair bestSet = null;
-		Node nodeBeingExamined = null;
-		
-		for(int l = layers.size()-1; l >= 0; l--){ //this isn't being ran.
-			
-			for(int n = 0; n < layers.get(l).getNodes().size(); n++){
-				
-				nodeBeingExamined = layers.get(l).getNodes().get(n);
-				
-				if(nodeBeingExamined.getIndexSets().size()>0){
-					
-					nodeBeingExamined.findBestIndexSetAndSendItUp();
-					
-				}
-				
-			}
-			
-			if(l == 0 && layers.get(l).getNodes().size() == 1){
-				
-				debugPrint("LAYER IS 0");
-				
-				debugPrint("IndexSets in top node: " + nodeBeingExamined.toString());
-				
-				bestSet = nodeBeingExamined.getBestSet();
-				
-			}
-			/*
-			 * I don't have time to be down on myself
-			 * I'm on top of things
-			 * */
-			
-			debugPrint("l: " + l);
-			
-		}
-		
-		idealRhymeValue = bestSet.getRhymeValueForSet();
-		
-		double rhymeValue = idealRhymeValue;
-		
-		//subtract specing to get actual rhyme value
-		
-		debugPrint("deduction: " + findDeductionForWordIndexSet(bestSet, longerWord));
-		
-		rhymeValue = rhymeValue - findDeductionForWordIndexSet(bestSet, longerWord);
-		
-		return (double) findRhymePercentile(rhymeValue, longerWord);
-		
-	}
-	
-	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
-	 * actual Rhyme Value matches with the homophonic RV
-	 * @return Rhyme Percentile between two Words*/
-	private double findRhymePercentile(double rhymeValue, Word longerWord){
-		
-		double homophonicRhymeValue = 0.0;
-		double rhymePercentile = 0.0;
-		
-		double weightTowardsWordEnd = 0.5;
-		
-		for(int i = 0; i < longerWord.getListOfSyllables().size(); i++){
-			
-			homophonicRhymeValue = homophonicRhymeValue + 
-					findRVBetweenSyllables(longerWord.getListOfSyllables().get(i), longerWord.getListOfSyllables().get(i), true, i*weightTowardsWordEnd);
-			
-		}
-		debugPrint("RV: " + rhymeValue);
-		debugPrint("HRV: " + homophonicRhymeValue);
-		
-		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
-		
-		return rhymePercentile;
-		
-	}
-	
-	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
-	 * @return The Rhyme Value between two phonemes*/
-	private double findRVBetweenSyllables(Syllable s1, Syllable s2, boolean addWeight, double weight){
-		
-		double rhymeValue = 0.0;
-		
-		if(s1.getListOfPhonemes().size() == s2.getListOfPhonemes().size()){
-			
-			rhymeValue = regularRhymeValueBetweenSyllables(s1, s2);
-			
-		}else{
-			
-			rhymeValue = idealRhymeValueBetweenSyllables(s1, s2);
-			
-		}
-		
-		return rhymeValue + weight;
-		
-	}
-	
-	private double regularRhymeValueBetweenSyllables(Syllable s1, Syllable s2){
-			
-			double rhymeValue = 0.0;
-			
-			for(int p = 0; p < s1.getListOfPhonemes().size(); p++){
-			
-				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(s1.getListOfPhonemes().get(p), 
-						s2.getListOfPhonemes().get(p));
-			
-			}
-			
-		return rhymeValue;
-			
-	}
-	
-	private double idealRhymeValueBetweenSyllables(Syllable anchorSyllable, Syllable satelliteSyllable){
-		
-		debugPrint("IDEAL RHYME VALUE");
-		
-		Syllable shorterSyllable = null;
-		Syllable longerSyllable = null;
-		
-		//these conditionals find which word is longer and which is shorter
-		if(anchorSyllable.getListOfPhonemes().size() < satelliteSyllable.getListOfPhonemes().size()){
-			
-			shorterSyllable = anchorSyllable;
-			longerSyllable = satelliteSyllable;
-			
-		}else{
-			
-			shorterSyllable = satelliteSyllable;
-			longerSyllable = anchorSyllable;
-			
-		}
-		
-		double idealRhymeValue = 0.0;
-		
-		//start here
-		//too much hatred for too long
-		
-		boolean firstSearch = true;
-		boolean foundStartingIndex = false;
-		ArrayList<Layer> layers = new ArrayList<Layer>();
-		ArrayList<Node> nodesForThisLayer = new ArrayList<Node>();
-		
-		int pastLayerNum = 0;
-		
-		for(int s = 0; s < shorterSyllable.getListOfPhonemes().size(); s++){
+		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
 			double weightTowardsWordEnd = 0.1;
 			
@@ -432,9 +151,9 @@ public class RhymeFinder {
 				debugPrint("firstSearch");
 				
 				Node startNode = new Node();
-				for(int l = 0; l < longerSyllable.getListOfPhonemes().size(); l++){
+				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 					
-					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterSyllable.getListOfPhonemes().get(s), longerSyllable.getListOfPhonemes().get(l));
+					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
 					if(RVBetweenPhonemes > 0){
 						
@@ -477,15 +196,15 @@ public class RhymeFinder {
 						int indexToStartAt = setBeingExamined.getIndexes().get(0);
 						debugPrint("setBeingExamined: " + setBeingExamined.toString());
 						
-						if(indexToStartAt + 1 == longerSyllable.getListOfPhonemes().size()){
+						if(indexToStartAt + 1 == longerWord.getListOfPhonemes().size()){
 							
 							//do nothing
 							
 						}else{
 							
-							for(int l = indexToStartAt + 1; l < longerSyllable.getListOfPhonemes().size(); l++){
+							for(int l = indexToStartAt + 1; l < longerWord.getListOfPhonemes().size(); l++){
 								
-								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterSyllable.getListOfPhonemes().get(s), longerSyllable.getListOfPhonemes().get(l));
+								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
 								if(RVBetweenPhonemes > 0){
 									
@@ -560,17 +279,135 @@ public class RhymeFinder {
 		
 		//subtract specing to get actual rhyme value
 		
-		debugPrint("deduction: " + findDeductionForSyllableIndexSet(bestSet, longerSyllable));
+		debugPrint("deduction: " + findDeductionForIndexSet(bestSet, longerWord));
 		
-		rhymeValue = rhymeValue - findDeductionForSyllableIndexSet(bestSet, longerSyllable);
+		rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
 		
-		return (double) rhymeValue;
+		return (double) findRhymePercentile(rhymeValue, longerWord);
+		
+	}
+	
+	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
+	 * @return Regular Rhyme Value between two Words*/
+	private double regularRhymeValue(Word anchor, Word satellite){
+		
+		debugPrint("REGULAR RHYME VALUE");
+		
+		debugPrint("Anchor:");
+		anchor.printListOfPhonemes();
+		debugPrint("Satellite:");
+		satellite.printListOfPhonemes();
+		
+		boolean foundConsonantCluster = false;
+		boolean anchorOrSatellite = false; //true if anchor, false if satellite.
+		
+		double rhymeValue = 0.0;
+		
+		Word newWord = null;
+		
+		double weightTowardsWordEnd = 0.1;
+			
+		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = anchor.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = true;
+				
+		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = satellite.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = false;
+			
+		}
+		
+		if(foundConsonantCluster == false){
+			
+			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+			
+				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
+						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
+			
+			}
+			
+		}else{
+			
+			//nothing, it'll be taken care of in the next if-else statement.
+			
+		}
+		
+		debugPrint("Rhyme Value:" + rhymeValue);
+		
+		if(foundConsonantCluster == false){
+			
+			return (double) findRhymePercentile(rhymeValue, anchor);
+			
+		}else{
+			
+			Word longerWord = null;
+			
+			if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
+				
+				longerWord = satellite;
+				
+			}else{
+				
+				longerWord = anchor;
+				
+			}
+			
+			if(anchorOrSatellite == true){
+				
+				return idealRhymeValue(newWord, satellite);
+				
+			}else{
+				
+				return idealRhymeValue(anchor, newWord);
+				
+			}
+			
+		}
+		
+	}
+	
+	/**Finds the Rhyme Value that a word has with itself (homophonic Rhyme Value) and then finds the percentage that the 
+	 * actual Rhyme Value matches with the homophonic RV
+	 * @return Rhyme Percentile between two Words*/
+	private double findRhymePercentile(double rhymeValue, Word longerWord){
+		
+		double homophonicRhymeValue = 0.0;
+		double rhymePercentile = 0.0;
+		
+		double weightTowardsWordEnd = 0.1;
+		
+		for(int i = 0; i < longerWord.getListOfPhonemes().size(); i++){
+			
+			homophonicRhymeValue = homophonicRhymeValue + 
+					findRVBetweenPhonemes(longerWord.getListOfPhonemes().get(i), longerWord.getListOfPhonemes().get(i), true, i*weightTowardsWordEnd);
+			
+		}
+		debugPrint("RV: " + rhymeValue);
+		debugPrint("HRV: " + homophonicRhymeValue);
+		
+		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
+		
+		return rhymePercentile;
 		
 	}
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
 	 * @return The Rhyme Value between two phonemes*/
-	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2){
+	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			
@@ -609,7 +446,7 @@ public class RhymeFinder {
 	/**To be used with Ideal Rhyme Value. Finds the amount that should be subtracted from the Ideal Rhyme Value based on the number of 
 	 * spaces between phonemes.
 	 * @return The number to subtract from Ideal Rhyme Value*/
-	private double findDeductionForWordIndexSet(RVIndexPair bestSet, Word longerWord){
+	private double findDeductionForIndexSet(RVIndexPair bestSet, Word longerWord){
 		
 		double deduction = 0.0;
 		debugPrint(bestSet.toString());
@@ -631,52 +468,9 @@ public class RhymeFinder {
 			
 		}
 		
-		if((longerWord.getListOfSyllables().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
+		if((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
 			
-			deduction = deduction + Math.log10((longerWord.getListOfSyllables().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
-			
-		}
-		
-		for(int i = 0; i < bestSet.getIndexes().size() - 1; i++){
-			
-			int index1 = bestSet.getIndexes().get(i);
-			int index2 = bestSet.getIndexes().get(i + 1);
-			
-			debugPrint("index subtraction" + (index2 - index1-1));
-			
-			deduction = deduction + (0.25 * (index2 - index1 - 1));
-			
-		}
-		
-		return deduction;
-		
-	}
-	
-	private double findDeductionForSyllableIndexSet(RVIndexPair bestSet, Syllable longerSyllable){
-		
-		double deduction = 0.0;
-		debugPrint(bestSet.toString());
-		
-		if(bestSet.getIndexes().get(0) > 0){
-			
-			if(bestSet.getIndexes().get(0) > 1){
-				
-				deduction = deduction + Math.log10(bestSet.getIndexes().get(0));
-				
-			}else{
-				
-				deduction = deduction + 0.25;
-				
-			}
-			
-			debugPrint("first index: " + bestSet.getIndexes().get(0));
-			debugPrint("DEDUCTION FROM FRONT: " + deduction);
-			
-		}
-		
-		if((longerSyllable.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1) > 0){
-			
-			deduction = deduction + Math.log10((longerSyllable.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
+			deduction = deduction + Math.log10((longerWord.getListOfPhonemes().size() - 1) - bestSet.getIndexes().get(bestSet.getIndexes().size()-1));
 			
 		}
 		

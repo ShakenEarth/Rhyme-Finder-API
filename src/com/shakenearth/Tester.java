@@ -11,10 +11,10 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 1;
+		final int TESTING = 3;
 		
 		if(TESTING == 0){
-			
+/*			syllable testing
 			Scanner reader = new Scanner(System.in);  // Reading from System.in
 			System.out.println("Enter a word: ");
 			String wordSpelling = reader.nextLine();
@@ -31,7 +31,7 @@ public class Tester {
 				System.out.println("Syllable " + (i+1) + ": ");
 				word.getListOfSyllables().get(i).printListOfPhonemes();
 				
-			}
+			}*/
 			
 		}else if(TESTING == 1){
 			
