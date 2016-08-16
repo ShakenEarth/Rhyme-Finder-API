@@ -15,9 +15,9 @@ public class Word extends PhonemeSequence implements Serializable{
 	private String wordName = "";
 	private WordName wordNameObj = null;
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
-	private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
+	private List<Phoneme> vowelPhonemes = new ArrayList<Phoneme>();
+	//private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
-	private int numOfSyllables = 0;
 	
 	public Word(String wordName, String phonemeString){
 		
@@ -29,7 +29,7 @@ public class Word extends PhonemeSequence implements Serializable{
 			listOfPhonemes.add(new Phoneme(phonemes[i]));
 			if(listOfPhonemes.get(i).isAVowelPhoneme()){
 				
-				numOfSyllables = numOfSyllables + 1;
+				vowelPhonemes.add(listOfPhonemes.get(i));
 				
 			}
 			
@@ -80,7 +80,7 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 		}
 		
-		splitIntoSyllables();
+		//splitIntoSyllables();
 		
 	}
 	
@@ -94,7 +94,7 @@ public class Word extends PhonemeSequence implements Serializable{
 			listOfPhonemes.add(new Phoneme(phonemes[i]));
 			if(listOfPhonemes.get(i).isAVowelPhoneme()){
 				
-				numOfSyllables = numOfSyllables + 1;
+				vowelPhonemes.add(listOfPhonemes.get(i));
 				
 			}
 			
@@ -145,11 +145,11 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 		}
 		
-		splitIntoSyllables();
+		//splitIntoSyllables();
 		
 	}
 	
-	private void splitIntoSyllables(){
+/*	private void splitIntoSyllables(){
 		
 		Syllable currentSyllable = null;
 		ArrayList<Phoneme> phonemesForCurrentSyllable = new ArrayList<Phoneme>();
@@ -162,8 +162,8 @@ public class Word extends PhonemeSequence implements Serializable{
 				
 				if(i + 1 != listOfPhonemes.size()){
 						
-					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ /*if we're not reaching the end of the word and the next phoneme is a consonant 
-					follow the consonant rules to see where to split*/
+					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ if we're not reaching the end of the word and the next phoneme is a consonant 
+					follow the consonant rules to see where to split
 						
 						if(i + 2 != listOfPhonemes.size()-1){
 							
@@ -187,7 +187,7 @@ public class Word extends PhonemeSequence implements Serializable{
 								
 							}
 							
-						}else{/*make sure to include that final consonant as well*/
+						}else{make sure to include that final consonant as well
 							
 							if(listOfPhonemes.get(i + 2).isAVowelPhoneme() == false){
 								
@@ -218,7 +218,7 @@ public class Word extends PhonemeSequence implements Serializable{
 							
 						}
 						
-					}else{/*it's a vowel so you're gonna have to split*/
+					}else{it's a vowel so you're gonna have to split
 						
 						phonemesForCurrentSyllable.add(phonemeBeingExamined);
 						currentSyllable = new Syllable(phonemesForCurrentSyllable);
@@ -279,7 +279,7 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		listOfPhonemes = null;
 		
-	}
+	}*/
 	
 	/**Creates a new Word object using the spelling of the word itself as well as a list of the Phonemes that compose it.
 	 * @param wordName The spelling of the word
@@ -293,7 +293,7 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 			if(getListOfPhonemes().get(i).isAVowelPhoneme() == true){
 				
-				setNumOfSyllables(getNumOfSyllables() + 1);
+				vowelPhonemes.add(listOfPhonemes.get(i));
 				
 			}
 			
@@ -327,14 +327,6 @@ public class Word extends PhonemeSequence implements Serializable{
 	public void setListOfPhonemes(List<Phoneme> listOfPhonemes) {
 		this.listOfPhonemes = listOfPhonemes;
 	}
-	
-	public List<Syllable> getListOfSyllables() {
-		return listOfSyllables;
-	}
-
-	public void setListOfSyllables(List<Syllable> listOfSyllables) {
-		this.listOfSyllables = listOfSyllables;
-	}
 
 	public ArrayList<Point2D.Double> getWordsThisRhymesWith() {
 		return wordsThisRhymesWith;
@@ -342,14 +334,6 @@ public class Word extends PhonemeSequence implements Serializable{
 
 	public void setWordsThisRhymesWith(ArrayList<Point2D.Double> wordsThisRhymesWith) {
 		this.wordsThisRhymesWith = wordsThisRhymesWith;
-	}
-
-	public int getNumOfSyllables() {
-		return numOfSyllables;
-	}
-
-	public void setNumOfSyllables(int numOfSyllables) {
-		this.numOfSyllables = numOfSyllables;
 	}
 	
 	public String toString(){
@@ -380,6 +364,14 @@ public class Word extends PhonemeSequence implements Serializable{
 
 	public void setWordNameObj(WordName wordNameObj) {
 		this.wordNameObj = wordNameObj;
+	}
+
+	public List<Phoneme> getVowelPhonemes() {
+		return vowelPhonemes;
+	}
+
+	public void setVowelPhonemes(List<Phoneme> vowelPhonemes) {
+		this.vowelPhonemes = vowelPhonemes;
 	}
 
 }

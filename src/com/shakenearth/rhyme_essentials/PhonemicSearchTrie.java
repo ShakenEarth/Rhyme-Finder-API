@@ -30,14 +30,14 @@ public class PhonemicSearchTrie implements Trie, Serializable {
             
         }
         
-        List<Syllable> syllables = word.getListOfSyllables();
+        List<Phoneme> vowelPhonemes = word.getVowelPhonemes();
         PhonemicSearchTrieNode tempRoot = trieRoot;
         
-        for (int i = syllables.size() - 1; i >= 0; i--) {
+        for (int i = vowelPhonemes.size() - 1; i >= 0; i--) {
         	
-        	Syllable syllable = syllables.get(i);
-            tempRoot.addChild(syllable.getVowelPhoneme().getPhoneme());
-            tempRoot = tempRoot.getChild(syllable.getVowelPhoneme().getPhoneme());
+        	Phoneme phoneme = vowelPhonemes.get(i);
+            tempRoot.addChild(phoneme.getPhoneme());
+            tempRoot = tempRoot.getChild(phoneme.getPhoneme());
             
         }
         
@@ -54,9 +54,9 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 		PhonemicSearchTrieNode currentNode = trieRoot;
 		
 		
-		for(int i = word.getListOfSyllables().size()- 1; i >= 0; i--){
+		for(int i = word.getVowelPhonemes().size()- 1; i >= 0; i--){
 			
-			String phoneme = word.getListOfSyllables().get(i).getVowelPhoneme().getPhoneme();
+			String phoneme = word.getVowelPhonemes().get(i).getPhoneme();
 			ArrayList<PhonemicSearchTrieNode> children = new ArrayList<PhonemicSearchTrieNode>(currentNode.getChildrenNodes());
 			boolean foundPhoneme = false;
 			
