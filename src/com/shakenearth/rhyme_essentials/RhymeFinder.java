@@ -67,6 +67,8 @@ public class RhymeFinder {
 			
 		}
 		
+		System.out.println(getTrie());
+		
 	}
 
 	/**This method goes through the entire process of finding how well two words rhyme with one another.

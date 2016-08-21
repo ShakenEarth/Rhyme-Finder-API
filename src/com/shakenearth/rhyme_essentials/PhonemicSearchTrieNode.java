@@ -16,10 +16,11 @@ import java.util.TreeMap;
 public class PhonemicSearchTrieNode {
 	// to be set by Trie implementor
 	private boolean isFinalPhoneme;
-	private String phonemeName; //the name of this node
+	private String phonemeName = ""; //the name of this node
 	private ArrayList<WordName> wordNames; //the value this node is holding
 	private int depth;
 	private Map<String, PhonemicSearchTrieNode> childrenMap;
+	boolean visited = false; //for trie traversal
 
 	// creates empty root trie node
 	public PhonemicSearchTrieNode() {
@@ -115,7 +116,7 @@ public class PhonemicSearchTrieNode {
    	public Set<PhonemicSearchTrieNode> getChildrenNodes() {
    		// return null if there are no children
    		if (childrenMap == null) {
-   			return null;
+   			return new HashSet<PhonemicSearchTrieNode>();
    		}
         Set<PhonemicSearchTrieNode> trieNodes = new HashSet<PhonemicSearchTrieNode>();
         for (String phoneme : childrenMap.keySet()) {

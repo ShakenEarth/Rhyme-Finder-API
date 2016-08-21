@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 public class PhonemicSearchTrie implements Trie, Serializable {
 
@@ -14,6 +15,7 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 	private static final long serialVersionUID = 1L;
 	protected PhonemicSearchTrieNode trieRoot;
 	private Hashtable<WordName, String> dictionary = null;
+	int searchCounter = 0;
 	
     public PhonemicSearchTrie(Hashtable<WordName, String> dictionary) {
     	
@@ -112,8 +114,61 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 		
 		String string = "";
 		
+		dfs(trieRoot, 0);
+		System.out.println(searchCounter);
 		return string;
 		
+	}
+
+	public String dfs(PhonemicSearchTrieNode root, int layer){       
+	    //Avoid infinite loops
+		String trieString = "";
+		
+	    if(root == null) {
+	    	
+	    	return trieString;
+	    
+	    }
+	    
+	    searchCounter = searchCounter + 1;
+	    
+	    trieString = trieString + "\n";
+	    
+	    for(int i = 0; i < layer; i++){
+	    	
+	    	trieString = trieString + "\t";
+	    	
+	    }
+	    
+	    trieString = trieString + root.getPhonemeName();
+	    System.out.println(trieString);
+	    
+	    root.visited = true;
+	
+	    //for every child
+	    PhonemicSearchTrieNode[] childNodes = new PhonemicSearchTrieNode[root.getChildrenNodes().size()];
+	    root.getChildrenNodes().toArray(childNodes);
+	    for(PhonemicSearchTrieNode n: childNodes){
+	    	
+	        //if childs state is not visited then recurse
+	    	if(n != null){
+		    	
+		        if(n.visited == false){
+		        	
+		            dfs(n, layer + 1);
+		            
+		        }
+		        
+	    	}else{
+	    		layer = layer - 1;
+	    		break;
+	    		
+	    	}
+	        
+	    }
+	    
+	    return trieString;
+	    
 	}
 
 }

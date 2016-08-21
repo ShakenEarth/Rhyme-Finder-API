@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 3;
+		final int TESTING = 1;
 		
 		if(TESTING == 0){
 /*			syllable testing
@@ -112,6 +112,8 @@ public class Tester {
 				System.out.println(returnedWords.get(i).getWordName() + ", " + finder.findRhymeValueAndPercentileForWords(originalWord, secondWord) * 100 + "%");
 				
 			}
+			
+			System.out.println(returnedWords.size());
 			
 		}
 		
