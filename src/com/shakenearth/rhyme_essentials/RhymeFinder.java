@@ -1,5 +1,7 @@
 package com.shakenearth.rhyme_essentials;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -14,7 +16,7 @@ public class RhymeFinder {
 	
 	public ArrayList<Word> anchors = null, words;
 	private Hashtable<WordName, String> dictionary = null;
-	private PhonemicSearchTrie trie = null;
+	private Hashtable<String, Integer> structureReference = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
@@ -44,16 +46,22 @@ public class RhymeFinder {
 		}
 		
 		setDictionary(new Hashtable<WordName, String>());
-		setTrie(new PhonemicSearchTrie(dictionary));
+		setStructureReference(new Hashtable<String, Integer>());
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
 			String[] components = linesOfDictionary.get(l).split("  ");
 			
-			if(components.length != 3){
+			if(components.length != 2){
 				
 				System.out.println("The lines aren't separated by two spaces.");
 				break;
+				
+			}
+			
+			if(components[0].equals("#")){
+				
+				getStructureReference().put(components[1], l);
 				
 			}
 			
@@ -61,13 +69,7 @@ public class RhymeFinder {
 			
 			dictionary.put(wordName, components[1]);
 			
-			Word word = new Word(wordName, components[1]);
-			
-			getTrie().addWord(word);
-			
 		}
-		
-		System.out.println(getTrie());
 		
 	}
 
@@ -514,12 +516,12 @@ public class RhymeFinder {
 		this.dictionary = dictionary;
 	}
 
-	public PhonemicSearchTrie getTrie() {
-		return trie;
+	public Hashtable<String, Integer> getStructureReference() {
+		return structureReference;
 	}
 
-	public void setTrie(PhonemicSearchTrie trie) {
-		this.trie = trie;
+	public void setStructureReference(Hashtable<String, Integer> structureReference) {
+		this.structureReference = structureReference;
 	}
 	
 }

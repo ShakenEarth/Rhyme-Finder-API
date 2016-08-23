@@ -115,6 +115,10 @@ public class Tester {
 			
 			System.out.println(returnedWords.size());
 			
+		}else if(TESTING == 4){
+			
+			
+			
 		}
 		
 	}

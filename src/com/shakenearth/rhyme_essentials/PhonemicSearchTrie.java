@@ -13,9 +13,10 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected PhonemicSearchTrieNode trieRoot;
+	private PhonemicSearchTrieNode trieRoot;
 	private Hashtable<WordName, String> dictionary = null;
 	int searchCounter = 0;
+	String trieString = "";
 	
     public PhonemicSearchTrie(Hashtable<WordName, String> dictionary) {
     	
@@ -33,7 +34,7 @@ public class PhonemicSearchTrie implements Trie, Serializable {
         }
         
         List<Phoneme> vowelPhonemes = word.getVowelPhonemes();
-        PhonemicSearchTrieNode tempRoot = trieRoot;
+        PhonemicSearchTrieNode tempRoot = getTrieRoot();
         
         for (int i = vowelPhonemes.size() - 1; i >= 0; i--) {
         	
@@ -53,7 +54,7 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 		
 		ArrayList<WordName> similarWordNames = null;
 		Word word = new Word(wordName, dictionary.get(wordName));
-		PhonemicSearchTrieNode currentNode = trieRoot;
+		PhonemicSearchTrieNode currentNode = getTrieRoot();
 		
 		
 		for(int i = word.getVowelPhonemes().size()- 1; i >= 0; i--){
@@ -114,15 +115,15 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 		
 		String string = "";
 		
-		dfs(trieRoot, 0);
+		string = dfs(getTrieRoot(), 0);
+		System.out.println(trieString);
 		System.out.println(searchCounter);
 		return string;
 		
 	}
 
-	public String dfs(PhonemicSearchTrieNode root, int layer){       
+	public String dfs(PhonemicSearchTrieNode root, int layer){      
 	    //Avoid infinite loops
-		String trieString = "";
 		
 	    if(root == null) {
 	    	
@@ -136,12 +137,11 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 	    
 	    for(int i = 0; i < layer; i++){
 	    	
-	    	trieString = trieString + "\t";
+	    	trieString = trieString + "--";
 	    	
 	    }
 	    
 	    trieString = trieString + root.getPhonemeName();
-	    System.out.println(trieString);
 	    
 	    root.visited = true;
 	
@@ -169,6 +169,10 @@ public class PhonemicSearchTrie implements Trie, Serializable {
 	    
 	    return trieString;
 	    
+	}
+
+	public PhonemicSearchTrieNode getTrieRoot() {
+		return trieRoot;
 	}
 
 }

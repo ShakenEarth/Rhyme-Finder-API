@@ -17,10 +17,10 @@ public class PhonemicSearchTrieNode {
 	// to be set by Trie implementor
 	private boolean isFinalPhoneme;
 	private String phonemeName = ""; //the name of this node
-	private ArrayList<WordName> wordNames; //the value this node is holding
+	private ArrayList<WordName> wordNames = new ArrayList<WordName>(); //the value this node is holding
 	private int depth;
 	private Map<String, PhonemicSearchTrieNode> childrenMap;
-	boolean visited = false; //for trie traversal
+	public boolean visited = false; //for trie traversal
 
 	// creates empty root trie node
 	public PhonemicSearchTrieNode() {
@@ -156,17 +156,17 @@ public class PhonemicSearchTrieNode {
 		this.wordNames = wordNames;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder toString = new StringBuilder();
-		toString.append("nodeValue: " + phonemeName + "; isFinalChar: "
-				+ isFinalPhoneme + "; Word: "
-						+ wordNames + "; depth: " + depth + "; children: ");
-		if (childrenMap != null) {
-			return toString.append(childrenMap.keySet().toString()).toString();
-		}
-		return toString.append("no children").toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuilder toString = new StringBuilder();
+//		toString.append("nodeValue: " + phonemeName + "; isFinalChar: "
+//				+ isFinalPhoneme + "; Word: "
+//						+ wordNames + "; depth: " + depth + "; children: ");
+//		if (childrenMap != null) {
+//			return toString.append(childrenMap.keySet().toString()).toString();
+//		}
+//		return toString.append("no children").toString();
+//	}
 
 	public String getPhonemeName() {
 		return phonemeName;
