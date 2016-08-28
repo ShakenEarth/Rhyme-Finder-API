@@ -13,25 +13,17 @@ import java.util.*;
 public class Word extends PhonemeSequence implements Serializable{
 	
 	private String wordName = "";
-	private WordName wordNameObj = null;
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
-	private List<Phoneme> vowelPhonemes = new ArrayList<Phoneme>();
 	//private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	
 	public Word(String wordName, String phonemeString){
 		
 		this.wordName = wordName;
-		wordNameObj = new WordName(this.wordName);
 		String[] phonemes = phonemeString.split(" ");
 		for(int i = 0; i < phonemes.length; i++){
 			
 			listOfPhonemes.add(new Phoneme(phonemes[i]));
-			if(listOfPhonemes.get(i).isAVowelPhoneme()){
-				
-				vowelPhonemes.add(listOfPhonemes.get(i));
-				
-			}
 			
 		}
 		
@@ -83,203 +75,6 @@ public class Word extends PhonemeSequence implements Serializable{
 		//splitIntoSyllables();
 		
 	}
-	
-	public Word(WordName wordName, String phonemeString) {
-		
-		this.wordName = wordName.getWordName();
-		setWordNameObj(wordName);
-		String[] phonemes = phonemeString.split(" ");
-		for(int i = 0; i < phonemes.length; i++){
-			
-			listOfPhonemes.add(new Phoneme(phonemes[i]));
-			if(listOfPhonemes.get(i).isAVowelPhoneme()){
-				
-				vowelPhonemes.add(listOfPhonemes.get(i));
-				
-			}
-			
-		}
-		
-		for(int i = 0; i < listOfPhonemes.size(); i++){
-			
-			if(i+1 != listOfPhonemes.size()){
-				
-				if(listOfPhonemes.get(i).isAVowelPhoneme()){
-					
-					if(listOfPhonemes.get(i).getPhoneme().equals("AA") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
-						
-						listOfPhonemes.get(i).setPhoneme("AR");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("EH") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("EL");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("OW") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("OL");
-						listOfPhonemes.remove(i+1);
-						
-					}else if((listOfPhonemes.get(i).getPhoneme().equals("AO") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))
-							|| (listOfPhonemes.get(i).getPhoneme().equals("UW") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))){
-						
-						listOfPhonemes.get(i).setPhoneme("OR");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("EY") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("ALE");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("IY") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
-						
-						listOfPhonemes.get(i).setPhoneme("EAR");
-						listOfPhonemes.remove(i+1);
-						
-					}
-					
-				}
-				
-			}
-			
-		}
-		
-		//splitIntoSyllables();
-		
-	}
-	
-/*	private void splitIntoSyllables(){
-		
-		Syllable currentSyllable = null;
-		ArrayList<Phoneme> phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-		
-		for(int i = 0; i < listOfPhonemes.size(); i++){
-			
-			Phoneme phonemeBeingExamined = listOfPhonemes.get(i);
-			
-			if(phonemeBeingExamined.isAVowelPhoneme()){
-				
-				if(i + 1 != listOfPhonemes.size()){
-						
-					if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){ if we're not reaching the end of the word and the next phoneme is a consonant 
-					follow the consonant rules to see where to split
-						
-						if(i + 2 != listOfPhonemes.size()-1){
-							
-							if(phonemeBeingExamined.isALongVowelPhoneme()){ //is long phoneme, cut before next consonant.
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}else{
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								i = i + 1;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}
-							
-						}else{make sure to include that final consonant as well
-							
-							if(listOfPhonemes.get(i + 2).isAVowelPhoneme() == false){
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
-								i = i + 2;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}else{
-								
-								phonemesForCurrentSyllable.add(phonemeBeingExamined);
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+1));
-								phonemesForCurrentSyllable.add(listOfPhonemes.get(i+2));
-								i = i + 2;
-								currentSyllable = new Syllable(phonemesForCurrentSyllable);
-								listOfSyllables.add(currentSyllable);
-								phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-								currentSyllable = null;
-								
-							}
-							
-						}
-						
-					}else{it's a vowel so you're gonna have to split
-						
-						phonemesForCurrentSyllable.add(phonemeBeingExamined);
-						currentSyllable = new Syllable(phonemesForCurrentSyllable);
-						listOfSyllables.add(currentSyllable);
-						phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-						currentSyllable = null;
-						
-					}
-					
-				}else{
-					
-					phonemesForCurrentSyllable.add(phonemeBeingExamined);
-					currentSyllable = new Syllable(phonemesForCurrentSyllable);
-					listOfSyllables.add(currentSyllable);
-					phonemesForCurrentSyllable = new ArrayList<Phoneme>();
-					currentSyllable = null;
-					
-				}
-				
-			}else{
-				
-				if(i + 1 != listOfPhonemes.size()){
-					
-					if(listOfSyllables.size() != 0){
-						
-						if(listOfPhonemes.get(i+1).isAVowelPhoneme() == false){
-							
-							listOfSyllables.get(listOfSyllables.size() - 1).addPhoneme(listOfPhonemes.get(i));
-							
-						}else{
-							
-							phonemesForCurrentSyllable.add(phonemeBeingExamined);
-							
-						}
-						
-					}else{
-						
-						phonemesForCurrentSyllable.add(phonemeBeingExamined);
-						
-					}
-					
-				}else{
-						
-					phonemesForCurrentSyllable.add(phonemeBeingExamined);
-					
-				}
-				
-			}
-			
-		}
-		
-		//add leftover consonants to most recently added syllable
-		for(int i = 0; i < phonemesForCurrentSyllable.size(); i++){
-			
-			getListOfSyllables().get(getListOfSyllables().size() - 1).addPhoneme(phonemesForCurrentSyllable.get(i));
-			
-		}
-		
-		listOfPhonemes = null;
-		
-	}*/
 	
 	/**Creates a new Word object using the spelling of the word itself as well as a list of the Phonemes that compose it.
 	 * @param wordName The spelling of the word
@@ -288,16 +83,6 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		this.setWordName(wordName);
 		setListOfPhonemes(phonemes);
-		
-		for(int i = 0; i < getListOfPhonemes().size(); i++){
-			
-			if(getListOfPhonemes().get(i).isAVowelPhoneme() == true){
-				
-				vowelPhonemes.add(listOfPhonemes.get(i));
-				
-			}
-			
-		}
 		
 	}
 
@@ -358,20 +143,38 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 	}
 
-	public WordName getWordNameObj() {
-		return wordNameObj;
-	}
-
-	public void setWordNameObj(WordName wordNameObj) {
-		this.wordNameObj = wordNameObj;
-	}
-
 	public List<Phoneme> getVowelPhonemes() {
+		
+		List<Phoneme> vowelPhonemes = new ArrayList<Phoneme>();
+		
+		for(int i = 0; i < listOfPhonemes.size(); i++){
+			
+			if(listOfPhonemes.get(i).isAVowelPhoneme()){
+				
+				vowelPhonemes.add(listOfPhonemes.get(i));
+				
+			}
+			
+		}
+		
 		return vowelPhonemes;
+		
 	}
-
-	public void setVowelPhonemes(List<Phoneme> vowelPhonemes) {
-		this.vowelPhonemes = vowelPhonemes;
+	
+	public String getVowelPhonemesAsString(){
+		
+		String vowelPhonemeString = "";
+		
+		List<Phoneme> vowelPhonemes = getVowelPhonemes();
+		
+		for(int i = 0; i < vowelPhonemes.size(); i++){
+			
+			vowelPhonemeString = vowelPhonemeString + vowelPhonemes.get(i).getPhoneme() + " ";
+			
+		}
+		
+		return vowelPhonemeString;
+		
 	}
 
 }

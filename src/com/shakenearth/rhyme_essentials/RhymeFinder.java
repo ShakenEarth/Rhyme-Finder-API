@@ -14,9 +14,9 @@ public class RhymeFinder {
 	
 	public final static boolean DEBUGGING = false, SAMPLESIZE = false;
 	
-	public ArrayList<Word> anchors = null, words;
-	private Hashtable<WordName, String> dictionary = null;
+	private Hashtable<String, String> dictionary = null;
 	private Hashtable<String, Integer> structureReference = null;
+	private ArrayList<String> wordList = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
@@ -45,8 +45,9 @@ public class RhymeFinder {
 		
 		}
 		
-		setDictionary(new Hashtable<WordName, String>());
+		setDictionary(new Hashtable<String, String>());
 		setStructureReference(new Hashtable<String, Integer>());
+		setWordList(new ArrayList<String>());
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
@@ -61,13 +62,17 @@ public class RhymeFinder {
 			
 			if(components[0].equals("#")){
 				
-				getStructureReference().put(components[1], l);
+				getStructureReference().put(components[1], l - getStructureReference().size());
+				
+			}else{
+				
+				String lowerCaseWord = components[0].toLowerCase();
+				
+				getWordList().add(lowerCaseWord);
+				
+				dictionary.put(lowerCaseWord, components[1]);
 				
 			}
-			
-			WordName wordName = new WordName(components[0].toLowerCase());
-			
-			dictionary.put(wordName, components[1]);
 			
 		}
 		
@@ -78,9 +83,6 @@ public class RhymeFinder {
 	 * @return Rhyme Percentile between two Words*/
 	public double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
 		
-		//System.out.println("---------------------------------------------");
-		//System.out.println("Anchor: " + anchor.getWordName() + ", Satellite: " + satellite.getWordName());
-		double rhymeValue = 0.0;
 		double rhymePercentile = 0.0;
 		
 		if(anchor.getListOfPhonemes().size() == satellite.getListOfPhonemes().size()){
@@ -505,14 +507,14 @@ public class RhymeFinder {
 
 	/**Returns the trie of the CMU Dictionary
 	 * @return A trie of the CMU Dictionary*/
-	public Hashtable<WordName, String> getDictionary() {
+	public Hashtable<String, String> getDictionary() {
 		return dictionary;
 	}
 
 	/**
 	 * Sets this object's trie of the CMU Dictionary
 	 * @param trie a RhymeDictionaryTrie*/
-	public void setDictionary(Hashtable<WordName, String> dictionary) {
+	public void setDictionary(Hashtable<String, String> dictionary) {
 		this.dictionary = dictionary;
 	}
 
@@ -522,6 +524,14 @@ public class RhymeFinder {
 
 	public void setStructureReference(Hashtable<String, Integer> structureReference) {
 		this.structureReference = structureReference;
+	}
+
+	public ArrayList<String> getWordList() {
+		return wordList;
+	}
+
+	public void setWordList(ArrayList<String> wordList) {
+		this.wordList = wordList;
 	}
 	
 }

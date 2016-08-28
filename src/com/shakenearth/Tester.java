@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 1;
+		final int TESTING = 3;
 		
 		if(TESTING == 0){
 /*			syllable testing
@@ -45,8 +45,8 @@ public class Tester {
 			
 			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
 			
-			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(new WordName(firstWordSpelling)));
-			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(new WordName(secondWordSpelling)));
+			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(firstWordSpelling));
+			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(secondWordSpelling));
 			
 			System.out.println(finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
 			
@@ -101,23 +101,36 @@ public class Tester {
 			reader.close();
 			
 			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
-			ArrayList<WordName> returnedWords = finder.getTrie().getWordsWithSimilarVowelStructure(new WordName(wordSpelling));
 			
-			Word originalWord = new Word(wordSpelling, finder.getDictionary().get(new WordName(wordSpelling)));
+			Word firstWord = new Word(wordSpelling, finder.getDictionary().get(wordSpelling.toLowerCase()));
+			String vowelString = firstWord.getVowelPhonemesAsString();
+			System.out.println(vowelString);
+			int beginningIndex = finder.getStructureReference().get(vowelString);
+			boolean nextStructFound = false;
+			System.out.println(beginningIndex);
 			
-			for(int i = 0; i < returnedWords.size(); i++){
+			int currentIndex = beginningIndex;
+			
+			while(nextStructFound == false){
 				
-				Word secondWord = new Word(returnedWords.get(i), finder.getDictionary().get(returnedWords.get(i)));
+				currentIndex = currentIndex + 1;
 				
-				System.out.println(returnedWords.get(i).getWordName() + ", " + finder.findRhymeValueAndPercentileForWords(originalWord, secondWord) * 100 + "%");
+				String currentWord = finder.getWordList().get(currentIndex);
+				Word newWord = new Word(currentWord, finder.getDictionary().get(currentWord));
+				
+				if(newWord.getVowelPhonemesAsString().equals(vowelString) == false){
+					
+					break;
+					
+				}else{
+					
+					Word secondWord = new Word(currentWord, finder.getDictionary().get(currentWord));
+					
+					System.out.println(currentWord + ", " + finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
+					
+				}
 				
 			}
-			
-			System.out.println(returnedWords.size());
-			
-		}else if(TESTING == 4){
-			
-			
 			
 		}
 		
