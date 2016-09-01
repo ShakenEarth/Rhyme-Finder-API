@@ -14,7 +14,6 @@ public class Word extends PhonemeSequence implements Serializable{
 	
 	private String wordName = "";
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
-	//private List<Syllable> listOfSyllables = new ArrayList<Syllable>();
 	private ArrayList<Point2D.Double> wordsThisRhymesWith = new ArrayList<Point2D.Double>();
 	
 	public Word(String wordName, String phonemeString){
