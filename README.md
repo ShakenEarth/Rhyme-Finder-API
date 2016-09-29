@@ -1,4 +1,4 @@
-# Pronunciation Similarity Algorithm
+# Pronunciation Similarity Algorithm (Version 1)
 
 The algorithm uses the [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) which contains the spelling of each word in English as well as its [ARPAbet](https://en.wikipedia.org/wiki/Arpabet) translation.
 
