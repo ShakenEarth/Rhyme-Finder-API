@@ -29,8 +29,21 @@ Finding pronunciation similarity between words that have the same number of phon
 
 Let’s choose two words that have the same phonemic length and compare them to one another: *upright* [AH P R AY T] and *uptight* [AH P T AY T].
 
+#### Step 1
+
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
 | **Phonemes of Word 1** | AH | P | R | AY | T |  |
 | **Phonemes of Word 2** | AH | P | T | AY | T |  |
 | **Points Awarded** | 5 | 1 | 0.5 | 5 | 1 | **Total RV: 12.5** |
+ 
+#### Step 2
+|  |  |  |  |  |  |  |
+| :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
+| **Phonemes of Word 1** | AH | P | R | AY | T |  |
+| **Phonemes of Word 1** | AH | P | R | AY | T |  |
+| **Points Awarded** | 5 | 1 | 1 | 5 | 1 | **Total HRV: 13** |
+(note that performing this same operation on *uptight* would result in the same total)
+ 
+#### Step 3
+(12.5/13)*100% = 96%
