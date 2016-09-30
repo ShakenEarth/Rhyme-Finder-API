@@ -51,5 +51,7 @@ Let’s choose two words that have the same phonemic length and compare them to 
 ## Pronunciation Similarity Between Words of Differing Phonemic Length
 
 The process of finding pronunciation similarity between two words of differing phonemic lengths is a bit trickier since simple iteration through the phonemes of a word is simply not enough to gain an accurate picture of whether or not two words have similarity in pronunciation. While the last two steps may remain the same, it is necessary to test a variety of combinations and then give the benefit of the doubt to the combination with the highest Rhyme Value output. This process can be rather hard to explain, so I’ll try and explain by example first:
+
 Let’s say we’re comparing the words *shifter* (SH IH F T ER) and *ship* (SH IH P). (These were chosen because they only differ in size by two phonemes which makes them an easy example to showcase). First, we must identify which word is phonemically longer and which is shorter. In this case *ship* is the shorter word and *shifter* is the longer word.
+
 Once we have identified which word is shorter and which is longer, we then compare the first phoneme of the shorter word to every phoneme in the longer word and then store the positions in the longer words where there were points awarded:
