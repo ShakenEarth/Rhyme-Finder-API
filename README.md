@@ -55,3 +55,13 @@ The process of finding pronunciation similarity between two words of differing p
 Let’s say we’re comparing the words *shifter* (SH IH F T ER) and *ship* (SH IH P). (These were chosen because they only differ in size by two phonemes which makes them an easy example to showcase). First, we must identify which word is phonemically longer and which is shorter. In this case *ship* is the shorter word and *shifter* is the longer word.
 
 Once we have identified which word is shorter and which is longer, we then compare the first phoneme of the shorter word to every phoneme in the longer word and then store the positions in the longer words where there were points awarded:
+
+| **Index of Longer Word** | **Phonemes of Longer Word** | **Points Awarded for Comparison** |
+| :--: | :--: | :--: |
+| 0   | SH | 1 |
+| 1   | IH | 0 |
+| 2   | F | 0.5 |
+| 3   | T | 0.5 |
+| 4   | ER | 0.5 |
+
+Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
