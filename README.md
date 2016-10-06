@@ -65,3 +65,5 @@ Once we have identified which word is shorter and which is longer, we then compa
 | 4   | ER | 0.5 |
 
 Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
+
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/1.png "Stage 1")
