@@ -1,4 +1,6 @@
-# Pronunciation Similarity Algorithm (Version 1)
+# Pronunciation Similarity Algorithm (Version 1.x)
+
+**The information that follows may not match up with the functionality of the code contained in this branch since this is an experimental branch created with the intention of adding phonetic features for comparison in an effort to make the algorithm more nuanced.**
 
 The algorithm uses the [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) which contains the spelling of each word in English as well as its [ARPAbet](https://en.wikipedia.org/wiki/Arpabet) translation.
 
