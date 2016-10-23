@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class Phoneme implements Serializable {
 	
-	private boolean isAVowelPhoneme;
+	private boolean isAVowelPhoneme; //this needs to be replaced by some sort of a way of keeping track of phonetic features.
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	

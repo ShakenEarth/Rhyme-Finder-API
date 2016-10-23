@@ -268,10 +268,6 @@ public class RhymeFinder {
 				bestSet = nodeBeingExamined.getBestSet();
 				
 			}
-			/*
-			 * I don't have time to be down on myself
-			 * I'm on top of things
-			 * */
 			
 			debugPrint("l: " + l);
 			
@@ -294,6 +290,9 @@ public class RhymeFinder {
 	}
 	
 	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
+	 * 1. Iterate through each phoneme in one of the words and compare it to its corresponding phoneme in the other word, adding the resulting points awarded to the total Rhyme Value along the way.
+	 * 2. Find Homophonic Rhyme Value (as previously defined)
+	 * 3. Divide Rhyme Value by Homophonic Rhyme Value and multiply by 100
 	 * @return Regular Rhyme Value between two Words*/
 	private double regularRhymeValue(Word anchor, Word satellite){
 		
