@@ -2,6 +2,7 @@
 package com.shakenearth.rhyme_essentials;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -11,7 +12,7 @@ import java.io.Serializable;
  */
 public class Phoneme implements Serializable {
 	
-	private boolean isAVowelPhoneme; //this needs to be replaced by some sort of a way of keeping track of phonetic features.
+	private ArrayList<String> features = new ArrayList<String>(); //this needs to be replaced by some sort of a way of keeping track of phonetic features.
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
@@ -29,14 +30,14 @@ public class Phoneme implements Serializable {
 			
 		}
 		
-		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
+		/*if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
 				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
 				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("OW")
 				|| this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
 			
 			setIsAVowelPhoneme(true);
 			
-		}
+		} change this part to some way of importing features*/
 		
 	}
 
@@ -50,7 +51,7 @@ public class Phoneme implements Serializable {
 	public void setPhoneme(String phoneme) {
 		this.phoneme = phoneme;
 		
-		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
+		/*if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
 				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
 				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
 				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")
@@ -59,15 +60,16 @@ public class Phoneme implements Serializable {
 			
 			setIsAVowelPhoneme(true);
 			
-		}
+		} change this part to some way of importing features*/
+		
 	}
 
-	public boolean isAVowelPhoneme() {
-		return isAVowelPhoneme;
+	public ArrayList<String> getFeatures() {
+		return features;
 	}
 	
-	public void setIsAVowelPhoneme(boolean isAVowel) {
-		this.isAVowelPhoneme = isAVowel;
+	public void setFeatures(ArrayList<String> features) {
+		this.features = features;
 	}
 	
 	public boolean isALongVowelPhoneme() {
