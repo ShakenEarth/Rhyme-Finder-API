@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Phoneme implements Serializable {
 	
-	private ArrayList<String> features = new ArrayList<String>(); //this needs to be replaced by some sort of a way of keeping track of phonetic features.
+	private ArrayList<Integer> features = new ArrayList<Integer>(); //this needs to be replaced by some sort of a way of keeping track of phonetic features.
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
 	
@@ -64,11 +64,11 @@ public class Phoneme implements Serializable {
 		
 	}
 
-	public ArrayList<String> getFeatures() {
+	public ArrayList<Integer> getFeatures() {
 		return features;
 	}
 	
-	public void setFeatures(ArrayList<String> features) {
+	public void setFeatures(ArrayList<Integer> features) {
 		this.features = features;
 	}
 	
