@@ -17,27 +17,41 @@ public class RhymeFinder {
 	private Hashtable<String, String> dictionary = null;
 	private Hashtable<String, Integer> structureReference = null;
 	private ArrayList<String> wordList = null;
+	private Hashtable<String, ArrayList<Integer>> features = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
 	 *@param pathToDict The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.
 	 */
-	public RhymeFinder(String pathToDict){
+	public RhymeFinder(String pathToDict, String pathToFeatureSet){
 		
-		buildWords(pathToDict);
+		buildWords(pathToDict, pathToFeatureSet);
 		
 	}
 	
 	/**
 	 * builds the list of Word objects that can be compared to one another.
 	 * @param path The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.*/
-	public void buildWords(String path){ 
+	public void buildWords(String path, String featureSetPath){ 
 		
 		//1
 		List<String> linesOfDictionary = null;
+		List<String> linesOfFeatureSet = null;
 		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
 		try{
+			
 			linesOfDictionary = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
+			
+		}catch(Exception e){
+			
+			debugPrint("there was an exception");
+		
+		}
+		
+		//loads lines of feature set
+		try{
+			
+			linesOfFeatureSet = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
 			
 		}catch(Exception e){
 			
@@ -48,6 +62,7 @@ public class RhymeFinder {
 		setDictionary(new Hashtable<String, String>());
 		setStructureReference(new Hashtable<String, Integer>());
 		setWordList(new ArrayList<String>());
+		setFeatures(new Hashtable<String, ArrayList<Integer>>());
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
@@ -73,6 +88,31 @@ public class RhymeFinder {
 				dictionary.put(lowerCaseWord, components[1]);
 				
 			}
+			
+		}
+		
+		//import phonemes and their features
+		for(int l = 0; l < linesOfFeatureSet.size(); l++){
+			
+			String[] components = linesOfFeatureSet.get(l).split("  ");
+			
+			if(components.length != 2){
+				
+				System.out.println("The lines aren't separated by two spaces.");
+				break;
+				
+			}
+			
+			String[] features = components[1].split(" ");
+			ArrayList<Integer> featureInts = new ArrayList<Integer>();
+			
+			for(int i = 0; i < features.length; i++){
+				
+				featureInts.add(Integer.parseInt(features[i]));
+				
+			}
+			
+			getFeatures().put(components[0], featureInts);
 			
 		}
 		
@@ -531,6 +571,14 @@ public class RhymeFinder {
 
 	public void setWordList(ArrayList<String> wordList) {
 		this.wordList = wordList;
+	}
+
+	public Hashtable<String, ArrayList<Integer>> getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(Hashtable<String, ArrayList<Integer>> features) {
+		this.features = features;
 	}
 	
 }
