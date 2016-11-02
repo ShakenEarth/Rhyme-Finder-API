@@ -30,48 +30,11 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 			if(i+1 != listOfPhonemes.size()){
 				
-				if(listOfPhonemes.get(i).isAVowelPhoneme()){
-					
-					if(listOfPhonemes.get(i).getPhoneme().equals("AA") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
-						
-						listOfPhonemes.get(i).setPhoneme("AR");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("EH") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("EL");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("OW") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("OL");
-						listOfPhonemes.remove(i+1);
-						
-					}else if((listOfPhonemes.get(i).getPhoneme().equals("AO") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))
-							|| (listOfPhonemes.get(i).getPhoneme().equals("UW") && listOfPhonemes.get(i+1).getPhoneme().equals("R"))){
-						
-						listOfPhonemes.get(i).setPhoneme("OR");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("EY") && listOfPhonemes.get(i+1).getPhoneme().equals("L")){
-						
-						listOfPhonemes.get(i).setPhoneme("ALE");
-						listOfPhonemes.remove(i+1);
-						
-					}else if(listOfPhonemes.get(i).getPhoneme().equals("IY") && listOfPhonemes.get(i+1).getPhoneme().equals("R")){
-						
-						listOfPhonemes.get(i).setPhoneme("EAR");
-						listOfPhonemes.remove(i+1);
-						
-					}
-					
-				}
+				
 				
 			}
 			
 		}
-		
-		//splitIntoSyllables();
 		
 	}
 	

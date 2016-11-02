@@ -17,7 +17,7 @@ public class RhymeFinder {
 	private Hashtable<String, String> dictionary = null;
 	private Hashtable<String, Integer> structureReference = null;
 	private ArrayList<String> wordList = null;
-	private Hashtable<String, ArrayList<Integer>> features = null;
+	private static Hashtable<String, ArrayList<Integer>> features = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
@@ -454,37 +454,42 @@ public class RhymeFinder {
 	 * @return The Rhyme Value between two phonemes*/
 	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
-		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+		ArrayList<Integer> p1Features = p1.getFeatures();
+		ArrayList<Integer> p2Features = p2.getFeatures();
+		ArrayList<Integer> biggerList = null;
+		
+		if(p1Features.size() >= p2Features.size()){
 			
-			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
-			
-			if(p1.isEqualTo(p2)){
-				
-				return 5.0 - 1.5*stressDifference;
-				
-			}else{
-				
-				return 2.5 - 1.5*stressDifference;
-				
-			}
-			
-		}else if(!p1.isAVowelPhoneme() && !p2.isAVowelPhoneme()){
-			
-			if(p1.isEqualTo(p2)){
-				
-				return 1.0;
-				
-			}else{
-				
-				return 0.5;
-				
-			}
+			biggerList = p1Features;
 			
 		}else{
 			
-			return 0.0;
+			biggerList = p2Features;
 			
 		}
+		
+		ArrayList<Integer> commonFeatures = new ArrayList<Integer>(p1Features);
+		commonFeatures.retainAll(p2Features);
+		
+		int difference = biggerList.size() - commonFeatures.size();
+		
+		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+			
+			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
+			return 5.0 - (0.75*difference) - stressDifference;
+			//TODO
+			
+		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
+			
+			//TODO
+			
+		}else{
+			
+			//TODO
+			
+		}
+		
+		return 0;
 		
 	}
 	
@@ -573,12 +578,12 @@ public class RhymeFinder {
 		this.wordList = wordList;
 	}
 
-	public Hashtable<String, ArrayList<Integer>> getFeatures() {
+	public static Hashtable<String, ArrayList<Integer>> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Hashtable<String, ArrayList<Integer>> features) {
-		this.features = features;
+	public static void setFeatures(Hashtable<String, ArrayList<Integer>> featureList) {
+		features = featureList;
 	}
 	
 }
