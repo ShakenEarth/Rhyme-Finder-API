@@ -1,4 +1,4 @@
-# Pronunciation Similarity Algorithm (Version 1.x)
+# Pronunciation Similarity Algorithm (Version 1.0.x)
 
 **The information that follows may not match up with the functionality of the code contained in this branch since this is an experimental branch created with the intention of adding phonetic features for comparison in an effort to make the algorithm more nuanced.**
 
