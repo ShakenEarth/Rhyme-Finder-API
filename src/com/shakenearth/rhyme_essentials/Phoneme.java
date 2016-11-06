@@ -32,7 +32,6 @@ public class Phoneme implements Serializable {
 			
 		}
 		
-		System.out.println("features in RhymeFinder: " + RhymeFinder.getFeatures());
 		features = RhymeFinder.getFeatures().get(phoneme);
 		
 	}
