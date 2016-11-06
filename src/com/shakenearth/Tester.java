@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 3;
+		final int TESTING = 1;
 		
 		if(TESTING == 0){
 /*			syllable testing
@@ -33,7 +33,7 @@ public class Tester {
 				
 			}*/
 			
-		}else if(TESTING == 1){
+		}else if(TESTING == 1){ //comparing two words
 			
 			Scanner reader = new Scanner(System.in);
 			System.out.println("Enter first word: ");
@@ -43,7 +43,8 @@ public class Tester {
 			String secondWordSpelling = reader.nextLine();
 			reader.close();
 			
-			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
+					"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
 			
 			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(firstWordSpelling));
 			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(secondWordSpelling));
@@ -93,14 +94,15 @@ public class Tester {
 				
 			}
 			
-		}else if(TESTING == 3){
+		}else if(TESTING == 3){ //finding rhyming words
 			
 			Scanner reader = new Scanner(System.in);  // Reading from System.in
 			System.out.println("Enter a word to find rhymes for: ");
 			String wordSpelling = reader.nextLine();
 			reader.close();
 			
-			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
+					"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
 			
 			Word firstWord = new Word(wordSpelling, finder.getDictionary().get(wordSpelling.toLowerCase()));
 			String vowelString = firstWord.getVowelPhonemesAsString();

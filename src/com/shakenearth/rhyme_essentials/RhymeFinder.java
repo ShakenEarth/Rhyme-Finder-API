@@ -51,7 +51,7 @@ public class RhymeFinder {
 		//loads lines of feature set
 		try{
 			
-			linesOfFeatureSet = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
+			linesOfFeatureSet = Files.readAllLines(Paths.get(featureSetPath), Charset.defaultCharset());
 			
 		}catch(Exception e){
 			
@@ -95,6 +95,7 @@ public class RhymeFinder {
 		for(int l = 0; l < linesOfFeatureSet.size(); l++){
 			
 			String[] components = linesOfFeatureSet.get(l).split("  ");
+			//System.out.println(components[0] + " " + components[1]);
 			
 			if(components.length != 2){
 				
@@ -468,6 +469,7 @@ public class RhymeFinder {
 			
 		}
 		
+		//contains just the features that the phonemes share
 		ArrayList<Integer> commonFeatures = new ArrayList<Integer>(p1Features);
 		commonFeatures.retainAll(p2Features);
 		
@@ -477,19 +479,59 @@ public class RhymeFinder {
 			
 			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
 			return 5.0 - (0.75*difference) - stressDifference;
-			//TODO
 			
 		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
 			
-			//TODO
+			int commonFeaturesSize = commonFeatures.size();
+			double specialDifference = 0; /*this is used for keeping track of differences that need different values to be subtracted
+			as opposed to the standard amount*/
 			
-		}else{
+			if(commonFeatures.contains(9) == false){ //difference in voicing
+				
+				specialDifference = specialDifference + 0.1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
 			
-			//TODO
+			if(commonFeatures.contains(2)){ //difference in sonority
+				
+				specialDifference = specialDifference + 1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
+			
+			difference = biggerList.size() - commonFeaturesSize;
+			
+			return 2.0 - (0.25*difference) - specialDifference;
+			
+		}else{ /*this is a bit different because we're starting at the assumption that they won't have much in common so it's structured
+		for rewarding common features rather than punishing for differences*/
+			
+			//run same sonority and voicing tests but perhaps with different amounts rewarded for each
+			
+			int commonFeaturesSize = commonFeatures.size();
+			double specialDifference = 0; /*this is used for keeping track of differences that need different values to be subtracted
+			as opposed to the standard amount*/
+			
+			if(commonFeatures.contains(9) == false){ //difference in voicing
+				
+				specialDifference = specialDifference + 0.1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
+			
+			if(commonFeatures.contains(2)){ //difference in sonority
+				
+				specialDifference = specialDifference + 1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
+			
+			difference = biggerList.size() - commonFeaturesSize;
+			
+			return 0.1*commonFeaturesSize + specialDifference;
 			
 		}
-		
-		return 0;
 		
 	}
 	
