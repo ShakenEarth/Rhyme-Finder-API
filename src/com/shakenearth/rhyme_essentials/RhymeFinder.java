@@ -447,6 +447,12 @@ public class RhymeFinder {
 		
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
 		
+		if(rhymePercentile < 0){
+			
+			rhymePercentile = 0;
+			
+		}
+		
 		return rhymePercentile;
 		
 	}
