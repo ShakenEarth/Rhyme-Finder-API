@@ -478,7 +478,7 @@ public class RhymeFinder {
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			
 			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
-			return 5.0 - (0.75*difference) - stressDifference;
+			return 5.0 - (1*difference) - stressDifference;
 			
 		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
 			
@@ -486,23 +486,29 @@ public class RhymeFinder {
 			double specialDifference = 0; /*this is used for keeping track of differences that need different values to be subtracted
 			as opposed to the standard amount*/
 			
-			if(commonFeatures.contains(9) == false){ //difference in voicing
+			if(p1.getPhoneme().equals(p2.getPhoneme()) == false){ /*This is here so that when homophonic rhyme value is being 
+			calculated, the homophonic rhyme value won't differ according to feature sets and thus rhyme percentile won't be 
+			altered based on the order in which the words were entered*/
+					
+				if(commonFeatures.contains(9) == false){ //difference in voicing
+					
+					specialDifference = specialDifference + 0.1;
+					commonFeaturesSize = commonFeaturesSize - 1;
+					
+				}
 				
-				specialDifference = specialDifference + 0.1;
-				commonFeaturesSize = commonFeaturesSize - 1;
-				
-			}
-			
-			if(commonFeatures.contains(2)){ //difference in sonority
-				
-				specialDifference = specialDifference + 1;
-				commonFeaturesSize = commonFeaturesSize - 1;
+				if(commonFeatures.contains(2)){ //difference in sonority
+					
+					specialDifference = specialDifference + 1;
+					commonFeaturesSize = commonFeaturesSize - 1;
+					
+				}
 				
 			}
 			
 			difference = biggerList.size() - commonFeaturesSize;
 			
-			return 2.0 - (0.25*difference) - specialDifference;
+			return 2.0 - (0.15*difference) - specialDifference;
 			
 		}else{ /*this is a bit different because we're starting at the assumption that they won't have much in common so it's structured
 		for rewarding common features rather than punishing for differences*/
