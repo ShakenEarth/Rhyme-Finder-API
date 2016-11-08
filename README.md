@@ -4,14 +4,14 @@
 
 The algorithm uses the [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) which contains the spelling of each word in English as well as its [ARPAbet](https://en.wikipedia.org/wiki/Arpabet) translation.
 
-There are two cases encountered when comparing two words for pronunciation similarity: either they have the same phonemic length (that is, they are composed of the same number of phonemes) or they have differing phonemic lengths. In either of these cases, the algorithm awards the same number of pronunciation “points” between phonemes:
+There are two cases encountered when comparing two words for pronunciation similarity: either they have the same phonemic length (that is, they are composed of the same number of phonemes) or they have differing phonemic lengths. In either of these cases, the algorithm awards pronunciation “points” between phonemes based on how many [distinctive features](https://en.wikipedia.org/wiki/Distinctive_feature) two phonemes share with one another. All features are treated the same when calculating how many points are to be awarded except for voicing and sonority. The reasoning for treating voicing differently is that when comparing two phonemes that are identical with the exception of their voicing, voicing doesn't make too much of a difference for the rest of the articulation. Thus, a smaller deduction is made when there's a voicing difference. The reasoning for treating sonority differently is that sonorous consonants in English can be nuclei for syllables. Considering sonority separately is also important when comparing a vowel (which we define as a phoneme that at the very least is syllabic, sonorous, continuous, an approximant, and voiced) and a consonant.
+The measurements for comparing two phonemes are as follows:
 
-| **Case**      | **Number of Points Awarded** |
+| **Comparison Case**      | **Number of Points Awarded** |
 | :-------------: |:-------------:         |
-| Identical Vowel Phonemes        | 5         |
-| Different Vowel Phonemes        | 1               |
-| Identical Consonant Phonemes   | 1              |
-| Different Consonant Phonemes   | 0.5               |
+| Vowel and Vowel        | 5 - (number of features they don't share) - (difference in stress)         |
+| Consonant and Consonant   | 2 - (0.15 * (number of features they don't share)) - (0.1 if they both aren't voiced) - (1 if they both aren't sonorous)              |
+| Vowel and Consonant   | (0.1 * (the number of features that they have in common)) + (0.1 if they both are voiced) + (1 if they're both sonorous)               |
 
 ### Some Basic Definitions
 
