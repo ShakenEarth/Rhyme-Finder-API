@@ -60,11 +60,11 @@ Once we have identified which word is shorter and which is longer, we then compa
 
 | **Index of Longer Word** | **Phonemes of Longer Word** | **Points Awarded for Comparison** |
 | :--: | :--: | :--: |
-| 0   | SH | 1 |
-| 1   | IH | 0 |
-| 2   | F | 0.5 |
-| 3   | T | 0.5 |
-| 4   | ER | 0.5 |
+| 0   | SH | 2 |
+| 1   | IH | 0.1 |
+| 2   | F | 1.55 |
+| 3   | T | 1.4 |
+| 4   | ER | 0.3 |
 
 Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
 
