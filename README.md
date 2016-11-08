@@ -29,26 +29,26 @@ Finding pronunciation similarity between words that have the same number of phon
 
 ### Example:
 
-Let’s choose two words that have the same phonemic length and compare them to one another: *upright* [AH P R AY T] and *uptight* [AH P T AY T].
+Let’s choose two words that have the same phonemic length and compare them to one another: *upright* [AH0 P R AY1 T] and *uptight* [AH0 P T AY1 T]. (**note:** numbers next to vowel phonemes indicate stress)
 
 #### Step 1
 
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Phonemes of Word 2** | AH | P | T | AY | T |  |
-| **Points Awarded** | 5 | 1 | 0.5 | 5 | 1 | **Total RV: 12.5** |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
+| **Phonemes of Word 2** | AH0 | P | T | AY1 | T |  |
+| **Points Awarded** | 5 | 2 | 0.45 | 5 | 2 | **Total RV: 14.45** |
  
 #### Step 2
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
 | **Phonemes of Word 1** | AH | P | R | AY | T |  |
 | **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Points Awarded** | 5 | 1 | 1 | 5 | 1 | **Total HRV: 13** |
+| **Points Awarded** | 5 | 2 | 2 | 5 | 2 | **Total HRV: 16** |
 (note that performing this same operation on *uptight* would result in the same total)
  
 #### Step 3
-(12.5/13)*100% = 96%
+(14.45/16)*100% = 90%
 
 ## Pronunciation Similarity Between Words of Differing Phonemic Length
 
