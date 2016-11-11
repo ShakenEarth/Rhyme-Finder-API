@@ -253,7 +253,7 @@ public class RhymeFinder {
 								
 								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
-								if(RVBetweenPhonemes > 0){
+								if(RVBetweenPhonemes > 1){
 									
 									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 									childNode.addIndexSet(indexSet);
