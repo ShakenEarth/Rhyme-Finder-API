@@ -95,4 +95,4 @@ Once the initial layer has been reached, it would make sense to deduce points fr
 
 ![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.jpg "5")
 
-The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 13. The Rhyme Percentile is then found and it comes out to be (7.1/16)*100% = 44%
+The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 16. The Rhyme Percentile is then found and it comes out to be (7.1/16)*100% = 44%
