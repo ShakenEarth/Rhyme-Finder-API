@@ -11,7 +11,7 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
-		final int TESTING = 0;
+		final int TESTING = 0; //0 for comparing two words and/or phrases, 1 for finding rhyming words for a specific word or phrase.
 		
 		if(TESTING == 0){ //comparing two words and/or phrases
 			

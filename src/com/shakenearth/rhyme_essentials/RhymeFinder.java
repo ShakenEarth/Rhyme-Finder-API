@@ -202,7 +202,7 @@ public class RhymeFinder {
 					
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
-					if(RVBetweenPhonemes > 0){
+					if(RVBetweenPhonemes > 1){
 						
 						foundStartingIndex = true;
 						
@@ -444,7 +444,7 @@ public class RhymeFinder {
 		}
 		debugPrint("RV: " + rhymeValue);
 		debugPrint("HRV: " + homophonicRhymeValue);
-		
+		System.out.println(rhymeValue + ", " + homophonicRhymeValue);
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
 		
 		if(rhymePercentile < 0){
