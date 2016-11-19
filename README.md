@@ -45,8 +45,8 @@ Let’s choose two words that have the same phonemic length and compare them to 
 #### Step 2
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
 | **Points Awarded** | 5 | 2 | 2 | 5 | 2 | **Total HRV: 16** |
 (note that performing this same operation on *uptight* would result in the same total)
  
@@ -64,10 +64,10 @@ Once we have identified which word is shorter and which is longer, we then compa
 | **Index of Longer Word** | **Phonemes of Longer Word** | **Points Awarded for Comparison** |
 | :--: | :--: | :--: |
 | 0   | SH | 2 |
-| 1   | IH | 0.1 |
+| 1   | IH1 | 0.1 |
 | 2   | F | 1.55 |
 | 3   | T | 1.4 |
-| 4   | ER | 0.3 |
+| 4   | ER0 | 0.3 |
 
 Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
 
