@@ -17,27 +17,41 @@ public class RhymeFinder {
 	private Hashtable<String, String> dictionary = null;
 	private Hashtable<String, Integer> structureReference = null;
 	private ArrayList<String> wordList = null;
+	private static Hashtable<String, ArrayList<Integer>> features = null;
 	
 	/**
 	 * Creates a new RhymeFinder object.
 	 *@param pathToDict The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.
 	 */
-	public RhymeFinder(String pathToDict){
+	public RhymeFinder(String pathToDict, String pathToFeatureSet){
 		
-		buildWords(pathToDict);
+		buildWords(pathToDict, pathToFeatureSet);
 		
 	}
 	
 	/**
 	 * builds the list of Word objects that can be compared to one another.
 	 * @param path The path to the CMU Dictionary (or any stylistic equivalent) to be loaded.*/
-	public void buildWords(String path){ 
+	public void buildWords(String path, String featureSetPath){ 
 		
 		//1
 		List<String> linesOfDictionary = null;
+		List<String> linesOfFeatureSet = null;
 		//loads all the lines in the CMU Phonemic Dictionary. Each line contains a word and its phonemic translation.
 		try{
+			
 			linesOfDictionary = Files.readAllLines(Paths.get(path), Charset.defaultCharset());
+			
+		}catch(Exception e){
+			
+			debugPrint("there was an exception");
+		
+		}
+		
+		//loads lines of feature set
+		try{
+			
+			linesOfFeatureSet = Files.readAllLines(Paths.get(featureSetPath), Charset.defaultCharset());
 			
 		}catch(Exception e){
 			
@@ -48,6 +62,7 @@ public class RhymeFinder {
 		setDictionary(new Hashtable<String, String>());
 		setStructureReference(new Hashtable<String, Integer>());
 		setWordList(new ArrayList<String>());
+		setFeatures(new Hashtable<String, ArrayList<Integer>>());
 		
 		for(int l = 0; l < linesOfDictionary.size(); l++){
 			
@@ -73,6 +88,32 @@ public class RhymeFinder {
 				dictionary.put(lowerCaseWord, components[1]);
 				
 			}
+			
+		}
+		
+		//import phonemes and their features
+		for(int l = 0; l < linesOfFeatureSet.size(); l++){
+			
+			String[] components = linesOfFeatureSet.get(l).split("  ");
+			//System.out.println(components[0] + " " + components[1]);
+			
+			if(components.length != 2){
+				
+				System.out.println("The lines aren't separated by two spaces.");
+				break;
+				
+			}
+			
+			String[] features = components[1].split(" ");
+			ArrayList<Integer> featureInts = new ArrayList<Integer>();
+			
+			for(int i = 0; i < features.length; i++){
+				
+				featureInts.add(Integer.parseInt(features[i]));
+				
+			}
+			
+			getFeatures().put(components[0], featureInts);
 			
 		}
 		
@@ -161,7 +202,7 @@ public class RhymeFinder {
 					
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
-					if(RVBetweenPhonemes > 0){
+					if(RVBetweenPhonemes > 1){
 						
 						foundStartingIndex = true;
 						
@@ -212,7 +253,7 @@ public class RhymeFinder {
 								
 								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
-								if(RVBetweenPhonemes > 0){
+								if(RVBetweenPhonemes > 1){
 									
 									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 									childNode.addIndexSet(indexSet);
@@ -403,8 +444,14 @@ public class RhymeFinder {
 		}
 		debugPrint("RV: " + rhymeValue);
 		debugPrint("HRV: " + homophonicRhymeValue);
-		
+		System.out.println(rhymeValue + ", " + homophonicRhymeValue);
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
+		
+		if(rhymePercentile < 0){
+			
+			rhymePercentile = 0;
+			
+		}
 		
 		return rhymePercentile;
 		
@@ -414,35 +461,87 @@ public class RhymeFinder {
 	 * @return The Rhyme Value between two phonemes*/
 	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
-		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+		ArrayList<Integer> p1Features = p1.getFeatures();
+		ArrayList<Integer> p2Features = p2.getFeatures();
+		ArrayList<Integer> biggerList = null;
+		
+		if(p1Features.size() >= p2Features.size()){
 			
-			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
-			
-			if(p1.isEqualTo(p2)){
-				
-				return 5.0 - 1.5*stressDifference;
-				
-			}else{
-				
-				return 2.5 - 1.5*stressDifference;
-				
-			}
-			
-		}else if(!p1.isAVowelPhoneme() && !p2.isAVowelPhoneme()){
-			
-			if(p1.isEqualTo(p2)){
-				
-				return 1.0;
-				
-			}else{
-				
-				return 0.5;
-				
-			}
+			biggerList = p1Features;
 			
 		}else{
 			
-			return 0.0;
+			biggerList = p2Features;
+			
+		}
+		
+		//contains just the features that the phonemes share
+		ArrayList<Integer> commonFeatures = new ArrayList<Integer>(p1Features);
+		commonFeatures.retainAll(p2Features);
+		
+		int difference = biggerList.size() - commonFeatures.size();
+		
+		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
+			
+			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
+			return 5.0 - (1*difference) - stressDifference;
+			
+		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
+			
+			int commonFeaturesSize = commonFeatures.size();
+			double specialDifference = 0; /*this is used for keeping track of differences that need different values to be subtracted
+			as opposed to the standard amount*/
+			
+			if(p1.getPhoneme().equals(p2.getPhoneme()) == false){ /*This is here so that when homophonic rhyme value is being 
+			calculated, the homophonic rhyme value won't differ according to feature sets and thus rhyme percentile won't be 
+			altered based on the order in which the words were entered*/
+					
+				if(commonFeatures.contains(9) == false){ //difference in voicing
+					
+					specialDifference = specialDifference + 0.1;
+					commonFeaturesSize = commonFeaturesSize - 1;
+					
+				}
+				
+				if(commonFeatures.contains(2)){ //difference in sonority
+					
+					specialDifference = specialDifference + 1;
+					commonFeaturesSize = commonFeaturesSize - 1;
+					
+				}
+				
+			}
+			
+			difference = biggerList.size() - commonFeaturesSize;
+			
+			return 2.0 - (0.15*difference) - specialDifference;
+			
+		}else{ /*this is a bit different because we're starting at the assumption that they won't have much in common so it's structured
+		for rewarding common features rather than punishing for differences*/
+			
+			//run same sonority and voicing tests but perhaps with different amounts rewarded for each
+			
+			int commonFeaturesSize = commonFeatures.size();
+			double specialDifference = 0; /*this is used for keeping track of differences that need different values to be subtracted
+			as opposed to the standard amount*/
+			
+			if(commonFeatures.contains(9) == false){ //difference in voicing
+				
+				specialDifference = specialDifference + 0.1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
+			
+			if(commonFeatures.contains(2)){ //difference in sonority
+				
+				specialDifference = specialDifference + 1;
+				commonFeaturesSize = commonFeaturesSize - 1;
+				
+			}
+			
+			difference = biggerList.size() - commonFeaturesSize;
+			
+			return 0.1*commonFeaturesSize + specialDifference;
 			
 		}
 		
@@ -531,6 +630,14 @@ public class RhymeFinder {
 
 	public void setWordList(ArrayList<String> wordList) {
 		this.wordList = wordList;
+	}
+
+	public static Hashtable<String, ArrayList<Integer>> getFeatures() {
+		return features;
+	}
+
+	public static void setFeatures(Hashtable<String, ArrayList<Integer>> featureList) {
+		features = featureList;
 	}
 	
 }

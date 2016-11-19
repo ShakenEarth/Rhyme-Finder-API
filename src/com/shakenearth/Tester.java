@@ -11,29 +11,13 @@ public class Tester {
 	
 	public static void main(String[] args){
 		
+<<<<<<< HEAD
 		final int TESTING = 1;
+=======
+		final int TESTING = 0; //0 for comparing two words and/or phrases, 1 for finding rhyming words for a specific word or phrase.
+>>>>>>> phonetic-features
 		
-		if(TESTING == 0){
-/*			syllable testing
-			Scanner reader = new Scanner(System.in);  // Reading from System.in
-			System.out.println("Enter a word: ");
-			String wordSpelling = reader.nextLine();
-			reader.close();
-			
-			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
-			WordName name = new WordName(wordSpelling);
-			
-			Word word = new Word(wordSpelling, finder.getDictionary().get(name));
-			System.out.println("Initial Syllable Count: " + word.getNumOfSyllables());
-			
-			for(int i = 0; i < word.getListOfSyllables().size(); i++){
-				
-				System.out.println("Syllable " + (i+1) + ": ");
-				word.getListOfSyllables().get(i).printListOfPhonemes();
-				
-			}*/
-			
-		}else if(TESTING == 1){
+		if(TESTING == 0){ //comparing two words and/or phrases
 			
 			Scanner reader = new Scanner(System.in);
 			System.out.println("Enter first word: ");
@@ -43,66 +27,52 @@ public class Tester {
 			String secondWordSpelling = reader.nextLine();
 			reader.close();
 			
-			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
+					"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
 			
-			Word firstWord = new Word(firstWordSpelling, finder.getDictionary().get(firstWordSpelling));
-			Word secondWord = new Word(secondWordSpelling, finder.getDictionary().get(secondWordSpelling));
+			String[] firstWordComponents = firstWordSpelling.split(" ");
+			String[] secondWordComponents = secondWordSpelling.split(" ");
+			
+			String firstWordPhonemeString = "";
+			String secondWordPhonemeString = "";
+			
+			for(int i = 0; i < firstWordComponents.length; i++){
+				
+				firstWordPhonemeString = firstWordPhonemeString + finder.getDictionary().get(firstWordComponents[i].toLowerCase()) + " ";
+				
+			}
+			
+			for(int i = 0; i < secondWordComponents.length; i++){
+				
+				secondWordPhonemeString = secondWordPhonemeString + finder.getDictionary().get(secondWordComponents[i].toLowerCase()) + " ";
+				
+			}
+			
+			Word firstWord = new Word(firstWordSpelling, firstWordPhonemeString);
+			Word secondWord = new Word(secondWordSpelling, secondWordPhonemeString);
 			
 			System.out.println(finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
 			
-		}else if (TESTING == 2){
-			
-			List<String> linesOfDictionary = null;
-			;
-			try{
-				linesOfDictionary = Files.readAllLines(Paths.get("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt"), Charset.defaultCharset());
-				
-			}catch(Exception e){
-				
-				System.out.println("there was an exception");
-			
-			}
-			
-			int[] syllableCounts = new int[20];
-			
-			for(int l = 0; l < linesOfDictionary.size(); l++){
-				
-				String[] components = linesOfDictionary.get(l).split("  ");
-				
-				if(components.length != 3){
-					
-					System.out.println("The lines aren't separated by two spaces.");
-					break;
-					
-				}
-				
-				syllableCounts[Integer.parseInt(components[2]) - 1] = syllableCounts[Integer.parseInt(components[2]) - 1] + 1;
-				
-			}
-			
-			for(int i = 0; i < syllableCounts.length; i++){
-				if(i != 0){
-					
-					System.out.println(syllableCounts[i] + " words with " + (i+1) + " syllables.");
-					
-				}else{
-					
-					System.out.println(syllableCounts[i] + " words with " + (i+1) + " syllable.");
-					
-				}
-				
-			}
-			
-		}else if(TESTING == 3){
+		}else if(TESTING == 1){ //finding rhyming words for a specific word or phrase
 			
 			Scanner reader = new Scanner(System.in);  // Reading from System.in
 			System.out.println("Enter a word to find rhymes for: ");
 			String wordSpelling = reader.nextLine();
 			reader.close();
 			
-			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt");
+			RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
+					"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
 			
-			Word firstWord = new Word(wordSpelling, finder.getDictionary().get(wordSpelling.toLowerCase()));
+			String[] wordComponents = wordSpelling.split(" ");
+			String wordPhonemeString = "";
+			
+			for(int i = 0; i < wordComponents.length; i++){
+				
+				wordPhonemeString = wordPhonemeString + finder.getDictionary().get(wordComponents[i].toLowerCase()) + " ";
+				
+			}
+			
+			Word firstWord = new Word(wordSpelling, wordPhonemeString);
 			String vowelString = firstWord.getVowelPhonemesAsString();
 			System.out.println(vowelString);
 			int beginningIndex = finder.getStructureReference().get(vowelString);

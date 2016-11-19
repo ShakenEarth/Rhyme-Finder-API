@@ -2,6 +2,7 @@
 package com.shakenearth.rhyme_essentials;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 
 /**
@@ -11,32 +12,27 @@ import java.io.Serializable;
  */
 public class Phoneme implements Serializable {
 	
-	private boolean isAVowelPhoneme; //this needs to be replaced by some sort of a way of keeping track of phonetic features.
+	private ArrayList<Integer> features = new ArrayList<Integer>(); //this needs to be replaced by some sort of a way of keeping track of phonetic features.
 	private String phoneme = "";
 	private int stress = -1; //-1 just means there isn't an assigned stress
+	private boolean isAVowelPhoneme = false;
 	
-	public Phoneme(String phoneme) {
+	public Phoneme(String phonemeString) {
 		
-		this.phoneme = phoneme;
+		this.phoneme = phonemeString;
 		
-		if(phoneme.endsWith("0") || phoneme.endsWith("1") || phoneme.endsWith("2") || phoneme.endsWith("3") || phoneme.endsWith("4") 
-				|| phoneme.endsWith("5")){
+		if(phonemeString.endsWith("0") || phonemeString.endsWith("1") || phonemeString.endsWith("2") || phonemeString.endsWith("3") || phonemeString.endsWith("4") 
+				|| phonemeString.endsWith("5")){
 			
-			String stressText = phoneme.substring(phoneme.length()-1);
-			String thePhoneme = phoneme.substring(0, phoneme.length()-1);
+			String stressText = phonemeString.substring(phonemeString.length()-1);
+			String thePhoneme = phonemeString.substring(0, phonemeString.length()-1);
 			this.phoneme = thePhoneme;
 			stress = Integer.parseInt(stressText);
+			isAVowelPhoneme = true;
 			
 		}
 		
-		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
-				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
-				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("OW")
-				|| this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")){
-			
-			setIsAVowelPhoneme(true);
-			
-		}
+		features = RhymeFinder.getFeatures().get(phoneme);
 		
 	}
 
@@ -48,42 +44,30 @@ public class Phoneme implements Serializable {
 	 * Sets the text representation of the phoneme and determines whether or not the phoneme is a vowel.
 	 */
 	public void setPhoneme(String phoneme) {
+		
 		this.phoneme = phoneme;
 		
-		if(this.phoneme.equals("AA") || this.phoneme.equals("AE") || this.phoneme.equals("AH") || this.phoneme.equals("AO") 
-				|| this.phoneme.equals("AW") || this.phoneme.equals("AY") || this.phoneme.equals("EH") || this.phoneme.equals("ER") 
-				|| this.phoneme.equals("EY") || this.phoneme.equals("IH") || this.phoneme.equals("IY") || this.phoneme.equals("NG") 
-				|| this.phoneme.equals("OW") || this.phoneme.equals("OY") || this.phoneme.equals("UH") || this.phoneme.equals("UW")
-				|| this.phoneme.equals("AR") || this.phoneme.equals("EL") || this.phoneme.equals("OL") || this.phoneme.equals("OR") 
-				|| this.phoneme.equals("ALE") || this.phoneme.equals("EAR")){
+		if(phoneme.endsWith("0") || phoneme.endsWith("1") || phoneme.endsWith("2") || phoneme.endsWith("3") || phoneme.endsWith("4") 
+				|| phoneme.endsWith("5")){
 			
-			setIsAVowelPhoneme(true);
+			String stressText = phoneme.substring(phoneme.length()-1);
+			String thePhoneme = phoneme.substring(0, phoneme.length()-1);
+			this.phoneme = thePhoneme;
+			stress = Integer.parseInt(stressText);
+			isAVowelPhoneme = true;
 			
 		}
+		
+		features = RhymeFinder.getFeatures().get(phoneme);
+		
 	}
 
-	public boolean isAVowelPhoneme() {
-		return isAVowelPhoneme;
+	public ArrayList<Integer> getFeatures() {
+		return features;
 	}
 	
-	public void setIsAVowelPhoneme(boolean isAVowel) {
-		this.isAVowelPhoneme = isAVowel;
-	}
-	
-	public boolean isALongVowelPhoneme() {
-		
-		if(getPhoneme().equals("AO") || getPhoneme().equals("AW") || getPhoneme().equals("AY") || getPhoneme().equals("EY") || getPhoneme().equals("IY")
-				|| getPhoneme().equals("OW") || getPhoneme().equals("OY") || getPhoneme().equals("UW") || getPhoneme().equals("OL") || getPhoneme().equals("OR")
-				|| getPhoneme().equals("ALE") || getPhoneme().equals("EAR") || getPhoneme().equals("AR")){
-			
-			return true;
-			
-		}else{
-			
-			return false;
-			
-		}
-		
+	public void setFeatures(ArrayList<Integer> features) {
+		this.features = features;
 	}
 
 	public int getStress() {
@@ -105,6 +89,14 @@ public class Phoneme implements Serializable {
 			return false;
 			
 		}
+	}
+
+	public boolean isAVowelPhoneme() {
+		return isAVowelPhoneme;
+	}
+
+	public void setAVowelPhoneme(boolean isAVowelPhoneme) {
+		this.isAVowelPhoneme = isAVowelPhoneme;
 	}
 
 }

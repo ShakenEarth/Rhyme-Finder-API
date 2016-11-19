@@ -1,19 +1,24 @@
-# Pronunciation Similarity Algorithm (Version 1)
+# Pronunciation Similarity Algorithm (Version 1.0.x)
+
+**The information that follows may not match up with the functionality of the code contained in this branch since this is an experimental branch created with the intention of adding phonetic features for comparison in an effort to make the algorithm more nuanced.**
 
 ## For most recent changes (including use of phonetic features), look under the phonetic-features branch.
 
 The algorithm uses the [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) which contains the spelling of each word in English as well as its [ARPAbet](https://en.wikipedia.org/wiki/Arpabet) translation.
 
-There are two cases encountered when comparing two words for pronunciation similarity: either they have the same phonemic length (that is, they are composed of the same number of phonemes) or they have differing phonemic lengths. In either of these cases, the algorithm awards the same number of pronunciation “points” between phonemes:
+- [Feature to Numeric Representation Reference Sheet](http://tomlisankie.com/pronunciation-algorithm-resources/feature-to-number-reference.txt)
+- [Phonemes and Their Features (in Numerical Form)](http://tomlisankie.com/pronunciation-algorithm-resources/features.txt)
 
-| **Case**      | **Number of Points Awarded** |
+There are two cases encountered when comparing two words for pronunciation similarity: either they have the same phonemic length (that is, they are composed of the same number of phonemes) or they have differing phonemic lengths. In either of these cases, the algorithm awards pronunciation “points” between phonemes based on how many [distinctive features](https://en.wikipedia.org/wiki/Distinctive_feature) two phonemes share with one another. All features are treated the same when calculating how many points are to be awarded except for voicing and sonority. The reasoning for treating voicing differently is that when comparing two phonemes that are identical with the exception of their voicing, voicing doesn't make too much of a difference for the rest of the articulation. Thus, a smaller deduction is made when there's a voicing difference. The reasoning for treating sonority differently is that sonorous consonants in English can be nuclei for syllables. Considering sonority separately is also important when comparing a vowel (which we define as a phoneme that at the very least is syllabic, sonorous, continuous, an approximant, and voiced) and a consonant.
+The measurements for comparing two phonemes are as follows:
+
+| **Comparison Case**      | **Number of Points Awarded** |
 | :-------------: |:-------------:         |
-| Identical Vowel Phonemes        | 5         |
-| Different Vowel Phonemes        | 1               |
-| Identical Consonant Phonemes   | 1              |
-| Different Consonant Phonemes   | 0.5               |
+| Vowel and Vowel        | 5 - (number of features they don't share) - (difference in stress)         |
+| Consonant and Consonant   | 2 - (0.15 * (number of features they don't share)) - (0.1 if they both aren't voiced) - (1 if they both aren't sonorous)              |
+| Vowel and Consonant   | (0.1 * (the number of features that they have in common)) + (0.1 if they both are voiced) + (1 if they're both sonorous)               |
 
-### Some Basic Definitions
+### Some Basic Definitions 
 
 * **Rhyme Value**: the sum of the points awarded between phonemes for any two given words as well deductions when necessary.
 * **Homophonic Rhyme Value**: the Rhyme Value given when comparing a word to itself.
@@ -29,26 +34,26 @@ Finding pronunciation similarity between words that have the same number of phon
 
 ### Example:
 
-Let’s choose two words that have the same phonemic length and compare them to one another: *upright* [AH P R AY T] and *uptight* [AH P T AY T].
+Let’s choose two words that have the same phonemic length and compare them to one another: *upright* [AH0 P R AY1 T] and *uptight* [AH0 P T AY1 T]. (**note:** numbers next to vowel phonemes indicate stress)
 
 #### Step 1
 
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Phonemes of Word 2** | AH | P | T | AY | T |  |
-| **Points Awarded** | 5 | 1 | 0.5 | 5 | 1 | **Total RV: 12.5** |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
+| **Phonemes of Word 2** | AH0 | P | T | AY1 | T |  |
+| **Points Awarded** | 5 | 2 | 0.45 | 5 | 2 | **Total RV: 14.45** |
  
 #### Step 2
 |  |  |  |  |  |  |  |
 | :--------------------: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Phonemes of Word 1** | AH | P | R | AY | T |  |
-| **Points Awarded** | 5 | 1 | 1 | 5 | 1 | **Total HRV: 13** |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
+| **Phonemes of Word 1** | AH0 | P | R | AY1 | T |  |
+| **Points Awarded** | 5 | 2 | 2 | 5 | 2 | **Total HRV: 16** |
 (note that performing this same operation on *uptight* would result in the same total)
  
 #### Step 3
-(12.5/13)*100% = 96%
+(14.45/16)*100% = 90%
 
 ## Pronunciation Similarity Between Words of Differing Phonemic Length
 
@@ -60,36 +65,42 @@ Once we have identified which word is shorter and which is longer, we then compa
 
 | **Index of Longer Word** | **Phonemes of Longer Word** | **Points Awarded for Comparison** |
 | :--: | :--: | :--: |
-| 0   | SH | 1 |
-| 1   | IH | 0 |
-| 2   | F | 0.5 |
-| 3   | T | 0.5 |
-| 4   | ER | 0.5 |
+| 0   | SH | 2 |
+| 1   | IH1 | 0.1 |
+| 2   | F | 1.55 |
+| 3   | T | 1.4 |
+| 4   | ER0 | 0.3 |
 
 Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/1.png "Stage 1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/1.jpg "1")
 
 Now that we have some starting indexes, we can begin to figure out where the succeeding phonemes of the shorter word fit into the rest of the longer word. Now we compare the next phoneme of the shorter word (IH) to every phoneme in the longer word that starts after one of the previously recorded indices. The only two phonemes that return points for the first recorded pair are “IH” at index 1 and “ER” at index 4. The only phoneme that awards points after the next two recorded pairs is “ER.” Now our situation looks like this:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/2.png "Stage 1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/2.jpg "2")
 
 Last, but not least, we have the final phoneme in the word to compare. Since the there’s no phonemes in the longer word that succeed the fourth index, those index-point pairs are not checked for any follow up phonemes. However, checking the phonemes after index 1 does return some phonemes that award points:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/3.png "Stage 1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/3.jpg "3")
 
 All possible positions for placement of the shorter word’s phonemes for Rhyme Value with the max number of points have now been found. It’s now necessary to find which path leads to the highest Rhyme Value and thus what individuals are most likely to intuitively see as similarity in pronunciation between the two words.
 
 To do this, whichever index-point pair in each node that has the largest point value is sent up and added to the point value of the node’s parent index-point pair as well as that pair’s index(es) added to the parent’s. For example, in the bottom layer, there is only one node that contains index-point pairs. These pairs are (2, 0.5) and (3, 0.5). Their point value is equivalent so whichever is sent up is arbitrary as far as we’re concerned, so let’s send up (3, 0.5):
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/4.png "Stage 1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/4.jpg "4")
 
 This process is then repeated for each node in each layer until the initial layer is reached:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/5.png "Stage 1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/5.jpg "5")
 
 Once the initial layer has been reached, it would make sense to deduce points from the remaining index-point pairs by seeing how much space is between each of the indices as well as from the first recorded index to the beginning of the word and from the last recorded index to the end of the word. We will deduce 0.25 from the Rhyme Value for each space between indices and deduce log(x+1) and log(y+1)  where x is the amount of space from the front to the first index and yis the amount of space from the last index to the end of the word. The results are as follows:
 
+<<<<<<< HEAD
 ![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.png "Stage 1")
 
 The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 13. The Rhyme Percentile is then found and it comes out to be (5.95/13)*100% = 46%
+=======
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.jpg "5")
+
+The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 16. The Rhyme Percentile is then found and it comes out to be (7.1/16)*100% = 44%
+>>>>>>> phonetic-features
