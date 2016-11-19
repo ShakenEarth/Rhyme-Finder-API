@@ -1,6 +1,6 @@
 # Pronunciation Similarity Algorithm (Version 1)
 
-***For most recent changes (including use of phonetic features), look under the phonetic-features branch.***
+## For most recent changes (including use of phonetic features), look under the phonetic-features branch.
 
 The algorithm uses the [CMU Pronouncing Dictionary](http://www.speech.cs.cmu.edu/cgi-bin/cmudict) which contains the spelling of each word in English as well as its [ARPAbet](https://en.wikipedia.org/wiki/Arpabet) translation.
 
