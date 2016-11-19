@@ -71,28 +71,28 @@ Once we have identified which word is shorter and which is longer, we then compa
 
 Thus, the indexes of the three phonemes that were awarded points (SH, F, T) are stored along with the number of points awarded at each index. These comprise the first “layer” of comparisons and can be represented as such with each pair being represented as (index, points):
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/1.png "1")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/1.jpg "1")
 
 Now that we have some starting indexes, we can begin to figure out where the succeeding phonemes of the shorter word fit into the rest of the longer word. Now we compare the next phoneme of the shorter word (IH) to every phoneme in the longer word that starts after one of the previously recorded indices. The only two phonemes that return points for the first recorded pair are “IH” at index 1 and “ER” at index 4. The only phoneme that awards points after the next two recorded pairs is “ER.” Now our situation looks like this:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/2.png "2")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/2.jpg "2")
 
 Last, but not least, we have the final phoneme in the word to compare. Since the there’s no phonemes in the longer word that succeed the fourth index, those index-point pairs are not checked for any follow up phonemes. However, checking the phonemes after index 1 does return some phonemes that award points:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/3.png "3")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/3.jpg "3")
 
 All possible positions for placement of the shorter word’s phonemes for Rhyme Value with the max number of points have now been found. It’s now necessary to find which path leads to the highest Rhyme Value and thus what individuals are most likely to intuitively see as similarity in pronunciation between the two words.
 
 To do this, whichever index-point pair in each node that has the largest point value is sent up and added to the point value of the node’s parent index-point pair as well as that pair’s index(es) added to the parent’s. For example, in the bottom layer, there is only one node that contains index-point pairs. These pairs are (2, 0.5) and (3, 0.5). Their point value is equivalent so whichever is sent up is arbitrary as far as we’re concerned, so let’s send up (3, 0.5):
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/4.png "4")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/4.jpg "4")
 
 This process is then repeated for each node in each layer until the initial layer is reached:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/5.png "5")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/5.jpg "5")
 
 Once the initial layer has been reached, it would make sense to deduce points from the remaining index-point pairs by seeing how much space is between each of the indices as well as from the first recorded index to the beginning of the word and from the last recorded index to the end of the word. We will deduce 0.25 from the Rhyme Value for each space between indices and deduce log(x+1) and log(y+1)  where x is the amount of space from the front to the first index and yis the amount of space from the last index to the end of the word. The results are as follows:
 
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.png "5")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.jpg "5")
 
-The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 13. The Rhyme Percentile is then found and it comes out to be (5.95/13)*100% = 46%
+The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 13. The Rhyme Percentile is then found and it comes out to be (7.1/16)*100% = 44%
