@@ -16,7 +16,7 @@ The measurements for comparing two phonemes are as follows:
 | Consonant and Consonant   | 2 - (0.15 * (number of features they don't share)) - (0.1 if they both aren't voiced) - (1 if they both aren't sonorous)              |
 | Vowel and Consonant   | (0.1 * (the number of features that they have in common)) + (0.1 if they both are voiced) + (1 if they're both sonorous)               |
 
-### Some Basic Definitions
+### Some Basic Definitions 
 
 * **Rhyme Value**: the sum of the points awarded between phonemes for any two given words as well deductions when necessary.
 * **Homophonic Rhyme Value**: the Rhyme Value given when comparing a word to itself.
