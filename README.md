@@ -91,12 +91,6 @@ This process is then repeated for each node in each layer until the initial laye
 
 Once the initial layer has been reached, it would make sense to deduce points from the remaining index-point pairs by seeing how much space is between each of the indices as well as from the first recorded index to the beginning of the word and from the last recorded index to the end of the word. We will deduce 0.25 from the Rhyme Value for each space between indices and deduce log(x+1) and log(y+1)  where x is the amount of space from the front to the first index and yis the amount of space from the last index to the end of the word. The results are as follows:
 
-<<<<<<< HEAD
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.png "Stage 1")
-
-The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 13. The Rhyme Percentile is then found and it comes out to be (5.95/13)*100% = 46%
-=======
-![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.jpg "5")
+![diagram](http://tomlisankie.com/pronunciation-algorithm-diagrams/6.jpg "6")
 
 The dominant index-pair here is clearly the first one. The Homophonic Rhyme Value is then found for the longer word. In this case it comes out to be 16. The Rhyme Percentile is then found and it comes out to be (7.1/16)*100% = 44%
->>>>>>> phonetic-features
