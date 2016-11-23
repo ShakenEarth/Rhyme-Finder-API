@@ -26,16 +26,6 @@ public class Word extends PhonemeSequence implements Serializable{
 			
 		}
 		
-		for(int i = 0; i < listOfPhonemes.size(); i++){
-			
-			if(i+1 != listOfPhonemes.size()){
-				
-				
-				
-			}
-			
-		}
-		
 	}
 	
 	/**Creates a new Word object using the spelling of the word itself as well as a list of the Phonemes that compose it.
