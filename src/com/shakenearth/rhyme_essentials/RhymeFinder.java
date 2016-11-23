@@ -371,7 +371,7 @@ public class RhymeFinder {
 			
 			List<Phoneme> shortenedListOfPhonemes = satellite.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
 			
-			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			newWord = new Word(satellite.getWordName(), shortenedListOfPhonemes);
 			
 			anchorOrSatellite = false;
 			
@@ -399,18 +399,6 @@ public class RhymeFinder {
 			return (double) findRhymePercentile(rhymeValue, anchor);
 			
 		}else{
-			
-			Word longerWord = null;
-			
-			if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
-				
-				longerWord = satellite;
-				
-			}else{
-				
-				longerWord = anchor;
-				
-			}
 			
 			if(anchorOrSatellite == true){
 				

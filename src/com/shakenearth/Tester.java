@@ -10,12 +10,8 @@ import com.shakenearth.rhyme_essentials.*;
 public class Tester {
 	
 	public static void main(String[] args){
-		
-<<<<<<< HEAD
-		final int TESTING = 1;
-=======
+
 		final int TESTING = 0; //0 for comparing two words and/or phrases, 1 for finding rhyming words for a specific word or phrase.
->>>>>>> phonetic-features
 		
 		if(TESTING == 0){ //comparing two words and/or phrases
 			
