@@ -203,7 +203,7 @@ public class RhymeFinder {
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
 					if(RVBetweenPhonemes > 1){
-						
+						System.out.println(RVBetweenPhonemes);
 						foundStartingIndex = true;
 						
 						RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
@@ -254,7 +254,7 @@ public class RhymeFinder {
 								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
 								if(RVBetweenPhonemes > 1){
-									
+									System.out.println(RVBetweenPhonemes);
 									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 									childNode.addIndexSet(indexSet);
 									
@@ -383,6 +383,7 @@ public class RhymeFinder {
 			
 				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
 						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
+				System.out.println("s: " + s);
 			
 			}
 			
@@ -396,6 +397,7 @@ public class RhymeFinder {
 		
 		if(foundConsonantCluster == false){
 			
+			System.out.println(rhymeValue);
 			return (double) findRhymePercentile(rhymeValue, anchor);
 			
 		}else{
@@ -577,6 +579,7 @@ public class RhymeFinder {
 			
 		}
 		
+		System.out.println(deduction);
 		return deduction;
 		
 	}

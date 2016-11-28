@@ -70,10 +70,10 @@ public class Tester {
 			
 			Word firstWord = new Word(wordSpelling, wordPhonemeString);
 			String vowelString = firstWord.getVowelPhonemesAsString();
-			System.out.println(vowelString);
+			
 			int beginningIndex = finder.getStructureReference().get(vowelString);
 			boolean nextStructFound = false;
-			System.out.println(beginningIndex);
+			
 			
 			int currentIndex = beginningIndex;
 			
