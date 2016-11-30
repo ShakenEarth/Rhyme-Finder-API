@@ -173,13 +173,7 @@ public class RhymeFinder {
 			
 		}
 		
-		debugPrint("Shorter Word: " + shorterWord.getWordName());
-		debugPrint("Longer Word: " + longerWord.getWordName());
-		
 		double idealRhymeValue = 0.0;
-		
-		//start here
-		//too much hatred for too long
 		
 		boolean firstSearch = true;
 		boolean foundStartingIndex = false;
@@ -188,14 +182,12 @@ public class RhymeFinder {
 		
 		int pastLayerNum = 0;
 		
+		// find all possible sequence lineups for the two phonemic sequences
 		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
 			
 			double weightTowardsWordEnd = 0.1;
 			
-			//firstSearch
 			if(firstSearch == true){
-				
-				debugPrint("firstSearch");
 				
 				Node startNode = new Node();
 				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
@@ -205,7 +197,7 @@ public class RhymeFinder {
 					if(RVBetweenPhonemes > 1){
 						System.out.println(RVBetweenPhonemes);
 						foundStartingIndex = true;
-						
+						System.out.println("STARTING INDEX");
 						RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 						
 						startNode.addIndexSet(indexSet);
@@ -302,27 +294,17 @@ public class RhymeFinder {
 			
 			if(l == 0 && layers.get(l).getNodes().size() == 1){
 				
-				debugPrint("LAYER IS 0");
-				
-				debugPrint("IndexSets in top node: " + nodeBeingExamined.toString());
-				
 				bestSet = nodeBeingExamined.getBestSet();
 				
 			}
 			
-			debugPrint("l: " + l);
-			
 		}
-		
-		debugPrint("bestSet info: " + bestSet.toString());
 		
 		idealRhymeValue = bestSet.getRhymeValueForSet();
 		
 		double rhymeValue = idealRhymeValue;
 		
 		//subtract specing to get actual rhyme value
-		
-		debugPrint("deduction: " + findDeductionForIndexSet(bestSet, longerWord));
 		
 		rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
 		
