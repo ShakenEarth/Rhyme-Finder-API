@@ -185,11 +185,12 @@ public class Tester {
 
 }
 	
-class WritingFrame extends JFrame{
+	class WritingFrame extends JFrame{
 		
 		JPanel contentPanel = new JPanel(), textPanel = new JPanel(), tablePanel = new JPanel(), buttonPanel = new JPanel();
-		JTextArea textArea = new JTextArea();
 		JTable table = new JTable();
+		JScrollPane tableScrollPane = null;
+		JTextPane textAreaScrollPane = null;
 		JButton findWordsButton = new JButton("Find Words");
 		String[][] data = {{"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}
 		, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}};
@@ -203,13 +204,38 @@ class WritingFrame extends JFrame{
 			
 			//table setup
 			table = new JTable(data, columnNames);
-			table.setSize(800, 200);
+			table.addMouseListener(new java.awt.event.MouseAdapter() {
+			    @Override
+			    public void mouseClicked(java.awt.event.MouseEvent evt) {
+			        int row = table.rowAtPoint(evt.getPoint());
+			        int col = table.columnAtPoint(evt.getPoint());
+			        if (row >= 0 && col >= 0) {
+			            
+			        	String wordToAdd = (String) table.getValueAt(row, 0);
+			        	
+			        	if(textAreaScrollPane.getText().endsWith(" ")){
+			        		
+			        		textAreaScrollPane.setText(textAreaScrollPane.getText() + wordToAdd);
+			        		
+			        	}else{
+			        		
+			        		textAreaScrollPane.setText(textAreaScrollPane.getText() + " " + wordToAdd);
+			        		
+			        	}
+			        	
+			        }
+			    }
+			});
+			
+			tableScrollPane = new JScrollPane(table);
+			
+			//textArea.setSize(800, 250);
+			textAreaScrollPane = new JTextPane();
 			
 			findWordsButton.addActionListener(new FindWordsButtonListener());
 			
-			textArea.setVisible(true);
-			textPanel.add(textArea);
-			tablePanel.add(table);
+			textPanel.add(textAreaScrollPane);
+			tablePanel.add(tableScrollPane);
 			buttonPanel.add(findWordsButton);
 			contentPanel.add(textPanel);
 			contentPanel.add(tablePanel);
@@ -228,7 +254,7 @@ class WritingFrame extends JFrame{
 				
 				ArrayList<String[]> tableContent = new ArrayList<String[]>();
 				
-				String wordSpelling = textArea.getSelectedText().trim();
+				String wordSpelling = textAreaScrollPane.getSelectedText().trim();
 				
 				String[] wordComponents = wordSpelling.split(" ");
 				String wordPhonemeString = "";
@@ -268,7 +294,18 @@ class WritingFrame extends JFrame{
 						if(rhymePercentile > 0.7){
 							
 							String[] wordPair = new String[2];
-							wordPair[0] = currentWord;
+							
+							if(currentWord.endsWith(")")){
+								
+								currentWord = currentWord.substring(0, currentWord.length() - 3);
+								wordPair[0] = currentWord;
+								
+							}else{
+								
+								wordPair[0] = currentWord;
+								
+							}
+							
 							wordPair[1] = Double.toString(rhymePercentile*100) + "%";
 							
 							tableContent.add(wordPair);

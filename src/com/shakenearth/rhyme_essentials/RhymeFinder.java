@@ -95,7 +95,6 @@ public class RhymeFinder {
 		for(int l = 0; l < linesOfFeatureSet.size(); l++){
 			
 			String[] components = linesOfFeatureSet.get(l).split("  ");
-			//System.out.println(components[0] + " " + components[1]);
 			
 			if(components.length != 2){
 				
@@ -138,8 +137,6 @@ public class RhymeFinder {
 			rhymePercentile = idealRhymeValue(anchor, satellite);
 			
 		}
-		
-		//System.out.println("Rhyme Percentile: " + rhymePercentile);
 		
 		return rhymePercentile;
 		
@@ -195,9 +192,8 @@ public class RhymeFinder {
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
 					
 					if(RVBetweenPhonemes > 1){
-						System.out.println(RVBetweenPhonemes);
+						
 						foundStartingIndex = true;
-						System.out.println("STARTING INDEX");
 						RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 						
 						startNode.addIndexSet(indexSet);
@@ -246,7 +242,7 @@ public class RhymeFinder {
 								double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l*weightTowardsWordEnd);
 								
 								if(RVBetweenPhonemes > 1){
-									System.out.println(RVBetweenPhonemes);
+									
 									RVIndexPair indexSet = new RVIndexPair(l, RVBetweenPhonemes);
 									childNode.addIndexSet(indexSet);
 									
@@ -365,7 +361,6 @@ public class RhymeFinder {
 			
 				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
 						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
-				System.out.println("s: " + s);
 			
 			}
 			
@@ -379,7 +374,6 @@ public class RhymeFinder {
 		
 		if(foundConsonantCluster == false){
 			
-			System.out.println(rhymeValue);
 			return (double) findRhymePercentile(rhymeValue, anchor);
 			
 		}else{
@@ -416,7 +410,7 @@ public class RhymeFinder {
 		}
 		debugPrint("RV: " + rhymeValue);
 		debugPrint("HRV: " + homophonicRhymeValue);
-		System.out.println(rhymeValue + ", " + homophonicRhymeValue);
+		
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
 		
 		if(rhymePercentile < 0){
@@ -561,7 +555,6 @@ public class RhymeFinder {
 			
 		}
 		
-		System.out.println(deduction);
 		return deduction;
 		
 	}
