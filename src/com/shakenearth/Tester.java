@@ -104,90 +104,18 @@ public class Tester {
 			
 		}else if(TESTING == 2){
 			
-			//writing frame setup
-			
 			WritingFrame writingFrame = new WritingFrame();
 			
-			//comparison frame setup
-			
-			ComparisonFrame comparisonFrame = new ComparisonFrame();
-			
 			}
 		
 		}
 	
 		
 	}
-	
-	class ComparisonFrame extends JFrame{
-		
-		JPanel panel = new JPanel();
-		JLabel firstLabel = new JLabel("First Word or Phrase"), secondLabel = new JLabel("Second Word or Phrase");
-		JTextField firstWordTextField = new JTextField(), secondWordTextField = new JTextField();
-		JButton compareButton = new JButton("Compare");
-		JLabel result = new JLabel("Result: ");
-		RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
-				"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
-		
-		public ComparisonFrame(){
-			
-			setSize(300, 300);
-			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-			
-			compareButton.addActionListener(new CompareButtonListener());
-			
-			panel.add(firstLabel);
-			panel.add(firstWordTextField);
-			panel.add(secondLabel);
-			panel.add(secondWordTextField);
-			panel.add(compareButton);
-			panel.add(result);
-			
-			add(panel);
-			setVisible(true);
-			
-		}
-		
-		class CompareButtonListener implements ActionListener{
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				String[] firstWordComponents = firstWordTextField.getText().split(" ");
-				String[] secondWordComponents = secondWordTextField.getText().split(" ");
-				
-				String firstWordPhonemeString = "";
-				String secondWordPhonemeString = "";
-				
-				for(int i = 0; i < firstWordComponents.length; i++){
-					
-					firstWordPhonemeString = firstWordPhonemeString + finder.getDictionary().get(firstWordComponents[i].toLowerCase()) + " ";
-					
-				}
-				
-				for(int i = 0; i < secondWordComponents.length; i++){
-					
-					secondWordPhonemeString = secondWordPhonemeString + finder.getDictionary().get(secondWordComponents[i].toLowerCase()) + " ";
-					
-				}
-				
-				Word firstWord = new Word(firstWordTextField.getText(), firstWordPhonemeString);
-				Word secondWord = new Word(secondWordTextField.getText(), secondWordPhonemeString);
-				
-				System.out.println(firstWord);
-				System.out.println(secondWord);
-				
-				result.setText("Result: " + (finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100) + "%");
-				
-			}
-		
-	}
-
-}
 	
 	class WritingFrame extends JFrame{
 		
-		JPanel contentPanel = new JPanel(), textPanel = new JPanel(), tablePanel = new JPanel(), buttonPanel = new JPanel();
+		JPanel firstContentPanel = new JPanel(), textPanel = new JPanel(), tablePanel = new JPanel(), buttonPanel = new JPanel();
 		JTable table = new JTable();
 		JScrollPane tableScrollPane = null;
 		JTextPane textAreaScrollPane = null;
@@ -196,9 +124,18 @@ public class Tester {
 		, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}, {"-", "0%"}};
 		String[] columnNames = {"Word", "Rhyme Percentile"};
 		
+		JPanel secondContentPanel = new JPanel();
+		JLabel firstLabel = new JLabel("First Word or Phrase"), secondLabel = new JLabel("Second Word or Phrase");
+		JTextField firstWordTextField = new JTextField(), secondWordTextField = new JTextField();
+		JButton compareButton = new JButton("Compare");
+		JLabel result = new JLabel("Result: ");
+		
+		JPanel controlPanel = new JPanel();
+		
 		public WritingFrame(){
 			
-			contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
+			firstContentPanel.setLayout(new BoxLayout(firstContentPanel, BoxLayout.PAGE_AXIS));
+			secondContentPanel.setLayout(new BoxLayout(secondContentPanel, BoxLayout.PAGE_AXIS));
 			textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.PAGE_AXIS));
 			tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.PAGE_AXIS));
 			
@@ -231,17 +168,29 @@ public class Tester {
 			
 			//textArea.setSize(800, 250);
 			textAreaScrollPane = new JTextPane();
+			textAreaScrollPane.setText("\n\n\n\n\n\n\n\n\n\n");
 			
 			findWordsButton.addActionListener(new FindWordsButtonListener());
+			compareButton.addActionListener(new CompareButtonListener());
 			
 			textPanel.add(textAreaScrollPane);
 			tablePanel.add(tableScrollPane);
 			buttonPanel.add(findWordsButton);
-			contentPanel.add(textPanel);
-			contentPanel.add(tablePanel);
-			contentPanel.add(findWordsButton);
+			firstContentPanel.add(textPanel);
+			firstContentPanel.add(tablePanel);
+			firstContentPanel.add(findWordsButton);
 			
-			add(contentPanel);
+			secondContentPanel.add(firstLabel);
+			secondContentPanel.add(firstWordTextField);
+			secondContentPanel.add(secondLabel);
+			secondContentPanel.add(secondWordTextField);
+			secondContentPanel.add(compareButton);
+			secondContentPanel.add(result);
+			
+			controlPanel.add(firstContentPanel);
+			controlPanel.add(secondContentPanel);
+			
+			add(controlPanel);
 			setSize(800, 500);
 			setVisible(true);
 			
@@ -326,5 +275,40 @@ public class Tester {
 			
 			
 		}
+		
+		class CompareButtonListener implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String[] firstWordComponents = firstWordTextField.getText().split(" ");
+				String[] secondWordComponents = secondWordTextField.getText().split(" ");
+				
+				String firstWordPhonemeString = "";
+				String secondWordPhonemeString = "";
+				
+				for(int i = 0; i < firstWordComponents.length; i++){
+					
+					firstWordPhonemeString = firstWordPhonemeString + Tester.finder.getDictionary().get(firstWordComponents[i].toLowerCase()) + " ";
+					
+				}
+				
+				for(int i = 0; i < secondWordComponents.length; i++){
+					
+					secondWordPhonemeString = secondWordPhonemeString + Tester.finder.getDictionary().get(secondWordComponents[i].toLowerCase()) + " ";
+					
+				}
+				
+				Word firstWord = new Word(firstWordTextField.getText(), firstWordPhonemeString);
+				Word secondWord = new Word(secondWordTextField.getText(), secondWordPhonemeString);
+				
+				System.out.println(firstWord);
+				System.out.println(secondWord);
+				
+				result.setText("Result: " + (Tester.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100) + "%");
+				
+			}
+		
+	}
 		
 }
