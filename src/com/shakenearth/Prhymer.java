@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.shakenearth.rhyme_essentials.*;
 
-public class Tester {
+public class Prhymer {
 	
 	static RhymeFinder finder = new RhymeFinder("/Users/thomas/Desktop/Dev/rap-writer/src/cmudict-0.7b_modified.txt", 
 			"/Users/thomas/Desktop/Dev/rap-writer/src/features.txt");
@@ -168,7 +168,7 @@ public class Tester {
 			
 			//textArea.setSize(800, 250);
 			textAreaScrollPane = new JTextPane();
-			textAreaScrollPane.setText("\n\n\n\n\n\n\n\n\n\n");
+			textAreaScrollPane.setText("");
 			
 			findWordsButton.addActionListener(new FindWordsButtonListener());
 			compareButton.addActionListener(new CompareButtonListener());
@@ -191,7 +191,7 @@ public class Tester {
 			controlPanel.add(secondContentPanel);
 			
 			add(controlPanel);
-			setSize(800, 500);
+			setSize(700, 1600);
 			setVisible(true);
 			
 		}
@@ -210,14 +210,14 @@ public class Tester {
 				
 				for(int i = 0; i < wordComponents.length; i++){
 					
-					wordPhonemeString = wordPhonemeString + Tester.finder.getDictionary().get(wordComponents[i].toLowerCase()) + " ";
+					wordPhonemeString = wordPhonemeString + Prhymer.finder.getDictionary().get(wordComponents[i].toLowerCase()) + " ";
 					
 				}
 				
 				Word firstWord = new Word(wordSpelling, wordPhonemeString);
 				String vowelString = firstWord.getVowelPhonemesAsString();
 				
-				int beginningIndex = Tester.finder.getStructureReference().get(vowelString);
+				int beginningIndex = Prhymer.finder.getStructureReference().get(vowelString);
 				boolean nextStructFound = false;
 				
 				
@@ -227,8 +227,8 @@ public class Tester {
 					
 					currentIndex = currentIndex + 1;
 					
-					String currentWord = Tester.finder.getWordList().get(currentIndex);
-					Word newWord = new Word(currentWord, Tester.finder.getDictionary().get(currentWord));
+					String currentWord = Prhymer.finder.getWordList().get(currentIndex);
+					Word newWord = new Word(currentWord, Prhymer.finder.getDictionary().get(currentWord));
 					
 					if(newWord.getVowelPhonemesAsString().equals(vowelString) == false){
 						
@@ -236,11 +236,11 @@ public class Tester {
 						
 					}else{
 						
-						Word secondWord = new Word(currentWord, Tester.finder.getDictionary().get(currentWord));
+						Word secondWord = new Word(currentWord, Prhymer.finder.getDictionary().get(currentWord));
 						
-						double rhymePercentile = Tester.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord);
+						double rhymePercentile = Prhymer.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord);
 						
-						if(rhymePercentile > 0.7){
+						if(rhymePercentile > 0.7  && !secondWord.getWordName().equals(firstWord.getWordName())){
 							
 							String[] wordPair = new String[2];
 							
@@ -289,13 +289,13 @@ public class Tester {
 				
 				for(int i = 0; i < firstWordComponents.length; i++){
 					
-					firstWordPhonemeString = firstWordPhonemeString + Tester.finder.getDictionary().get(firstWordComponents[i].toLowerCase()) + " ";
+					firstWordPhonemeString = firstWordPhonemeString + Prhymer.finder.getDictionary().get(firstWordComponents[i].toLowerCase()) + " ";
 					
 				}
 				
 				for(int i = 0; i < secondWordComponents.length; i++){
 					
-					secondWordPhonemeString = secondWordPhonemeString + Tester.finder.getDictionary().get(secondWordComponents[i].toLowerCase()) + " ";
+					secondWordPhonemeString = secondWordPhonemeString + Prhymer.finder.getDictionary().get(secondWordComponents[i].toLowerCase()) + " ";
 					
 				}
 				
@@ -305,7 +305,7 @@ public class Tester {
 				System.out.println(firstWord);
 				System.out.println(secondWord);
 				
-				result.setText("Result: " + (Tester.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100) + "%");
+				result.setText("Result: " + (Prhymer.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100) + "%");
 				
 			}
 		
