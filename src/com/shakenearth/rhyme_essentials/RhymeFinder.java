@@ -296,6 +296,8 @@ public class RhymeFinder {
 			
 		}
 		
+		System.out.println(bestSet.getIndexes());
+		
 		idealRhymeValue = bestSet.getRhymeValueForSet();
 		
 		double rhymeValue = idealRhymeValue;
