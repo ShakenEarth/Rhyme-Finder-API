@@ -142,6 +142,90 @@ public class RhymeFinder {
 		
 	}
 	
+	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
+	 * 1. Iterate through each phoneme in one of the words and compare it to its corresponding phoneme in the other word, adding the resulting points awarded to the total Rhyme Value along the way.
+	 * 2. Find Homophonic Rhyme Value (as previously defined)
+	 * 3. Divide Rhyme Value by Homophonic Rhyme Value and multiply by 100
+	 * @return Regular Rhyme Value between two Words*/
+	private double regularRhymeValue(Word anchor, Word satellite){
+		
+		debugPrint("REGULAR RHYME VALUE");
+		
+		debugPrint("Anchor:");
+		anchor.printListOfPhonemes();
+		debugPrint("Satellite:");
+		satellite.printListOfPhonemes();
+		
+		boolean foundConsonantCluster = false;
+		boolean anchorOrSatellite = false; //true if anchor, false if satellite.
+		
+		double rhymeValue = 0.0;
+		
+		Word newWord = null;
+		
+		double weightTowardsWordEnd = 0.1;
+			
+		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = anchor.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = true;
+				
+		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false
+				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
+			
+			foundConsonantCluster = true;
+			
+			List<Phoneme> shortenedListOfPhonemes = satellite.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
+			
+			newWord = new Word(satellite.getWordName(), shortenedListOfPhonemes);
+			
+			anchorOrSatellite = false;
+			
+		}
+		
+		if(foundConsonantCluster == false){
+			
+			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
+			
+				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
+						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
+			
+			}
+			
+		}else{
+			
+			//nothing, it'll be taken care of in the next if-else statement.
+			
+		}
+		
+		debugPrint("Rhyme Value:" + rhymeValue);
+		
+		if(foundConsonantCluster == false){
+			
+			return (double) findRhymePercentile(rhymeValue, anchor);
+			
+		}else{
+			
+			if(anchorOrSatellite == true){
+				
+				return idealRhymeValue(newWord, satellite);
+				
+			}else{
+				
+				return idealRhymeValue(anchor, newWord);
+				
+			}
+			
+		}
+		
+	}
+	
 	/**This method is called when two words have differing phonemic lengths (contain the same number of phonemes).
 	 * Ideal Rhyme Value is just the rhyme value before spacing between phoneme matches is taken into account.
 	 * @return Ideal Rhyme Value between two Words*/
@@ -307,90 +391,6 @@ public class RhymeFinder {
 		rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
 		
 		return (double) findRhymePercentile(rhymeValue, longerWord);
-		
-	}
-	
-	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
-	 * 1. Iterate through each phoneme in one of the words and compare it to its corresponding phoneme in the other word, adding the resulting points awarded to the total Rhyme Value along the way.
-	 * 2. Find Homophonic Rhyme Value (as previously defined)
-	 * 3. Divide Rhyme Value by Homophonic Rhyme Value and multiply by 100
-	 * @return Regular Rhyme Value between two Words*/
-	private double regularRhymeValue(Word anchor, Word satellite){
-		
-		debugPrint("REGULAR RHYME VALUE");
-		
-		debugPrint("Anchor:");
-		anchor.printListOfPhonemes();
-		debugPrint("Satellite:");
-		satellite.printListOfPhonemes();
-		
-		boolean foundConsonantCluster = false;
-		boolean anchorOrSatellite = false; //true if anchor, false if satellite.
-		
-		double rhymeValue = 0.0;
-		
-		Word newWord = null;
-		
-		double weightTowardsWordEnd = 0.1;
-			
-		if(anchor.getListOfPhonemes().get(0).isAVowelPhoneme() == false && anchor.getListOfPhonemes().get(1).isAVowelPhoneme() == false
-				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
-			
-			foundConsonantCluster = true;
-			
-			List<Phoneme> shortenedListOfPhonemes = anchor.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
-			
-			newWord = new Word(anchor.getWordName(), shortenedListOfPhonemes);
-			
-			anchorOrSatellite = true;
-				
-		}else if(satellite.getListOfPhonemes().get(0).isAVowelPhoneme() == false && satellite.getListOfPhonemes().get(1).isAVowelPhoneme() == false
-				&& (!anchor.getListOfPhonemes().get(0).isEqualTo(satellite.getListOfPhonemes().get(0)) && !anchor.getListOfPhonemes().get(1).isEqualTo(satellite.getListOfPhonemes().get(1)))){
-			
-			foundConsonantCluster = true;
-			
-			List<Phoneme> shortenedListOfPhonemes = satellite.getListOfPhonemes().subList(1, anchor.getListOfPhonemes().size());
-			
-			newWord = new Word(satellite.getWordName(), shortenedListOfPhonemes);
-			
-			anchorOrSatellite = false;
-			
-		}
-		
-		if(foundConsonantCluster == false){
-			
-			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
-			
-				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
-						satellite.getListOfPhonemes().get(s), true, s*weightTowardsWordEnd);
-			
-			}
-			
-		}else{
-			
-			//nothing, it'll be taken care of in the next if-else statement.
-			
-		}
-		
-		debugPrint("Rhyme Value:" + rhymeValue);
-		
-		if(foundConsonantCluster == false){
-			
-			return (double) findRhymePercentile(rhymeValue, anchor);
-			
-		}else{
-			
-			if(anchorOrSatellite == true){
-				
-				return idealRhymeValue(newWord, satellite);
-				
-			}else{
-				
-				return idealRhymeValue(anchor, newWord);
-				
-			}
-			
-		}
 		
 	}
 	
