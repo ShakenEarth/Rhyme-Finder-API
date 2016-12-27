@@ -135,6 +135,7 @@ public class RhymeFinder {
 		}else{//do ideal Rhyme Value process
 			
 			rhymePercentile = idealRhymeValue(anchor, satellite);
+			System.out.println("NEW METHOD RESULT: " + newFindRhymePercentileForWords(anchor, satellite) + "%");
 			
 		}
 		
@@ -179,16 +180,58 @@ public class RhymeFinder {
 			
 		}
 		
-		findBestRV(cartesianProducts);
+		System.out.println("Cartesian Products: " + cartesianProducts);
+		
+		double rhymeValue = findBestRV(cartesianProducts, 0.0);
+		
+		rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
 		
 		return rhymePercentile;
 		
 	}
 	
-	private void findBestRV(ArrayList<ArrayList<IndexPair>> cartesianProducts) {
+	private double findBestRV(ArrayList<ArrayList<IndexPair>> cartesianProducts, double addition) {
 		
 		IndexPair bestPair = null;
+		ArrayList<IndexPair> current = cartesianProducts.get(cartesianProducts.size()-1);
 		
+		for(int i = 0; i < current.size(); i++){
+			
+			current.get(i).setRhymeValue(current.get(i).getRhymeValue() + addition);
+			
+		}
+		
+		for(int i = 0; i < current.size(); i++){
+			
+			if(i == 0){
+				
+				bestPair = current.get(0);
+				
+			}else{
+				
+				if(current.get(i).getRhymeValue() > bestPair.getRhymeValue()){
+					
+					bestPair = current.get(i);
+					
+				}
+				
+			}
+			
+		}
+		
+		cartesianProducts.remove(cartesianProducts.size()-1);
+		
+		if(cartesianProducts.size() == 0){
+			
+			return bestPair.getRhymeValue();
+			
+		}else{
+			
+			findBestRV(cartesianProducts, bestPair.getRhymeValue());
+			
+		}
+		
+		return 0.0;
 		
 	}
 

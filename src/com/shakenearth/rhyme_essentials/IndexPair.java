@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 public class IndexPair {
 	
-	private int shorterWordPhoneme = 0, longerWordPhoneme = 0;
+	private String shorterWordPhoneme = "", longerWordPhoneme = "";
 	private double rhymeValue = 0.0;
 	
 	public IndexPair(Phoneme p1, Phoneme p2){
 		
+		shorterWordPhoneme = p1.getPhoneme();
+		longerWordPhoneme = p2.getPhoneme();
 		setRhymeValue(findRVBetweenPhonemes(p1, p2));
 		
 	}
@@ -101,19 +103,19 @@ public class IndexPair {
 		
 	}
 
-	public int getShorterWordPhoneme() {
+	public String getShorterWordPhoneme() {
 		return shorterWordPhoneme;
 	}
 
-	public void setShorterWordPhoneme(int shorterWordPhoneme) {
+	public void setShorterWordPhoneme(String shorterWordPhoneme) {
 		this.shorterWordPhoneme = shorterWordPhoneme;
 	}
 
-	public int getLongerWordPhoneme() {
+	public String getLongerWordPhoneme() {
 		return longerWordPhoneme;
 	}
 
-	public void setLongerWordPhoneme(int longerWordPhoneme) {
+	public void setLongerWordPhoneme(String longerWordPhoneme) {
 		this.longerWordPhoneme = longerWordPhoneme;
 	}
 
@@ -123,6 +125,12 @@ public class IndexPair {
 
 	public void setRhymeValue(double rhymeValue) {
 		this.rhymeValue = rhymeValue;
+	}
+	
+	public String toString(){
+		
+		return "(" + shorterWordPhoneme + ", " + longerWordPhoneme + ")";
+		
 	}
 
 }
