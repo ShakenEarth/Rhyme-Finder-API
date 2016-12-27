@@ -121,7 +121,7 @@ public class RhymeFinder {
 	/**This method goes through the entire process of finding how well two words rhyme with one another.
 	 * How well two words rhyme is given by the Rhyme Percentile returned. The higher the Rhyme Percentile, the better the two words rhyme.
 	 * @return Rhyme Percentile between two Words*/
-	public double findRhymeValueAndPercentileForWords(Word anchor, Word satellite) {
+	public double findRhymePercentileForWords(Word anchor, Word satellite) {
 		
 		double rhymePercentile = 0.0;
 		
@@ -142,6 +142,56 @@ public class RhymeFinder {
 		
 	}
 	
+	public double newFindRhymePercentileForWords(Word anchor, Word satellite){
+		
+		double rhymePercentile = 0.0;
+		
+		//find modified Cartesian product
+		Word shorterWord = null;
+		Word longerWord = null;
+		
+		//these conditionals find which word is longer and which is shorter
+		if(anchor.getListOfPhonemes().size() < satellite.getListOfPhonemes().size()){
+			
+			shorterWord = anchor;
+			longerWord = satellite;
+			
+		}else{
+			
+			shorterWord = satellite;
+			longerWord = anchor;
+			
+		}
+		
+		ArrayList<ArrayList<IndexPair>> cartesianProducts = new ArrayList<ArrayList<IndexPair>>();
+		
+		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
+			
+			ArrayList<IndexPair> cartes = new ArrayList<IndexPair>();
+			
+			for(int l = s; l < longerWord.getListOfPhonemes().size(); l++){
+				
+				cartes.add(new IndexPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l)));
+				
+			}
+			
+			cartesianProducts.add(cartes);
+			
+		}
+		
+		findBestRV(cartesianProducts);
+		
+		return rhymePercentile;
+		
+	}
+	
+	private void findBestRV(ArrayList<ArrayList<IndexPair>> cartesianProducts) {
+		
+		IndexPair bestPair = null;
+		
+		
+	}
+
 	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
 	 * 1. Iterate through each phoneme in one of the words and compare it to its corresponding phoneme in the other word, adding the resulting points awarded to the total Rhyme Value along the way.
 	 * 2. Find Homophonic Rhyme Value (as previously defined)

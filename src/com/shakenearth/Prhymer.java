@@ -54,7 +54,7 @@ public class Prhymer {
 			Word firstWord = new Word(firstWordSpelling, firstWordPhonemeString);
 			Word secondWord = new Word(secondWordSpelling, secondWordPhonemeString);
 			
-			System.out.println(finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
+			System.out.println(finder.findRhymePercentileForWords(firstWord, secondWord) * 100 + "%");
 			
 		}else if(TESTING == 1){ //finding rhyming words for a specific word or phrase
 			
@@ -96,7 +96,7 @@ public class Prhymer {
 					
 					Word secondWord = new Word(currentWord, finder.getDictionary().get(currentWord));
 					
-					System.out.println(currentWord + ", " + finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100 + "%");
+					System.out.println(currentWord + ", " + finder.findRhymePercentileForWords(firstWord, secondWord) * 100 + "%");
 					
 				}
 				
@@ -238,7 +238,7 @@ public class Prhymer {
 						
 						Word secondWord = new Word(currentWord, Prhymer.finder.getDictionary().get(currentWord));
 						
-						double rhymePercentile = Prhymer.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord);
+						double rhymePercentile = Prhymer.finder.findRhymePercentileForWords(firstWord, secondWord);
 						
 						if(rhymePercentile > 0.7  && !secondWord.getWordName().equals(firstWord.getWordName())){
 							
@@ -305,7 +305,7 @@ public class Prhymer {
 				System.out.println(firstWord);
 				System.out.println(secondWord);
 				
-				result.setText("Result: " + (Prhymer.finder.findRhymeValueAndPercentileForWords(firstWord, secondWord) * 100) + "%");
+				result.setText("Result: " + (Prhymer.finder.findRhymePercentileForWords(firstWord, secondWord) * 100) + "%");
 				
 			}
 		
