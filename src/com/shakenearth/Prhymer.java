@@ -106,6 +106,18 @@ public class Prhymer {
 			
 			WritingFrame writingFrame = new WritingFrame();
 			
+		}else if (TESTING == 3){
+				
+			Scanner reader = new Scanner(System.in);
+			System.out.println("Enter first phoneme (if vowel, include stress): ");
+			String firstPhonemeString = reader.nextLine();
+			
+			System.out.println("Enter second phoneme (if vowel, include stress): ");
+			String secondPhonemeString = reader.nextLine();
+			reader.close();
+			
+			System.out.println(finder.findRVBetweenPhonemes(new Phoneme(firstPhonemeString), new Phoneme(secondPhonemeString), false, 0));
+				
 			}
 		
 		}

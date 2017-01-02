@@ -135,7 +135,7 @@ public class RhymeFinder {
 		}else{//do ideal Rhyme Value process
 			
 			rhymePercentile = idealRhymeValue(anchor, satellite);
-			System.out.println("NEW METHOD RESULT: " + newFindRhymePercentileForWords(anchor, satellite) + "%");
+			System.out.println("NEW METHOD RESULT: " + newFindRhymePercentileForWords(anchor, satellite)*100 + "%");
 			
 		}
 		
@@ -180,8 +180,6 @@ public class RhymeFinder {
 			
 		}
 		
-		System.out.println("Cartesian Products: " + cartesianProducts);
-		
 		double rhymeValue = findBestRV(cartesianProducts, 0.0);
 		
 		rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
@@ -194,12 +192,15 @@ public class RhymeFinder {
 		
 		IndexPair bestPair = null;
 		ArrayList<IndexPair> current = cartesianProducts.get(cartesianProducts.size()-1);
+		System.out.println("Cartesian Products: " + cartesianProducts);
 		
 		for(int i = 0; i < current.size(); i++){
 			
 			current.get(i).setRhymeValue(current.get(i).getRhymeValue() + addition);
 			
 		}
+		
+		System.out.println("CURRENT'S SIZE: " + current.size());
 		
 		for(int i = 0; i < current.size(); i++){
 			
@@ -210,7 +211,8 @@ public class RhymeFinder {
 			}else{
 				
 				if(current.get(i).getRhymeValue() > bestPair.getRhymeValue()){
-					
+					System.out.println("CURRENT: " + current.get(i).getRhymeValue());
+					System.out.println("BEST PAIR: " + bestPair.getRhymeValue());
 					bestPair = current.get(i);
 					
 				}
@@ -220,18 +222,18 @@ public class RhymeFinder {
 		}
 		
 		cartesianProducts.remove(cartesianProducts.size()-1);
+		System.out.println("CARTESIAN PRODUCTS SIZE: " + cartesianProducts.size());
 		
 		if(cartesianProducts.size() == 0){
-			
+			System.out.println("BESTPAIR RHYME VALUE: " + bestPair.getRhymeValue());
 			return bestPair.getRhymeValue();
 			
 		}else{
 			
-			findBestRV(cartesianProducts, bestPair.getRhymeValue());
+			System.out.println("BESTPAIR RHYME VALUE: " + bestPair.getRhymeValue());
+			return findBestRV(cartesianProducts, bestPair.getRhymeValue());
 			
 		}
-		
-		return 0.0;
 		
 	}
 
@@ -520,7 +522,7 @@ public class RhymeFinder {
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
 	 * @return The Rhyme Value between two phonemes*/
-	private double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
+	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		ArrayList<Integer> p1Features = p1.getFeatures();
 		ArrayList<Integer> p2Features = p2.getFeatures();
