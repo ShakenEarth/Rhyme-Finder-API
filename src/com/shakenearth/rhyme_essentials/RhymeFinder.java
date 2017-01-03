@@ -131,6 +131,7 @@ public class RhymeFinder {
 			 * the anchor word which is the focus word*/
 			
 			rhymePercentile = regularRhymeValue(anchor, satellite);
+			System.out.println("NEW METHOD RESULT: " + newFindRhymePercentileForWords(anchor, satellite)*100 + "%");
 			
 		}else{//do ideal Rhyme Value process
 			
@@ -182,6 +183,8 @@ public class RhymeFinder {
 		
 		double rhymeValue = findBestRV(cartesianProducts, 0.0);
 		
+		//rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
+		
 		rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
 		
 		return rhymePercentile;
@@ -221,7 +224,7 @@ public class RhymeFinder {
 			
 		}
 		
-		cartesianProducts.remove(cartesianProducts.size()-1);
+		cartesianProducts.remove(cartesianProducts.size() - 1);
 		System.out.println("CARTESIAN PRODUCTS SIZE: " + cartesianProducts.size());
 		
 		if(cartesianProducts.size() == 0){

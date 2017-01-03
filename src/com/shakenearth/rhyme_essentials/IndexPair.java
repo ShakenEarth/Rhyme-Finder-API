@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class IndexPair {
 	
 	private String shorterWordPhoneme = "", longerWordPhoneme = "";
+	private int longerWordIndex = 0;
 	private double rhymeValue = 0.0;
 	
 	public IndexPair(Phoneme p1, Phoneme p2){
@@ -131,6 +132,14 @@ public class IndexPair {
 		
 		return "(" + shorterWordPhoneme + ", " + longerWordPhoneme + ")";
 		
+	}
+
+	public int getLongerWordIndex() {
+		return longerWordIndex;
+	}
+
+	public void setLongerWordIndex(int longerWordIndex) {
+		this.longerWordIndex = longerWordIndex;
 	}
 
 }
