@@ -144,6 +144,83 @@ public class RhymeFinder {
 		
 	}
 	
+	public double newNewFindRhymePercentileForWords(Word word1, Word word2){
+		
+		double rhymePercentile = 0.0;
+		
+		//1 - Find Cartesian product (shorterWord X longerWord)
+		ArrayList<ArrayList<IndexPair>> cartesianProduct = findCartesianProduct(word1, word2);
+		
+		//2 - Calculate RV
+		double rhymeValue = newFindBestRV(cartesianProduct);
+		
+		//3 - Find Rhyme Percentile
+		Word longerWord = null;
+		
+		//these conditionals find which word is longer and which is shorter
+		if(word1.getListOfPhonemes().size() < word2.getListOfPhonemes().size()){
+			
+			longerWord = word2;
+			
+		}else{
+			
+			longerWord = word1;
+			
+		}
+		
+		rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
+		
+		return rhymePercentile;
+		
+	}
+	
+	
+	private ArrayList<ArrayList<IndexPair>> findCartesianProduct(Word word1, Word word2){
+		
+		Word shorterWord = null;
+		Word longerWord = null;
+		
+		//these conditionals find which word is longer and which is shorter
+		if(word1.getListOfPhonemes().size() < word2.getListOfPhonemes().size()){
+			
+			shorterWord = word1;
+			longerWord = word2;
+			
+		}else{
+			
+			shorterWord = word2;
+			longerWord = word1;
+			
+		}
+		
+		ArrayList<ArrayList<IndexPair>> cartesianProduct = new ArrayList<ArrayList<IndexPair>>();
+		
+		//creates Cartesian product (shorterWord X longerWord)
+		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
+			
+			ArrayList<IndexPair> currentRow = new ArrayList<IndexPair>();
+			
+			for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
+				
+				currentRow.add(new IndexPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l));
+				
+			}
+			
+			cartesianProduct.add(currentRow);
+			
+		}
+		
+		return cartesianProduct;
+		
+	}
+	
+	private double newFindBestRV(ArrayList<ArrayList<IndexPair>> matrix){
+		
+		double rhymeValue = 0.0;
+		
+		return rhymeValue;
+	}
+	
 	public double newFindRhymePercentileForWords(Word anchor, Word satellite){
 		
 		double rhymePercentile = 0.0;
@@ -173,7 +250,7 @@ public class RhymeFinder {
 			
 			for(int l = s; l < longerWord.getListOfPhonemes().size(); l++){
 				
-				cartes.add(new IndexPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l)));
+				cartes.add(new IndexPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l));
 				
 			}
 			
@@ -181,9 +258,7 @@ public class RhymeFinder {
 			
 		}
 		
-		double rhymeValue = findBestRV(cartesianProducts, 0.0);
-		
-		//rhymeValue = rhymeValue - findDeductionForIndexSet(bestSet, longerWord);
+		double rhymeValue = findBestRV(cartesianProducts, 0.0, new ArrayList<Integer>(), longerWord.getListOfPhonemes().size());
 		
 		rhymePercentile = (double) findRhymePercentile(rhymeValue, longerWord);
 		
@@ -191,7 +266,7 @@ public class RhymeFinder {
 		
 	}
 	
-	private double findBestRV(ArrayList<ArrayList<IndexPair>> cartesianProducts, double addition) {
+	private double findBestRV(ArrayList<ArrayList<IndexPair>> cartesianProducts, double addition, ArrayList<Integer> indexes, int lSize) {
 		
 		IndexPair bestPair = null;
 		ArrayList<IndexPair> current = cartesianProducts.get(cartesianProducts.size()-1);
@@ -203,7 +278,8 @@ public class RhymeFinder {
 			
 		}
 		
-		System.out.println("CURRENT'S SIZE: " + current.size());
+		int startingIndex = cartesianProducts.get(0).size() - current.size();
+		int index = startingIndex;
 		
 		for(int i = 0; i < current.size(); i++){
 			
@@ -214,9 +290,9 @@ public class RhymeFinder {
 			}else{
 				
 				if(current.get(i).getRhymeValue() > bestPair.getRhymeValue()){
-					System.out.println("CURRENT: " + current.get(i).getRhymeValue());
-					System.out.println("BEST PAIR: " + bestPair.getRhymeValue());
+					
 					bestPair = current.get(i);
+					index = startingIndex + i;
 					
 				}
 				
@@ -224,17 +300,19 @@ public class RhymeFinder {
 			
 		}
 		
+		indexes.add(index);
+		
 		cartesianProducts.remove(cartesianProducts.size() - 1);
-		System.out.println("CARTESIAN PRODUCTS SIZE: " + cartesianProducts.size());
 		
 		if(cartesianProducts.size() == 0){
-			System.out.println("BESTPAIR RHYME VALUE: " + bestPair.getRhymeValue());
+			
+			bestPair.setIndexes(indexes);
+			bestPair.calculateGapPenalty(lSize);
 			return bestPair.getRhymeValue();
 			
 		}else{
 			
-			System.out.println("BESTPAIR RHYME VALUE: " + bestPair.getRhymeValue());
-			return findBestRV(cartesianProducts, bestPair.getRhymeValue());
+			return findBestRV(cartesianProducts, bestPair.getRhymeValue(), indexes, lSize);
 			
 		}
 		
@@ -288,7 +366,7 @@ public class RhymeFinder {
 		}
 		
 		if(foundConsonantCluster == false){
-			
+			System.out.println("OLD: ");
 			for(int s = 0; s < anchor.getListOfPhonemes().size(); s++){
 			
 				rhymeValue = (double) rhymeValue + (double)findRVBetweenPhonemes(anchor.getListOfPhonemes().get(s), 
@@ -369,6 +447,8 @@ public class RhymeFinder {
 			if(firstSearch == true){
 				
 				Node startNode = new Node();
+				System.out.println("OLD: ");
+				
 				for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 					
 					double RVBetweenPhonemes = findRVBetweenPhonemes(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), true, l * weightTowardsWordEnd);
@@ -501,6 +581,7 @@ public class RhymeFinder {
 		double rhymePercentile = 0.0;
 		
 		double weightTowardsWordEnd = 0.1;
+		System.out.println("OLD: ");
 		
 		for(int i = 0; i < longerWord.getListOfPhonemes().size(); i++){
 			
@@ -525,7 +606,7 @@ public class RhymeFinder {
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
 	 * @return The Rhyme Value between two phonemes*/
-	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
+		public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		ArrayList<Integer> p1Features = p1.getFeatures();
 		ArrayList<Integer> p2Features = p2.getFeatures();
@@ -550,6 +631,9 @@ public class RhymeFinder {
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			
 			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
+			
+			System.out.println(5.0 - (1*difference) - stressDifference);
+			
 			return 5.0 - (1*difference) - stressDifference;
 			
 		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
@@ -580,6 +664,8 @@ public class RhymeFinder {
 			
 			difference = biggerList.size() - commonFeaturesSize;
 			
+			System.out.println(2.0 - (0.15*difference) - specialDifference);
+			
 			return 2.0 - (0.15*difference) - specialDifference;
 			
 		}else{ /*this is a bit different because we're starting at the assumption that they won't have much in common so it's structured
@@ -606,6 +692,8 @@ public class RhymeFinder {
 			}
 			
 			difference = biggerList.size() - commonFeaturesSize;
+			
+			System.out.println(0.1*commonFeaturesSize + specialDifference);
 			
 			return 0.1*commonFeaturesSize + specialDifference;
 			
@@ -654,6 +742,8 @@ public class RhymeFinder {
 			deduction = deduction + (0.25 * (index2 - index1-1));
 			
 		}
+		
+		System.out.println("DEDUCTION: " + deduction);
 		
 		return deduction;
 		

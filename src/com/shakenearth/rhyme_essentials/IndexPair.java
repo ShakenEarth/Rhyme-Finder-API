@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public class IndexPair {
 	
 	private String shorterWordPhoneme = "", longerWordPhoneme = "";
-	private int longerWordIndex = 0;
+	private ArrayList<Integer> indexes = new ArrayList<Integer>();
 	private double rhymeValue = 0.0;
 	
-	public IndexPair(Phoneme p1, Phoneme p2){
+	public IndexPair(Phoneme p1, Phoneme p2, int l){
 		
 		shorterWordPhoneme = p1.getPhoneme();
 		longerWordPhoneme = p2.getPhoneme();
+		System.out.println("NEW: ");
 		setRhymeValue(findRVBetweenPhonemes(p1, p2));
+		getIndexes().add(l);
 		
 	}
 	
@@ -41,6 +43,9 @@ public class IndexPair {
 		if(p1.isAVowelPhoneme() && p2.isAVowelPhoneme()){
 			
 			int stressDifference = Math.abs(p1.getStress() - p2.getStress());
+			
+			System.out.println(5.0 - (1*difference) - stressDifference);
+			
 			return 5.0 - (1*difference) - stressDifference;
 			
 		}else if(p1.isAVowelPhoneme() == false && p2.isAVowelPhoneme() == false){
@@ -71,6 +76,8 @@ public class IndexPair {
 			
 			difference = biggerList.size() - commonFeaturesSize;
 			
+			System.out.println(2.0 - (0.15*difference) - specialDifference);
+			
 			return 2.0 - (0.15*difference) - specialDifference;
 			
 		}else{ /*this is a bit different because we're starting at the assumption that they won't have much in common so it's structured
@@ -97,6 +104,8 @@ public class IndexPair {
 			}
 			
 			difference = biggerList.size() - commonFeaturesSize;
+			
+			System.out.println(0.1*commonFeaturesSize + specialDifference);
 			
 			return 0.1*commonFeaturesSize + specialDifference;
 			
@@ -134,12 +143,52 @@ public class IndexPair {
 		
 	}
 
-	public int getLongerWordIndex() {
-		return longerWordIndex;
+	public ArrayList<Integer> getIndexes() {
+		return indexes;
 	}
 
-	public void setLongerWordIndex(int longerWordIndex) {
-		this.longerWordIndex = longerWordIndex;
+	public void setIndexes(ArrayList<Integer> indexes) {
+		this.indexes = indexes;
+	}
+
+	public void calculateGapPenalty(int lSize) {
+		
+		double deduction = 0.0;
+		System.out.println(getIndexes());
+		
+		for(int i = 0; i < getIndexes().size() - 1; i++){
+			
+			int index1 = getIndexes().get(i);
+			int index2 = getIndexes().get(i + 1);
+			
+			deduction = deduction + (0.25 * (index1 - index2-1));
+			
+		}
+		
+		if(getIndexes().get(getIndexes().size() - 1) < 0){
+			
+			if(getIndexes().get(getIndexes().size() - 1) > 1){
+				
+				deduction = deduction + Math.log10(getIndexes().get(0));
+				
+			}else{
+				
+				deduction = deduction + 0.25;
+				
+			}
+			
+		}
+		
+		if(lSize - getIndexes().get(getIndexes().size()-1) < 0){
+			
+			deduction = deduction + Math.log10(lSize - getIndexes().get(getIndexes().size()-1));
+			
+		}
+		
+		System.out.println("NEW DEDUCTION: " + deduction);
+		
+		setRhymeValue(getRhymeValue() - deduction);
+		
 	}
 
 }
