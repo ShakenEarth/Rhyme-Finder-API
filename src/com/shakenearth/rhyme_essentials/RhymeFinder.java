@@ -168,8 +168,47 @@ public class RhymeFinder {
 		ArrayList<ArrayList<OrderedPair>> cartesianProduct = findCartesianProduct(word1, word2);
 		
 		//2 - Calculate RVs
-		
+		int echelon = 0;
 		while(cartesianProduct.size() != 0){
+			
+			//print REF CP:
+			
+			for(int i = 0; i < cartesianProduct.size(); i++){
+				
+				ArrayList<OrderedPair> currentRow = cartesianProduct.get(i);
+				
+				for(int j = 0; j < echelon; j++){
+					
+					System.out.print("          ");
+					
+				}
+				
+				for(int j = echelon; j < currentRow.size(); j++){
+					
+					OrderedPair pair = currentRow.get(j);
+					
+					if(pair.getShorterWordPhoneme().length()  == 2 && pair.getLongerWordPhoneme().length()  == 2){
+						
+						System.out.print(pair + ", " + pair.getRhymeValue() + "  ");
+						
+					}else if(pair.getShorterWordPhoneme().length()  != pair.getLongerWordPhoneme().length()){
+						
+						System.out.print(pair + ", " + pair.getRhymeValue() + "   ");
+						
+					}else if(pair.getShorterWordPhoneme().length()  == 1 && pair.getLongerWordPhoneme().length()  == 1){
+						
+						System.out.print(pair + ", " + pair.getRhymeValue() + "    ");
+						
+					}
+					
+				}
+				
+				System.out.println();
+				echelon = echelon + 1;
+				
+			}
+			
+			//end REF CP print
 			
 			allRVs.add(newFindBestRV(cartesianProduct, 0.0, new ArrayList<Integer>(), longerWord.getListOfPhonemes().size()));
 			
@@ -197,6 +236,8 @@ public class RhymeFinder {
 		Word shorterWord = null;
 		Word longerWord = null;
 		
+		System.out.println("Cartesian Product of Newest Method: \n");
+		
 		//these conditionals find which word is longer and which is shorter
 		if(word1.getListOfPhonemes().size() < word2.getListOfPhonemes().size()){
 			
@@ -219,27 +260,48 @@ public class RhymeFinder {
 			
 			for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
 				
-				currentRow.add(new OrderedPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l));
+				OrderedPair newOrderedPair = new OrderedPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l);
+				currentRow.add(newOrderedPair);
+				
+				//print the Ordered Pairs and make it look pretty
+				
+				if(newOrderedPair.getShorterWordPhoneme().length()  == 2 && newOrderedPair.getLongerWordPhoneme().length()  == 2){
+					
+					System.out.print(newOrderedPair + "  ");
+					
+				}else if(newOrderedPair.getShorterWordPhoneme().length()  != newOrderedPair.getLongerWordPhoneme().length()){
+					
+					System.out.print(newOrderedPair + "   ");
+					
+				}else if(newOrderedPair.getShorterWordPhoneme().length()  == 1 && newOrderedPair.getLongerWordPhoneme().length()  == 1){
+					
+					System.out.print(newOrderedPair + "    ");
+					
+				}
+				
+				//End print of ordered pairs
 				
 			}
 			
+			System.out.println();
 			cartesianProduct.add(currentRow);
 			
 		}
 		
+		System.out.println();
 		return cartesianProduct;
 		
 	}
 	
 	private double newFindBestRV(ArrayList<ArrayList<OrderedPair>> matrix, double addition, ArrayList<Integer> indexes, int lSize){
 		
-		System.out.println("Cartesian Product of Newest Method: " + matrix);
-		
 		OrderedPair bestPair = null;
 		int echelonIndex = matrix.size() - 1;
 		int index = echelonIndex;
+		System.out.println("New Index: " + index);
 		
-		ArrayList<OrderedPair> currentRow = matrix.get(matrix.size()-1);
+		ArrayList<OrderedPair> currentRow = matrix.get(echelonIndex);
+		System.out.println("Current Row: " + currentRow);
 		
 		// add addition to an OrderedPair's RV
 		for(int i = 0; i < currentRow.size(); i++){
@@ -259,13 +321,15 @@ public class RhymeFinder {
 				if(currentRow.get(i).getRhymeValue() > bestPair.getRhymeValue()){
 					
 					bestPair = currentRow.get(i);
-					index = index + i;
+					index = echelonIndex + (currentRow.size() - echelonIndex);
 					
 				}
 				
 			}
 			
 		}
+		
+		System.out.println("Best Pair: " + bestPair);
 		
 		indexes.add(index);
 		
@@ -274,6 +338,7 @@ public class RhymeFinder {
 		if(matrix.size() == 0){
 			
 			bestPair.setIndexes(indexes);
+			System.out.println();
 			bestPair.calculateGapPenalty(lSize);
 			return bestPair.getRhymeValue();
 			
@@ -348,6 +413,7 @@ public class RhymeFinder {
 		
 		int startingIndex = cartesianProducts.get(0).size() - currentRow.size();
 		int index = startingIndex;
+		System.out.println("Old Index: " + index);
 		
 		for(int i = 0; i < currentRow.size(); i++){
 			
