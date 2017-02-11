@@ -213,18 +213,13 @@ public class RhymeFinder {
 			
 			allRVs.add(findBestRV(cartesianProduct, 0.0, new ArrayList<Integer>(), longerWord.getListOfPhonemes().size()));
 			
-			if(cartesianProduct.size() == 0){
-				System.out.println("BREAKING");
-				break;
-				
-			}
-			
 			cartesianProduct.remove(0);
 			
 		}
 		
 		//3 - Find Rhyme Percentile
-		
+		System.out.println("Rhyme Values: " + allRVs);
+		System.out.println("MAX: " + Collections.max(allRVs));
 		rhymePercentile = (double) findRhymePercentile(Collections.max(allRVs), longerWord);
 		
 		return rhymePercentile;
@@ -295,10 +290,13 @@ public class RhymeFinder {
 	
 	private double findBestRV(ArrayList<ArrayList<OrderedPair>> matrix, double addition, ArrayList<Integer> indexes, int lSize){
 		
+		@SuppressWarnings("unchecked")
 		ArrayList<ArrayList<OrderedPair>> matrixCopy = (ArrayList<ArrayList<OrderedPair>>) matrix.clone();
 		OrderedPair bestPair = null;
 		int echelonIndex = matrixCopy.size() - 1;
 		int index = echelonIndex;
+		
+		System.out.println("ADDITION: " + addition);
 		
 		ArrayList<OrderedPair> currentRow = matrixCopy.get(echelonIndex);
 		
@@ -336,6 +334,7 @@ public class RhymeFinder {
 			
 			bestPair.setIndexes(indexes);
 			bestPair.calculateGapPenalty(lSize);
+			System.out.println("BestPair RV: " + bestPair.getRhymeValue());
 			return bestPair.getRhymeValue();
 			
 		}else{
@@ -616,7 +615,7 @@ public class RhymeFinder {
 			
 		}
 		debugPrint("RV: " + rhymeValue);
-		debugPrint("HRV: " + homophonicRhymeValue);
+		System.out.println("HRV: " + homophonicRhymeValue);
 		
 		rhymePercentile = (double) rhymeValue / (double)homophonicRhymeValue;
 		
@@ -632,7 +631,7 @@ public class RhymeFinder {
 	
 	/**Takes in two Phonemes and finds the amount that should be added to the Rhyme Value based on how well the two Phonemes match.
 	 * @return The Rhyme Value between two phonemes*/
-		public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
+	public double findRVBetweenPhonemes(Phoneme p1, Phoneme p2, boolean addWeight, double weight){
 		
 		ArrayList<Integer> p1Features = p1.getFeatures();
 		ArrayList<Integer> p2Features = p2.getFeatures();
