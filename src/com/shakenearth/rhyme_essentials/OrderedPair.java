@@ -147,7 +147,7 @@ public class OrderedPair {
 	public void calculateGapPenalty(int lSize) {
 		
 		double deduction = 0.0;
-		System.out.println(getIndexes());
+		System.out.println("INDEXES: " + getIndexes());
 		
 		for(int i = 0; i < getIndexes().size() - 1; i++){
 			

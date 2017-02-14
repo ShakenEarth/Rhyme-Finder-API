@@ -169,51 +169,12 @@ public class RhymeFinder {
 		int echelon = 0;
 		while(cartesianProduct.size() != 0){
 			
-			System.out.println("LOOP ITERATION");
-			System.out.println("CARTESIAN PRODUCT HEIGHT: " + cartesianProduct.size());
-			
-			//print REF CP:
-			
-			for(int i = 0; i < cartesianProduct.size(); i++){
-				
-				ArrayList<OrderedPair> currentRow = cartesianProduct.get(i);
-				
-				for(int j = 0; j < echelon; j++){
-					
-					System.out.print("          ");
-					
-				}
-				
-				for(int j = echelon; j < currentRow.size(); j++){
-					
-					OrderedPair pair = currentRow.get(j);
-					
-					if(pair.getShorterWordPhoneme().length()  == 2 && pair.getLongerWordPhoneme().length()  == 2){
-						
-						System.out.print(pair + ", " + pair.getRhymeValue() + "  ");
-						
-					}else if(pair.getShorterWordPhoneme().length()  != pair.getLongerWordPhoneme().length()){
-						
-						System.out.print(pair + ", " + pair.getRhymeValue() + "   ");
-						
-					}else if(pair.getShorterWordPhoneme().length()  == 1 && pair.getLongerWordPhoneme().length()  == 1){
-						
-						System.out.print(pair + ", " + pair.getRhymeValue() + "    ");
-						
-					}
-					
-				}
-				
-				System.out.println();
-				echelon = echelon + 1;
-				
-			}
-			
-			//end REF CP print
-			
-			allRVs.add(findBestRV(cartesianProduct, 0.0, new ArrayList<Integer>(), longerWord.getListOfPhonemes().size()));
+			echelon = cartesianProduct.size() - 1;
+			allRVs.add(findBestRV(cartesianProduct, echelon, new ArrayList<Integer>(), 0, cartesianProduct.size(),
+					longerWord.getListOfPhonemes().size()));
 			
 			cartesianProduct.remove(0);
+			echelon = 0;
 			
 		}
 		
@@ -287,38 +248,33 @@ public class RhymeFinder {
 		return cartesianProduct;
 		
 	}
-	
-	private double findBestRV(ArrayList<ArrayList<OrderedPair>> matrix, double addition, ArrayList<Integer> indexes, int lSize){
+
+	private double findBestRV(ArrayList<ArrayList<OrderedPair>> cpMatrix, int echelon, ArrayList<Integer> indexes, 
+			double cumulative, int bound, int lSize){
 		
-		@SuppressWarnings("unchecked")
-		ArrayList<ArrayList<OrderedPair>> matrixCopy = (ArrayList<ArrayList<OrderedPair>>) matrix.clone();
-		OrderedPair bestPair = null;
-		int echelonIndex = matrixCopy.size() - 1;
-		int index = echelonIndex;
+		ArrayList<OrderedPair> currentRow = cpMatrix.get(echelon); //echelon index number is the same as the current row index.
 		
-		System.out.println("ADDITION: " + addition);
-		
-		ArrayList<OrderedPair> currentRow = matrixCopy.get(echelonIndex);
-		
-		// add addition to an OrderedPair's RV
-		for(int i = 0; i < currentRow.size(); i++){
-					
-			currentRow.get(i).setRhymeValue(currentRow.get(i).getRhymeValue() + addition);
-					
+		for(int i = echelon; i < bound; i++){
+			
+			currentRow.get(i).setRhymeValue(currentRow.get(i).getRhymeValue() + cumulative);;
+			
 		}
 		
-		for(int i = echelonIndex; i < currentRow.size(); i++){
+		OrderedPair bestPairForRow = null;
+		int indexToAdd = 0;
+		for(int i = echelon; i < bound; i++){
 			
-			if(i == echelonIndex){
+			if(i == echelon){
 				
-				bestPair = currentRow.get(echelonIndex);
+				bestPairForRow = currentRow.get(i);
+				indexToAdd = i;
 				
 			}else{
 				
-				if(currentRow.get(i).getRhymeValue() > bestPair.getRhymeValue()){
+				if(currentRow.get(i).getRhymeValue() > bestPairForRow.getRhymeValue()){
 					
-					bestPair = currentRow.get(i);
-					index = i;
+					bestPairForRow = currentRow.get(i);
+					indexToAdd = i;
 					
 				}
 				
@@ -326,25 +282,23 @@ public class RhymeFinder {
 			
 		}
 		
-		indexes.add(index);
+		indexes.add(indexToAdd);
+		echelon = echelon - 1;
 		
-		matrixCopy.remove(matrixCopy.size() - 1);
-		
-		if(matrixCopy.size() == 0){
+		if(echelon == 0){
 			
-			bestPair.setIndexes(indexes);
-			bestPair.calculateGapPenalty(lSize);
-			System.out.println("BestPair RV: " + bestPair.getRhymeValue());
-			return bestPair.getRhymeValue();
+			bestPairForRow.setIndexes(indexes);
+			bestPairForRow.calculateGapPenalty(lSize);
+			return bestPairForRow.getRhymeValue();
 			
 		}else{
 			
-			return findBestRV(matrixCopy, bestPair.getRhymeValue(), indexes, lSize);
+			return findBestRV(cpMatrix, echelon, indexes, bestPairForRow.getRhymeValue(), indexes.get(indexes.size() - 1), lSize);
 			
 		}
 		
 	}
-
+	
 	/**This method is called when two words have the same phonemic lengths (contain the same number of phonemes).
 	 * 1. Iterate through each phoneme in one of the words and compare it to its corresponding phoneme in the other word, adding the resulting points awarded to the total Rhyme Value along the way.
 	 * 2. Find Homophonic Rhyme Value (as previously defined)
