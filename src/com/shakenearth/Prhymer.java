@@ -20,7 +20,8 @@ public class Prhymer {
 	
 	public static void main(String[] args){
 
-		//0 for comparing two words and/or phrases, 1 for finding rhyming words for a specific word or phrase, 2 for a GUI.
+		//0 for comparing two words and/or phrases, 1 for finding rhyming words for a specific word or phrase, 2 for a GUI
+		// and 3 for phoneme comparison.
 		final int TESTING = 2;
 		
 		if(TESTING == 0){ //comparing two words and/or phrases

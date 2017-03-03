@@ -72,6 +72,8 @@ public class Node implements Serializable{
 		
 		this.setBestSet(bestSet);
 		
+		System.out.println("OLD BEST: " + bestSet);
+		
 		if(parentIndexSet != null){
 			
 			parentIndexSet.addIndexes(bestSet.getIndexes(), bestSet.getRhymeValueForSet());

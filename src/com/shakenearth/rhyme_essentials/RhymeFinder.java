@@ -1,7 +1,5 @@
 package com.shakenearth.rhyme_essentials;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.nio.charset.*;
 import java.nio.file.*;
 import java.util.*;
@@ -168,44 +166,11 @@ public class RhymeFinder {
 		//2 - Calculate RVs
 		int echelon = 0;
 		while(cartesianProduct.size() != 0){
-			
+			System.out.println("\n\nWHILE LOOP ITERATION: " + cartesianProduct.size());
+			System.out.println("\nCartesian Product: " + cartesianProduct);
 			echelon = cartesianProduct.size() - 1;
-			allRVs.add(findBestRV(cartesianProduct, echelon, new ArrayList<Integer>(), 0, cartesianProduct.size(),
+			allRVs.add(findBestRV(cartesianProduct, echelon, new ArrayList<Integer>(), 0, cartesianProduct.get(echelon).size(),
 					longerWord.getListOfPhonemes().size()));
-			
-			//print REF CP:
-			/*int echelonPrint = echelon;
-			for(int i = 0; i < cartesianProduct.size(); i++){
-				
-				ArrayList<OrderedPair> currentRow = cartesianProduct.get(i);
-				
-				for(int j = 0; j < echelonPrint; j++){
-					
-					System.out.print("          ");
-					
-				}
-				
-				for(int j = echelonPrint; j < currentRow.size(); j++){
-					
-					OrderedPair pair = currentRow.get(j);
-					
-					if(pair.getShorterWordPhoneme().length()  == 2 && pair.getLongerWordPhoneme().length()  == 2){
-						
-						System.out.print(pair + "  ");
-						
-					}else if(pair.getShorterWordPhoneme().length()  != pair.getLongerWordPhoneme().length()){
-						
-						System.out.print(pair + "   ");
-						
-					}else if(pair.getShorterWordPhoneme().length()  == 1 && pair.getLongerWordPhoneme().length()  == 1){
-						
-						System.out.print(pair + "    ");
-						
-					}
-					
-				}
-				
-			}*/
 			
 			cartesianProduct.remove(0);
 			echelon = 0;
@@ -283,21 +248,23 @@ public class RhymeFinder {
 		
 	}
 
+	
 	private double findBestRV(ArrayList<ArrayList<OrderedPair>> cpMatrix, int echelon, ArrayList<Integer> indexes, 
 			double cumulative, int bound, int lSize){
 		
-		ArrayList<OrderedPair> currentRow = cpMatrix.get(echelon); //echelon index number is the same as the current row index.
-		
+		ArrayList<OrderedPair> currentRow = cpMatrix.get(echelon); //echelon number is the same as the current row index.
+		System.out.println("CUMULATIVE: " + cumulative);
 		for(int i = echelon; i < bound; i++){
 			
-			currentRow.get(i).setRhymeValue(currentRow.get(i).getRhymeValue() + cumulative);;
+			currentRow.get(i).setRhymeValue(currentRow.get(i).getRhymeValue() + cumulative);
 			
 		}
 		
 		OrderedPair bestPairForRow = null;
 		int indexToAdd = 0;
+		System.out.println("\nECHELON: " + echelon);
+		System.out.println("BOUND: " + bound);
 		for(int i = echelon; i < bound; i++){
-			
 			if(i == echelon){
 				
 				bestPairForRow = currentRow.get(i);
@@ -322,11 +289,13 @@ public class RhymeFinder {
 			
 			bestPairForRow.setIndexes(indexes);
 			bestPairForRow.calculateGapPenalty(lSize);
+			System.out.println("ENDS ON: " + bestPairForRow);
 			return bestPairForRow.getRhymeValue();
 			
 		}else{
 			
 			echelon = echelon - 1;
+			System.out.println("USES: " + bestPairForRow + "\n");
 			return findBestRV(cpMatrix, echelon, indexes, bestPairForRow.getRhymeValue(), indexes.get(indexes.size() - 1), lSize);
 			
 		}

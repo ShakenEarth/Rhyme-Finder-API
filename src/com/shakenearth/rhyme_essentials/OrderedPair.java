@@ -179,6 +179,7 @@ public class OrderedPair {
 		}
 		
 		System.out.println("NEW DEDUCTION: " + deduction);
+		System.out.println("RV BEFORE DEDUCTION: " + getRhymeValue());
 		
 		setRhymeValue(getRhymeValue() - deduction);
 		
