@@ -161,18 +161,22 @@ public class RhymeFinder {
 		ArrayList<Double> allRVs = new ArrayList<Double>();
 		
 		//1 - Find Cartesian product (shorterWord X longerWord)
-		ArrayList<ArrayList<OrderedPair>> cartesianProduct = findCartesianProduct(word1, word2);
+		CartesianProduct cartesianProduct = new CartesianProduct(word1, word2);
 		
 		//2 - Calculate RVs
 		int echelon = 0;
-		while(cartesianProduct.size() != 0){
-			System.out.println("\n\nWHILE LOOP ITERATION: " + cartesianProduct.size());
+		while(cartesianProduct.getCartesianProductMatrix().size() != 0){
+			System.out.println("\n\nWHILE LOOP ITERATION: " + cartesianProduct.getCartesianProductMatrix().size());
 			System.out.println("\nCartesian Product: " + cartesianProduct);
-			echelon = cartesianProduct.size() - 1;
-			allRVs.add(findBestRV(cartesianProduct, echelon, new ArrayList<Integer>(), 0, cartesianProduct.get(echelon).size(),
+			echelon = cartesianProduct.getCartesianProductMatrix().size() - 1;
+			allRVs.add(findBestRV(cartesianProduct, echelon, new ArrayList<Integer>(), 0, 
+					cartesianProduct.getCartesianProductMatrix().get(echelon).size(),
 					longerWord.getListOfPhonemes().size()));
 			
-			cartesianProduct.remove(0);
+			cartesianProduct.removeTopRow();
+			/*resets rhyme values of OrderedPairs to their original value so that previous runthroughs of the findBestRV() method 
+			have no effect i.e. it makes sure it has the correct data to work with:*/
+			cartesianProduct.resetOrderedPairRVs();
 			echelon = 0;
 			
 		}
@@ -186,73 +190,10 @@ public class RhymeFinder {
 		
 	}
 	
-	private ArrayList<ArrayList<OrderedPair>> findCartesianProduct(Word word1, Word word2){
-		
-		Word shorterWord = null;
-		Word longerWord = null;
-		
-		System.out.println("Cartesian Product of Newest Method: \n");
-		
-		//these conditionals find which word is longer and which is shorter
-		if(word1.getListOfPhonemes().size() < word2.getListOfPhonemes().size()){
-			
-			shorterWord = word1;
-			longerWord = word2;
-			
-		}else{
-			
-			shorterWord = word2;
-			longerWord = word1;
-			
-		}
-		
-		ArrayList<ArrayList<OrderedPair>> cartesianProduct = new ArrayList<ArrayList<OrderedPair>>();
-		
-		//creates Cartesian product (shorterWord X longerWord)
-		for(int s = 0; s < shorterWord.getListOfPhonemes().size(); s++){
-			
-			ArrayList<OrderedPair> currentRow = new ArrayList<OrderedPair>();
-			
-			for(int l = 0; l < longerWord.getListOfPhonemes().size(); l++){
-				
-				OrderedPair newOrderedPair = new OrderedPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l);
-				currentRow.add(newOrderedPair);
-				
-				//print the Ordered Pairs and make it look pretty
-				
-				if(newOrderedPair.getShorterWordPhoneme().length()  == 2 && newOrderedPair.getLongerWordPhoneme().length()  == 2){
-					
-					System.out.print(newOrderedPair + "  ");
-					
-				}else if(newOrderedPair.getShorterWordPhoneme().length()  != newOrderedPair.getLongerWordPhoneme().length()){
-					
-					System.out.print(newOrderedPair + "   ");
-					
-				}else if(newOrderedPair.getShorterWordPhoneme().length()  == 1 && newOrderedPair.getLongerWordPhoneme().length()  == 1){
-					
-					System.out.print(newOrderedPair + "    ");
-					
-				}
-				
-				//End print of ordered pairs
-				
-			}
-			
-			System.out.println();
-			cartesianProduct.add(currentRow);
-			
-		}
-		
-		System.out.println();
-		return cartesianProduct;
-		
-	}
-
-	
-	private double findBestRV(ArrayList<ArrayList<OrderedPair>> cpMatrix, int echelon, ArrayList<Integer> indexes, 
+	private double findBestRV(CartesianProduct cp, int echelon, ArrayList<Integer> indexes, 
 			double cumulative, int bound, int lSize){
 		
-		ArrayList<OrderedPair> currentRow = cpMatrix.get(echelon); //echelon number is the same as the current row index.
+		ArrayList<OrderedPair> currentRow = cp.getCartesianProductMatrix().get(echelon); //echelon number is the same as the current row index.
 		System.out.println("CUMULATIVE: " + cumulative);
 		for(int i = echelon; i < bound; i++){
 			
@@ -296,7 +237,7 @@ public class RhymeFinder {
 			
 			echelon = echelon - 1;
 			System.out.println("USES: " + bestPairForRow + "\n");
-			return findBestRV(cpMatrix, echelon, indexes, bestPairForRow.getRhymeValue(), indexes.get(indexes.size() - 1), lSize);
+			return findBestRV(cp, echelon, indexes, bestPairForRow.getRhymeValue(), indexes.get(indexes.size() - 1), lSize);
 			
 		}
 		

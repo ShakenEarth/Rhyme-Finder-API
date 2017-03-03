@@ -6,6 +6,7 @@ public class OrderedPair {
 	
 	private String shorterWordPhoneme = "", longerWordPhoneme = "";
 	private ArrayList<Integer> indexes = new ArrayList<Integer>();
+	private double originalRhymeValue = 0.0;
 	private double rhymeValue = 0.0;
 	
 	public OrderedPair(Phoneme p1, Phoneme p2, int l){
@@ -13,6 +14,7 @@ public class OrderedPair {
 		shorterWordPhoneme = p1.getPhoneme();
 		longerWordPhoneme = p2.getPhoneme();
 		setRhymeValue(findRVBetweenPhonemes(p1, p2));
+		setOriginalRhymeValue(getRhymeValue());
 		getIndexes().add(l);
 		
 	}
@@ -105,6 +107,12 @@ public class OrderedPair {
 		}
 		
 	}
+	
+	public void resetRV(){
+		
+		rhymeValue = originalRhymeValue;
+		
+	}
 
 	public String getShorterWordPhoneme() {
 		return shorterWordPhoneme;
@@ -183,6 +191,14 @@ public class OrderedPair {
 		
 		setRhymeValue(getRhymeValue() - deduction);
 		
+	}
+
+	public double getOriginalRhymeValue() {
+		return originalRhymeValue;
+	}
+
+	public void setOriginalRhymeValue(double originalRhymeValue) {
+		this.originalRhymeValue = originalRhymeValue;
 	}
 
 }
