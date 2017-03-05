@@ -11,8 +11,6 @@ public class CartesianProduct {
 		Word shorterWord = null;
 		Word longerWord = null;
 		
-		System.out.println("Cartesian Product of Newest Method: \n");
-		
 		//these conditionals find which word is longer and which is shorter
 		if(word1.getListOfPhonemes().size() < word2.getListOfPhonemes().size()){
 			
@@ -36,32 +34,11 @@ public class CartesianProduct {
 				OrderedPair newOrderedPair = new OrderedPair(shorterWord.getListOfPhonemes().get(s), longerWord.getListOfPhonemes().get(l), l);
 				currentRow.add(newOrderedPair);
 				
-				//print the Ordered Pairs and make it look pretty
-						
-				if(newOrderedPair.getShorterWordPhoneme().length()  == 2 && newOrderedPair.getLongerWordPhoneme().length()  == 2){
-					
-					System.out.print(newOrderedPair + "  ");
-							
-				}else if(newOrderedPair.getShorterWordPhoneme().length()  != newOrderedPair.getLongerWordPhoneme().length()){
-					
-					System.out.print(newOrderedPair + "   ");
-					
-				}else if(newOrderedPair.getShorterWordPhoneme().length()  == 1 && newOrderedPair.getLongerWordPhoneme().length()  == 1){
-					
-					System.out.print(newOrderedPair + "    ");
-					
-				}
-				
-				//End print of ordered pairs
-				
 			}
 			
-			System.out.println();
 			cartesianProductMatrix.add(currentRow);
 			
 		}
-		
-		System.out.println();
 		
 	}
 	

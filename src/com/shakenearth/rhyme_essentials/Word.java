@@ -10,7 +10,7 @@ import java.util.*;
  * that make up the word.
  * @author Thomas Lisankie
  */
-public class Word extends PhonemeSequence implements Serializable{
+public class Word implements Serializable{
 	
 	private String wordName = "";
 	private List<Phoneme> listOfPhonemes = new ArrayList<Phoneme>();
@@ -35,17 +35,6 @@ public class Word extends PhonemeSequence implements Serializable{
 		
 		this.setWordName(wordName);
 		setListOfPhonemes(phonemes);
-		
-	}
-
-	public void addWordThisRhymesWith(int index, double rhymePercentile){
-		
-		
-		Point2D.Double wordToBeInserted = new Point2D.Double(index, rhymePercentile);
-		
-		wordsThisRhymesWith.add(wordToBeInserted);
-		
-		Collections.sort(wordsThisRhymesWith, new Point2DCompare());
 		
 	}
 

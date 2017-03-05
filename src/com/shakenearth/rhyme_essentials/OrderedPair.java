@@ -155,7 +155,6 @@ public class OrderedPair {
 	public void calculateGapPenalty(int lSize) {
 		
 		double deduction = 0.0;
-		System.out.println("INDEXES: " + getIndexes());
 		
 		for(int i = 0; i < getIndexes().size() - 1; i++){
 			
@@ -185,9 +184,6 @@ public class OrderedPair {
 			deduction = deduction + Math.log10(lSize - getIndexes().get(getIndexes().size()-1));
 			
 		}
-		
-		System.out.println("NEW DEDUCTION: " + deduction);
-		System.out.println("RV BEFORE DEDUCTION: " + getRhymeValue());
 		
 		setRhymeValue(getRhymeValue() - deduction);
 		
